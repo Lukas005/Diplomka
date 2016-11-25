@@ -1,0 +1,32 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdftex 2016.9.1)  1 SEP 2016 13:20
+entering extended mode
+**"C:/Users/Marek/OneDrive/Diplomová práce/LateX/ref.bib"
+("C:/Users/Marek/OneDrive/Diplomová práce/LateX/ref.bib"
+Overfull \hbox (95.19054pt too wide) in paragraph at lines 139--148
+[]\tenrm @miscPo01, au-thor = Matt Powel, ti-tle = "The Can-ter-bury Cor-pus [o
+n-line]", url = http://corpus.canterbury.ac.nz/index.html,|
+
+\hbox(7.5+2.5)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm @
+.\tenrm m
+.\tenrm i
+.\tenrm s
+.etc.
+
+! Misplaced alignment tab character &.
+l.168 	journal = {Computing in Science &
+                                         Engineering},
+? n
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? x
+No pages of output.
+PDF statistics:
+ 0 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

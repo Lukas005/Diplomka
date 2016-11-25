@@ -1,0 +1,33 @@
+\begin{thebibliography}{1}
+\providecommand{\biburl}[1]{\url{#1}}
+\providecommand{\urlprefix}{Available from: }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\biburl{#2}}
+
+\bibitem{Chen10}
+Chen, J.~X. Geographic Information Systems. \emph{Computing in Science \&
+  Engineering}, Jan.--Feb. 2010: pp. 8--9, ISSN 1521-9615.
+
+\bibitem{Koc14}
+Koc, L. \emph{Pl{\' a}nova{\v c} setk{\' a}n{\' i}}. Bachelor's thesis, Czech
+  Technical University in Prague, Faculty of Information Technology, 2014.
+
+\bibitem{Euro16}
+EuroGeographics. About Us. \url{http://www.eurogeographics.org/about}, [cit.
+  2016-09-04].
+
+\bibitem{EEA16}
+EEA. Who we are. \url{http://www.eea.europa.eu/about-us}, [cit. 2016-09-06].
+
+\bibitem{ESPON13}
+ESPON. ESPON 2013 PROGRAMME. \url{http://www.espon.eu}, [cit. 2016-09-04].
+
+\bibitem{Bondy76}
+Bondy, J.~A.; Murty, U. S.~R. \emph{Graph theory with applications}, chapter
+  The incidence and adjacency matrices. New York: Elsevier Science Publishing
+  Co., Inc., 1976, ISBN 0-444-19451-7.
+
+\end{thebibliography}
