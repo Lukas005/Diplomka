@@ -13,7 +13,7 @@
 
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{subfig} %subfigures
-\usepackage{amsmath, kbordermatrix} %advanced maths
+\usepackage{amsmath, kbordermatrix, amssymb} %advanced maths
 % \usepackage{amssymb} %additional math symbols
 
 \usepackage{enumitem}
@@ -354,11 +354,18 @@ The Ellpack-Itpack format for the matrix TODO is TODO.
 \section{Definitions and problem description}
 
 \subsection{Directed graph}
-A directed \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. Throughout this paper, the number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$. A $path$ in $G$ is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$. A path with $v_1 = v_k$ is called a $cycle$. A graph (without multiple edges) can have up to $n^2$ edges. We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L : V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R2$ in the plane.
+A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. The number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$ throughout this thesis, . A $path$ in $G$ is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$. A path with $v_1 = v_k$ is called a $cycle$. A graph (without multiple edges) can have up to $n^2$ edges. 
+
+% We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L: V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R^2$ in the plane.
 
 \subsection{Shortest path problem}
-Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f(e): E \to R$. We interpret the weights as edge lengths in the sense that the length of a path is the sum of the weights of its edges. The (single-source single-target) shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$. Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles. If there are negative weights, but not negative cycles, it is possible, using Johnson’s algorithm [Johnson 1977], to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f(e): A \to R$ to non-negative arc weights  : A → R+ 0 that result in the same shortest paths. Hence, in the rest of the paper, we can safely assume that edge weights are non-negative. Throughout the paper we also assume that for all pairs $(s,t) \in V \times V $ the shortest path from $s$ to $t$ is unique. Kranakis et al. [1995], for instance, gave a detailed description on how one can transform any graph into such a unique shortest-path graph.
+Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f: E \to \mathbb{R}$. 
+The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as a edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
 
+The shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
+Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
+Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
+And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm [Johnson 1977], to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
 
 \subsection{Dijkstra algorithm}
 
