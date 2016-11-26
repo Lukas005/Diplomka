@@ -365,7 +365,7 @@ The length of a path is the sum of the weights of its edges. In this sense the w
 The shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
 Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
 Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
-And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm [Johnson 1977], to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
+And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
 
 \subsection{Dijkstra algorithm}
 

@@ -28,6 +28,11 @@ ESPON. ESPON 2013 PROGRAMME. \url{http://www.espon.eu}, [cit. 2016-09-04].
 \bibitem{Bondy76}
 Bondy, J.~A.; Murty, U. S.~R. \emph{Graph theory with applications}, chapter
   The incidence and adjacency matrices. New York: Elsevier Science Publishing
-  Co., Inc., 1976, ISBN 0-444-19451-7.
+  Co., Inc., 1976, ISBN 0-444-19451-7, p.~7.
+
+\bibitem{Johnson77}
+Johnson, D.~B. Efficient algorithms for shortest paths in sparse networks.
+  \emph{Journal of the Association for Computing Machinery 24}, 1977: pp. 1 --
+  13.
 
 \end{thebibliography}
