@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \providecommand{\biburl}[1]{\url{#1}}
 \providecommand{\urlprefix}{Available from: }
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -38,5 +38,26 @@ Saad, Y. \emph{Iterative Methods for Sparse Linear Systems}. Society for
 Johnson, D.~B. Efficient algorithms for shortest paths in sparse networks.
   \emph{Journal of the Association for Computing Machinery 24}, 1977: pp. 1 --
   13.
+
+\bibitem{Dijkstra59}
+Dijkstra, E.~W. \emph{Numerische Mathematik 1}, chapter A Note on Two Problems
+  in Connexion with Graphs. Mathematisch Centrum, Amsterdam, 1959, pp.
+  269--271.
+
+\bibitem{Bellman58}
+Bellman, R.~E. On a Routing Problem. \emph{The Quarterly of Applied
+  Mathematics}, volume~16, 1958: pp. 87--90.
+
+\bibitem{FordFulkerson62}
+Ford, L.~R.; Fulkerson, D.~R. \emph{Flows in Networks}. Princeton, NJ:
+  Princeton University Press, 1962.
+
+\bibitem{Warshall62}
+Warshall, S. A theorem on Boolean matrices. \emph{Journal of the ACM},
+  volume~9, no.~1, January 1962: pp. 11--12.
+
+\bibitem{Floyd56}
+Floyd, R.~W. Algorithm 97: Shortest Path. \emph{Communications of the ACM},
+  volume~5, June 1956: p. 345.
 
 \end{thebibliography}

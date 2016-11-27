@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.5.19)  27 NOV 2016 01:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.5.19)  27 NOV 2016 14:02
 entering extended mode
 **./MT_Lukas_Koc.tex
 (MT_Lukas_Koc.tex
@@ -906,9 +906,9 @@ Package pdftex.def Info: pics/GraphRep.png used on input line 223.
 
 Underfull \vbox (badness 1817) has occurred while \output is active []
 
- [9 <./pics/GraphRep.png>] [10] [11] [12] [13] [14
+ [9 <./pics/GraphRep.png>] [10] [11] [12] [13] [14] [15
 
-] [15] [16
+] [16
 
 ] (MT_Lukas_Koc.bbl [17]
 [18
@@ -919,10 +919,10 @@ LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 19.
 
 ("C:\Users\Marek\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\ot1lmtt.fd"
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-))
-[19] [20
+)
+[19]) [20] [21
 
-] [21] [22
+] [22
 
 ] [23]
 \tf@toc=\write5
@@ -931,27 +931,27 @@ File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 \tf@lof=\write6
 \openout6 = `MT_Lukas_Koc.lof'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 431.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 431.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 445.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 445.
  (MT_Lukas_Koc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 431.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 431.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 445.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 445.
 Package rerunfilecheck Info: File `MT_Lukas_Koc.out' has not changed.
 (rerunfilecheck)             Checksum: 2F3717087ABB37BD5EA3494C23F5AFF7;2247.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 431.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 445.
  ) 
 Here is how much of TeX's memory you used:
- 14151 strings out of 493335
- 198093 string characters out of 3130230
- 326137 words of memory out of 3000000
- 17436 multiletter control sequences out of 15000+200000
+ 14161 strings out of 493335
+ 198230 string characters out of 3130230
+ 326302 words of memory out of 3000000
+ 17441 multiletter control sequences out of 15000+200000
  76408 words of font info for 60 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,15n,32p,1101b,447s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,15n,32p,1101b,492s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rmtt.
 enc}{C:/Users/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mat
 hsy.enc}{C:/Users/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm
@@ -978,9 +978,9 @@ ers/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb><C:
 /Users/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb
 ><C:/Users/Marek/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/
 symbols/msbm10.pfb>
-Output written on MT_Lukas_Koc.pdf (37 pages, 450925 bytes).
+Output written on MT_Lukas_Koc.pdf (37 pages, 455710 bytes).
 PDF statistics:
- 402 PDF objects out of 1000 (max. 8388607)
- 86 named destinations out of 1000 (max. 500000)
+ 414 PDF objects out of 1000 (max. 8388607)
+ 91 named destinations out of 1000 (max. 500000)
  144 words of extra memory for PDF output out of 10000 (max. 10000000)
 
