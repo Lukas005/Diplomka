@@ -279,15 +279,23 @@ $$ \sum_{v \in V} \textrm{deg\textsuperscript{--}(v)} = |E| $$ where $E$ is set 
 
 The reason why I mentioned sparse matrix in the first place is that there are functions and operations which could be done above the sparse matrices. The main motivation for this section are the storage schemes in which sparse matrix could be stored. Using storage scheme enables all the advantages of the regular matrix representation with significantly less memory usage since only the non-zero elements are being stored.
 
-According to %TODO cite Yasaad
-there are X storage schemes. 
+According to \cite{Saad03} there are X storage schemes. 
 
 Coordinate format belongs to the simplest storage schemes of sparse matrices. The data structure consists of three arrays: an array containing all the (real or complex) values of the non-zero elements of the original matrix in any order, an integer array containing their row indices and a second integer array containing their column indices. All three arrays are of length $N$, which is the number of non-zero elements.
 
 Let us take a look at adjacency $\textbf{A}$ matrix from section \ref{subsec:AdjMatrix}. Clearly this matrix contains less non-zero elements, therefore it is an example of sparse matrix. Using coordinate format matrix $\textbf{A}$ looks the following way:
 
 $$
+\begin{array}{c c}
+\textbf{A} = 
+\begin{pmatrix}
+
+1 & 1 \\
+1 & 1 \\
+
+\end{pmatrix}
 \begin{array}{c}
+
 AA:
 \begin{array}{|c|c|c|c|c|c|}
  \hline
@@ -307,6 +315,8 @@ IC:
  \hline
  4 & 2 & 3 & 1 & 3 & 3 \\
  \hline
+\end{array}
+
 \end{array}
 \end{array}
 $$
@@ -366,6 +376,8 @@ The shortest-path problem consists in finding a path of minimum length from a gi
 Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
 Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
 And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
+
+For solving shortest path problems exist nowadays many algorithms. Most of them evolved from their predecessors. The very first algorithms 
 
 \subsection{Dijkstra algorithm}
 

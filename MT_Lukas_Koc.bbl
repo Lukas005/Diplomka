@@ -30,6 +30,10 @@ Bondy, J.~A.; Murty, U. S.~R. \emph{Graph theory with applications}, chapter
   The incidence and adjacency matrices. New York: Elsevier Science Publishing
   Co., Inc., 1976, ISBN 0-444-19451-7, p.~7.
 
+\bibitem{Saad03}
+Saad, Y. \emph{Iterative Methods for Sparse Linear Systems}. Society for
+  Industrial Mathematics, 2003.
+
 \bibitem{Johnson77}
 Johnson, D.~B. Efficient algorithms for shortest paths in sparse networks.
   \emph{Journal of the Association for Computing Machinery 24}, 1977: pp. 1 --
