@@ -15,7 +15,7 @@
 % \usepackage{subfig} %subfigures
 \usepackage{amsmath, kbordermatrix, amssymb} %advanced maths
 % \usepackage{amssymb} %additional math symbols
-
+\usepackage[linesnumbered,lined,boxed]{algorithm2e}
 \usepackage{enumitem}
 \usepackage{dirtree} %directory tree visualisation
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
@@ -281,14 +281,6 @@ Coordinate format belongs to the simplest storage schemes of sparse matrices. Th
 Let us take a look at adjacency $\textbf{A}$ matrix from section \ref{subsec:AdjMatrix}. Clearly this matrix contains less non-zero elements, therefore it is an example of sparse matrix. Using coordinate format matrix $\textbf{A}$ looks the following way:
 
 $$
-\begin{array}{c c}
-\textbf{A} = 
-\begin{pmatrix}
-
-1 & 1 \\
-1 & 1 \\
-
-\end{pmatrix}
 \begin{array}{c}
 
 AA:
@@ -310,8 +302,6 @@ IC:
  \hline
  4 & 2 & 3 & 1 & 3 & 3 \\
  \hline
-\end{array}
-
 \end{array}
 \end{array}
 $$
@@ -354,12 +344,57 @@ Compressed Sparse Row format through the years develops in many number of variat
 While storing columns instead of rows, we create a new scheme known as Compressed Sparse Column (CSC) format.
 
 The last scheme I would like to point out is the Ellpack-Itpack format which is very popular on vector machines. The Ellpack-Itpack format stores matrix in two 2-dimensional arrays of the same size $n \times N_{mpr}$, where $n$ is the number of rows of the original matrix and $N_{mpr}$ represents maximum of non-zero elements per row. The first array contains non-zero elements of original matrix. If the number of non-zero elements is less then the $N_{mpr}$, the rest of the row is filled with zeroes. The second array stores the information about the column in which specific non-zero element is located. For each zero in the first array can be added any number.
-The Ellpack-Itpack format for the matrix TODO is TODO.
+
+For the given matrix $\textbf{EIF}$:
+
+$$
+\begin{array}{c}
+\textbf{EIF} = 
+\begin{pmatrix}
+4 & 0 & 0 & 1 & 0 \\
+0 & 0 & 7 & 0 & 9 \\
+0 & 2 & 0 & 0 & 0 \\
+6 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 4 & 3\\
+\end{pmatrix}
+\end{array}
+$$
+
+the Ellpack-Itpack format looks following:
+ 
+$$
+\begin{array}{lr}
+\textbf{AA} = 
+\begin{pmatrix}
+4 & 1 \\
+7 & 9 \\
+2 & 0 \\
+6 & 1 \\
+4 & 3 \\
+\end{pmatrix}
+\quad \quad
+\textbf{IC} = 
+\begin{pmatrix}
+0 & 3  \\
+2 & 4 \\
+1 & 0 \\
+0 & 3\\
+3 & 4 \\
+\end{pmatrix}
+\end{array}
+$$
 
 \subsection{List and matrix comparison}
 %Both matrices and list stores equivalent information about the graph. From incidence matrix we can read which two edges share the same vertex (they are incident) and from adjacency matrix which two vertex are connected with an edge. Adjacency list stores for each vertex node edge information in form of linked list which brings two main benefits. 
 
-%TODO 
+Adjacency lists in their essence compactly represent existing edges. 
+However, this comes at the cost of possibly slow lookup of specific edges.
+In case of unordered list, worst case lookup time for a specific edge can become O(n), since each list has length equal to degree of a vertex.
+On the other hand, looking up the neighbours of a vertex becomes trivial, and for a sparse or small graph the cost of iterating through the adjacency lists might be negligible.
+
+Adjacency matrices can use more space in order to provide constant lookup time. Since every possible entry exists you can check for the existence of an edge in constant time using indexes. However, lookup time for a neighbour becomes O(n) since it is needed to check all possible neighbours.
+
+Most real-world problems produce sparse and/or large graphs, for which adjacency list representations suit better.
 
 \section{Definitions and problem description}
 
@@ -391,9 +426,58 @@ Dijkstra's algorithm \cite{Dijkstra59} and Bellman-Ford algorithm \cite{Bellman5
 Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. Floyd-Warshall algorithm iterates all vertices $v$ in order to find better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm first converts all the negative edges into positive one and then applies Dijsktra's algorithm on every node within the graph. 
 For sparse graphs the Johnson's algorithm provides better times than Floyd-Warshall algorithm \cite{Cormen01}.
 
-\subsection{Dijkstra algorithm}
+\section{Dijkstra algorithm}
+Algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find shortest path between two nodes, but through the course of time among computer scientists is Dijkstra algorithm accepted as an algorithm finding path from one single node to all other nodes in graph. 
+
+
+% about  Mehlhorn, Kurt; Sanders, Peter (2008). Algorithms and Data Structures: The Basic Toolbox (PDF). Springer.
+Dijkstra algorithm was constructed to solve real world problem: How to get from one point to the other using shortest path possible. % Frana, Phil (August 2010). "An Interview with Edsger W. Dijkstra". Communications of the ACM. 53 (8): 41–47. doi:10.1145/1787234.1787249
+The main criteria used to define shortest path are either time or distance, both quantities having only positive values. If we convert these criteria into graph theory, all the edges of the graph, where graph represents our world and nodes positions in it, need to be also positive.
+Because of that, Dijkstra algorithm cannot be used to solve SSSP problem on graphs having negative values (as mentioned in previous chapter). However, the data available are based on real world problems as well therefore Dijkstra algorithm will be perfect foundation as an problem solving algorithm. 
+
+\subsection{Definition}
+There are many variations of Dijkstra algorithm. Here is presented variation, where nodes can be in three states: $unvisited, visited $ and $finished$. For each node \textbf{n} function \texttt{dist}(\textbf{n}) represents distance from the starting node \textbf{s}. For unreachable nodes value return by this function will be undefined. Next to \texttt{dist} function there is also \texttt{prev}(\textbf{n}), which returns node for the shortest path back to node \textbf{s}.
+
+\begin{algorithm}[H]
+\SetKwFunction{Dist}{dist}
+\SetKwFunction{Len}{length}
+\SetKwFunction{P}{prev}
+\SetKwData{Or}{or}
+ set the starting node \textbf{s} as \textit{visited} and \Dist{\textbf{s}}$ \leftarrow 0$\;
+ \For{for each node \textbf{n} different from \textbf{s}}{
+  set node \textbf{n} as \textit{unvisited}
+ }
+ \While{$\exists \textbf{u}$ with state visited}
+ {
+  \textbf{u} $\leftarrow$ node with minimal distance from \textbf{u} and state $visited$\;
+  set \textbf{u} state as $finished$	\;
+  \ForEach{neighbour \textbf{w} of \textbf{u}}
+  {
+   \If{\textbf{w} is unvisited \Or \Dist{\textbf{w}} $ > $  \Dist{\textbf{u}} $+$ \Len{\textbf{w}, \textbf{u}}}{
+	\lIf{\textbf{w} is unvisited}{ 
+	set \textbf{w} as visited}
+	\Dist{\textbf{w}} $\leftarrow$ \Dist{\textbf{u}} $+$ \Len{\textbf{w}, \textbf{u}}\;
+	\P{\textbf{w}} $\leftarrow \textbf{u}$   
+   }
+  } 
+ }
+\caption{Dijkstra algorithm}\label{algo_dijkstra}
+\end{algorithm}
+
+On line number 5 the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), where \textbf{w} is every other node having state $visited$.
 
 \section{User interface design}
+The application requires the spacial information as an input. 
+User should be able to insert the positions of people in order to find their meeting place and clearly see desired result. For that the user interface (UI) of our application should provide a way how to register and store spacial informations provided by the user. 
+
+Creating a fully satisfiable GUI is not main purpose of this thesis, so I have decided to create simple GUI where user insert geographical coordinates of participants and as a result he will receive sincle pair of coordinates of final destination. 
+Fully optimal GUI would allow user to select the position through the displayed map of the dataset currently available. That way the effort of finding coordinates would be eliminated and general user flow would be significantly improved. The same applies to the result of a application. User would see a marked point on the map to clearly see the meeting point. 
+
+\subsection{Technology used}
+Main core of my application is being developed in C++ language, therefore the goal is to have fully compatible front-end with it. In addition the technology used should be cross-platform. In general, for each high-level language (e.g. C\#, Java, ObjC)	one platform might be more preferred over the other or additional virtualization is required. 
+
+In direction of keeping my application as a whole simple, I stayed in C++ language and decided to use Qt framework, which provides easy and cross-platform tools to create  basic UI. Qt framework is classified as FOSS computer software, therefore fitting for the purpose.
+
 
 \chapter{Realisation}
 
@@ -415,6 +499,7 @@ For sparse graphs the Johnson's algorithm provides better times than Floyd-Warsh
 	\item[DEM] Digital Elevation Model
 	\item[ERDF] European Regional Development Fund
 	\item[ESPON] European Observation Network for Territorial Development and Cohesion
+	\item[FOSS] Free and Open-Source Software
 	\item[GIS] Geographic information systems	
 	\item[MEGRIN] Multi-purpose European Ground Related Information Network
 	\item[OSM] OpenStreetMaps
