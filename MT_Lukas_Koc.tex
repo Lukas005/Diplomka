@@ -14,6 +14,7 @@
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{subfig} %subfigures
 \usepackage{amsmath, kbordermatrix, amssymb} %advanced maths
+\usepackage{amsthm} %theorems and lemmas
 % \usepackage{amssymb} %additional math symbols
 \usepackage[linesnumbered,lined,boxed]{algorithm2e}
 \usepackage{enumitem}
@@ -48,6 +49,11 @@
 
 % \website{http://site.example/thesis} %optional thesis URL
 
+%%%%%% Theorem package def
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\renewcommand{\qedsymbol}{$\heartsuit$}
+%%%%%% Theorem package def
 
 \begin{document}
 
@@ -404,6 +410,7 @@ A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite s
 % We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L: V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R^2$ in the plane.
 
 \subsection{Shortest path problem}
+\label{sec:SPP}
 Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f: E \to \mathbb{R}$. 
 The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as a edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
 
@@ -427,6 +434,7 @@ Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cit
 For sparse graphs the Johnson's algorithm provides better times than Floyd-Warshall algorithm \cite{Cormen01}.
 
 \section{Dijkstra algorithm}
+\label{sec:dijsktra}
 Algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find shortest path between two nodes, but through the course of time among computer scientists is Dijkstra algorithm accepted as an algorithm finding path from one single node to all other nodes in graph. 
 
 
@@ -435,27 +443,27 @@ Dijkstra algorithm was constructed to solve real world problem: How to get from 
 The main criteria used to define shortest path are either time or distance, both quantities having only positive values. If we convert these criteria into graph theory, all the edges of the graph, where graph represents our world and nodes positions in it, need to be also positive.
 Because of that, Dijkstra algorithm cannot be used to solve SSSP problem on graphs having negative values (as mentioned in previous chapter). However, the data available are based on real world problems as well therefore Dijkstra algorithm will be perfect foundation as an problem solving algorithm. 
 
-\subsection{Definition}
-There are many variations of Dijkstra algorithm. Here is presented variation, where nodes can be in three states: $unvisited, visited $ and $finished$. For each node \textbf{n} function \texttt{dist}(\textbf{n}) represents distance from the starting node \textbf{s}. For unreachable nodes value return by this function will be undefined. Next to \texttt{dist} function there is also \texttt{prev}(\textbf{n}), which returns node for the shortest path back to node \textbf{s}.
+ \subsection{Definition}
+There are many variations of Dijkstra algorithm. Here is presented variation, where nodes can be in three states: $fresh, open $ and $closed$. For each node \textbf{n} function \texttt{dist}(\textbf{n}) represents distance from the starting node \textbf{s}. For unreachable nodes value return by this function will be undefined. Next to \texttt{dist} function there is also \texttt{prev}(\textbf{n}), which returns node for the shortest path back to node \textbf{s}.
 
 \begin{algorithm}[H]
 \SetKwFunction{Dist}{dist}
 \SetKwFunction{Len}{length}
 \SetKwFunction{P}{prev}
 \SetKwData{Or}{or}
- set the starting node \textbf{s} as \textit{visited} and \Dist{\textbf{s}}$ \leftarrow 0$\;
+ set the starting node \textbf{s} as \textit{open} and \Dist{\textbf{s}}$ \leftarrow 0$\;
  \For{for each node \textbf{n} different from \textbf{s}}{
-  set node \textbf{n} as \textit{unvisited}
+  set node \textbf{n} as \textit{fresh}
  }
- \While{$\exists \textbf{u}$ with state visited}
+ \While{$\exists \textbf{u}$ with state open}
  {
-  \textbf{u} $\leftarrow$ node with minimal distance from \textbf{u} and state $visited$\;
-  set \textbf{u} state as $finished$	\;
+  \textbf{u} $\leftarrow$ $open$ node with minimal \Dist{\textbf{u}} \;
+  set \textbf{u} state as $closed$	\;
   \ForEach{neighbour \textbf{w} of \textbf{u}}
   {
-   \If{\textbf{w} is unvisited \Or \Dist{\textbf{w}} $ > $  \Dist{\textbf{u}} $+$ \Len{\textbf{w}, \textbf{u}}}{
-	\lIf{\textbf{w} is unvisited}{ 
-	set \textbf{w} as visited}
+   \If{\textbf{w} is fresh \Or \Dist{\textbf{w}} $ > $  \Dist{\textbf{u}} $+$ \Len{\textbf{w}, \textbf{u}}}{
+	\lIf{\textbf{w} is fresh}{ 
+	set \textbf{w} as open}
 	\Dist{\textbf{w}} $\leftarrow$ \Dist{\textbf{u}} $+$ \Len{\textbf{w}, \textbf{u}}\;
 	\P{\textbf{w}} $\leftarrow \textbf{u}$   
    }
@@ -464,20 +472,83 @@ There are many variations of Dijkstra algorithm. Here is presented variation, wh
 \caption{Dijkstra algorithm}\label{algo_dijkstra}
 \end{algorithm}
 
-On line number 5 the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), where \textbf{w} is every other node having state $visited$.
+On the line number \textbf{6} the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), where \textbf{w} is every other node having state $open$.
+
+\subsection{Proof of correctness}
+
+In order to prove the algorithm will stop after finite number of step and its correctness, it is needed to define lemma about states in which nodes can be:
+
+%%%%% LEMMA 1
+\begin{lemma}
+Nodes can only change state either from "\textit{fresh}" to "\textit{open}" or from "\textit{open}" to "\textit{closed}".
+\end{lemma}
+%%%%% LEMMA 1
+
+%%%%% PRoof1
+\begin{proof}
+The only time nodes can change state are on line \textbf{7} and \textbf{10} of the Algorithm \ref{algo_dijkstra}.
+\end{proof}
+%%%%% PRoof1
+
+%%%%% Theorem 2
+\begin{theorem}
+\label{theorem2}
+Dijkstra algorithm will stop computing after at the most \textit{N} steps iterations of while cycle, where N is a number of nodes in graph. 
+\end{theorem}
+%%%%% Theorem 2
+
+%%%%% Proof 2
+\begin{proof}
+From the description of the algorithm and previous lemma it is clear the set of closed nodes of cycle will increase with each iteration by one and its size being between 0 and \textit{N}.
+\end{proof}
+%%%%% Proof 2
+
+%%%%% Theorem 3
+\begin{theorem}
+Let $A$ be a set of closed nodes. The length already found path from $v_0$ to $v$ is the length of the shortest path $v_0 v_1 \dots v_k v$, where nodes $v_0, v_1, \dots , v_k$ are in set $A$.
+\end{theorem}
+%%%%% Theorem 3
+
+%%%%% Proof 3
+\begin{proof}
+The proof is by induction on the number of step executed. The theorem clearly is correct before and after the first step. 
+
+Let $w$ be a node with a state set to closed in last step. Let us consider a node $v$ which is closed.
+If $v=w$, then the theorem is trivial. In opposite case case we will show, that there is a shortest path from $v_0$ to $v$ through nodes in set $A$ not containing the node $w$. Set $L$ as a length of the path from $v_0$ to $v$ through the nodes in $A$ without $w$. Because in each step we choose node with the lowest \texttt{dist}(\textbf{u}) and \texttt{dist} of chosen nodes in each step represents nondecreasing sequence (weight of the edges are positive), then the length of the path from $v_0$ to $w$ through nodes in $A$ is at least $D$. Because we have chosen the $D$ we know, there exists a path from $v_0$ to $v$ through nodes in $A$ which is not using node $w$.
+
+Now let us consider a node $v$ which is not closed. Let $v_0 v_1 \dots v_k v$ be the shortest path from $v_0$ to $v$, where $\forall v_0, v_1, \dots v_k v \in A$. 
+If $v_k = w$, then we changed the \texttt{dist} to the length of this path in current step. If $v_k \neq w$ then $v_0 v_1 \dots v_k$ is the shortest path from $v_0$ to $v_k$ through nodes in $A$ and so we can assume that no nodes $v_0, v_1, \dots v_k $ is not $w$ (according to last paragraph). Hence the length of the path was already set to the correct value before current step.
+
+Due to the fact, that after last step the set $A$ contains only the nodes, into which exists a path from node $v_0$, we have proven the correctness of Dijkstra algorithm.
+\end{proof}
+%%%%% Proof 3
+
+\subsection{Time complexity}
+Now from the Algorithm \ref{algo_dijkstra} we can compute time general complexity of Dijkstra algorithm. Let us assume we use array in order to store the distances for all the $N$ nodes. As proven in Theorem \ref{theorem2} the whole algorithm will execute at most $N$ steps, in each we are choosing node from the set of \textit{fresh} nodes having size $O(N)$. In each step we also need to check the number of nodes, which are being connected via edges outgoing from the currently checked node. Number of these checks in total is equal to at most $O(E)$, where $E$ is a number of edges in the input graph. To sum up time complexity equals to $O(N^2 + M)$, i.e. $O(N^2)$ since $E$ can be at the most $N^2$.
+
+It is possible to improve this complexity by using heap instead of an array in order to store the distances. In the beginning the heap will contain $N$ elements and in each step this number will be reduced by one: We find and delete smallest one in a time of $O(\log{N})$ and adjusting the distances of the neighbours, which takes $O(E\log{n})$ through all the edges. In total the time complexity of the algorithm is $O((N+M) \log{N})$. As mentioned in Section \ref{sec:dijsktra} for real life problems we expect the graph having a form of a sparse graph, meaning for $M << N^2$ the heap version of the algorithm will provide much more better results.
+
+
+Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsection \ref{sec:SPP}. The main difference between these algorithms is repetitive checking of the nodes. Once Dijkstra algorithm closes a node, it will never be checked again. Bellman-Fold algorithm goes through each of the nodes and recalculates the path in case negative edges exists in the graph. Because of this extra step, it is slower then Dijkstra, but can detect whether the graph is valid or not.
 
 \section{User interface design}
 The application requires the spacial information as an input. 
 User should be able to insert the positions of people in order to find their meeting place and clearly see desired result. For that the user interface (UI) of our application should provide a way how to register and store spacial informations provided by the user. 
 
-Creating a fully satisfiable GUI is not main purpose of this thesis, so I have decided to create simple GUI where user insert geographical coordinates of participants and as a result he will receive sincle pair of coordinates of final destination. 
-Fully optimal GUI would allow user to select the position through the displayed map of the dataset currently available. That way the effort of finding coordinates would be eliminated and general user flow would be significantly improved. The same applies to the result of a application. User would see a marked point on the map to clearly see the meeting point. 
+Creating a fully satisfiable GUI is not main purpose of this thesis, so I have decided to create simple GUI, where user can insert geographical coordinates of participants and as a result he will receive single pair of coordinates of final destination. 
+
+Fully optimal GUI would allow user to select the position through the displayed map of the dataset currently available. That way the effort of finding coordinates would be eliminated and general user-flow would be significantly improved. The same applies to the result of a application. User would see a marked point on the map to clearly see the meeting point. 
 
 \subsection{Technology used}
-Main core of my application is being developed in C++ language, therefore the goal is to have fully compatible front-end with it. In addition the technology used should be cross-platform. In general, for each high-level language (e.g. C\#, Java, ObjC)	one platform might be more preferred over the other or additional virtualization is required. 
+The goal of the thesis is to create complex desktop application with basic front-end to provide user proper control over the input data and general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (e.g. C\# Windows, ObjC iOS). 
 
-In direction of keeping my application as a whole simple, I stayed in C++ language and decided to use Qt framework, which provides easy and cross-platform tools to create  basic UI. Qt framework is classified as FOSS computer software, therefore fitting for the purpose.
+In direction of keeping my application as a whole simple, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make deployment on any server operating system effortless. Not to mention there are plenty open source libraries available making a realization of the whole project easily done.  
 
+%% QT 
+One of the framework being used is Qt framework. Qt provides cross-platform tools to create basic UI and is classified as FOSS computer software, therefore fitting the purpose of the application being open source.
+
+%% GDAL
+For reading the data files and following manipulation GDAL/ORG library was selected. GDAL is design for reading and writing raster GIS formats. 
 
 \chapter{Realisation}
 
@@ -500,8 +571,10 @@ In direction of keeping my application as a whole simple, I stayed in C++ langua
 	\item[ERDF] European Regional Development Fund
 	\item[ESPON] European Observation Network for Territorial Development and Cohesion
 	\item[FOSS] Free and Open-Source Software
+	\item[GDAL] Geospatial Data Abstraction Library
 	\item[GIS] Geographic information systems	
 	\item[MEGRIN] Multi-purpose European Ground Related Information Network
+	\item[OOP] Object Oriented Programming
 	\item[OSM] OpenStreetMaps
 	\item[SSSP] Single-source shortest path
 	\item[XML] Extensible markup language
