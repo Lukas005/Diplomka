@@ -1,4 +1,4 @@
-	% options:
+		% options:
 % thesis=B bachelor's thesis
 % thesis=M master's thesis
 % czech thesis in Czech language
@@ -64,10 +64,6 @@
 \chapter{Introduction}
 %TODO
 
-
-\setsecnumdepth{all}
-\chapter{State-of-the-art}
-
 \section{Geographic information system}
 Geographic information systems (GIS) are solving problems which are based on geospatial information. To achieve the goal special tools are being used such as visualization software, remote sensing and geography tools. Remote sensing tools gain information on specific objects or areas from a distance. Geography tools help to observe and research the environmental changes of the earth and its resources, its evolution of society and species. Visualization software, then, displays gathered data as 2D or 3D images \cite{Chen10}.
 
@@ -75,7 +71,45 @@ With a drastic change of modern technologies and enormous amount of data a new s
 
 This thesis uses knowledge gathered through the course of time in geographic information science to map graph theory problems on real life data. The developed application belongs to the software category GIS software. 
 
-\section{A need for data}
+
+\section{Problem description}
+
+\subsection{Directed graph}
+A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. The number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$ throughout this thesis, . A $path$ in $G$ is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$. A path with $v_1 = v_k$ is called a $cycle$. A graph (without multiple edges) can have up to $n^2$ edges. 
+
+% We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L: V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R^2$ in the plane.
+
+\subsection{Shortest path problem}
+\label{sec:SPP}
+Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f: E \to \mathbb{R}$. 
+The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as a edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
+
+The shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
+Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
+Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
+And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
+
+For solving shortest path problems exist nowadays many algorithms. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
+Following list contains the essential shortest path problem algorithms, which provided solid ground in graph theory science:
+\begin{itemize}
+\item Dijkstra's algorithm
+\item Bellman-Ford algorithm
+\item Floyd-Warshall algorithm
+\item Johnson's algorithm 
+\end{itemize}
+
+Dijkstra's algorithm \cite{Dijkstra59} and Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve single-source shortest path (SSSP) problem. SSSP problem can be defined as: Given a directed graph $G = (V,E)$, with non-negative costs on each edge, and a selected source node $v \in V, \forall w \in V$, find the cost of the least cost path from $v$ to $w$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is greedy algorithm working with the graph were negative edges are not allowed. Bellman-Ford algorithm is non-greedy version of Dijkstra's algorithm which allows it to work with the graph having negative edges.
+
+Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. Floyd-Warshall algorithm iterates all vertices $v$ in order to find better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm first converts all the negative edges into positive one and then applies Dijsktra's algorithm on every node within the graph. 
+For sparse graphs the Johnson's algorithm provides better times than Floyd-Warshall algorithm \cite{Cormen01}.
+
+\setsecnumdepth{all}
+
+
+\chapter{Data Analysis}
+
+
+\section{Data fitness}
 \label{S1: Good data}
 As stated in Koc 2014 \cite{Koc14}, proficient functioning of the application requires a fitting data source. The application needs to work with reliable and (preferably) daily updated data. The area of coverage should not be limiting the application, so that a high number of users would find it convenient. The data format should be unified in order to make manipulation and management effective. Choosing the correct data format also enables the application to combine different data sources.
 
@@ -91,7 +125,7 @@ To sum up the data are required to follow certain criteria:
 
 
 
-\section{Possible data-sources}
+\section{Possible sources}
 
 While searching for data, it was focused on sources providing free data of Europe, which is also available to the public. Further subsections describe sources which matched the criteria mentioned in section \ref{S1: Good data}.
 
@@ -156,7 +190,7 @@ Data are available as soon as users register and accept the Terms \& Conditions.
 \item Excel file
 \end{itemize}
 
-\section{Data format}
+\section{Format}
 Geographical data exist in various formats depending on type and usage of the data. Data representing the elevation of mountains are better stored in different format whereas data representing the location of points of interest. 
 Most of the existing formats typically fall into two main categories: vector format or raster format. 
 
@@ -210,14 +244,12 @@ Vector type formats uses vertices as a basic unit. A vertex consists of x and y 
 \item Continuous data is not effectively represented
 \end{itemize}
 
-\section{Summary -- data usage}
-Most of the official European sources (EuroGeographics, EPSON) require filling a form for each download of data. This process could be the bottleneck for the maintenance efforts of the application, because updating the data would take significant amount of time and would require additional functionality. 
+%\section{Summary -- data usage}
+%Most of the official European sources (EuroGeographics, EPSON) require filling a form for each download of data. This process could be the bottleneck for the maintenance efforts of the application, because updating the data would take significant amount of time and would require additional functionality. 
 
 %Next very significant part of the choice is the data format. As was said in subsection HERE_ADD_SECTION well 
 
-\chapter{Analysis and design}
-
-\section{Data storage}
+\section{Storage}
 %TODO
 Since the data source and format question is resolved, the next step is to decide the representation of the graph in the memory. During the history of graph theory, three main representations are to choose from. In the following subsections a closer look on all three options will be taken.
 
@@ -408,7 +440,7 @@ Most real-world problems produce sparse and/or large graphs, for which adjacency
 
 
 
-\section{Data processing}
+\section{Preprocessing}
 
 \subsection{Great Circle Distance and Harvesine formulae}
 The cost of the edge should represent the price of getting from one node into the other. Our application is trying to find shortest path from multiple sources into one source, therefore the price should be based on the distance between source points and the final node, the shorter the better. 
@@ -426,38 +458,7 @@ where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we m
 The great circle distance takes into account the 
 
 
-
-
-\section{Definitions and problem description}
-
-\subsection{Directed graph}
-A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. The number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$ throughout this thesis, . A $path$ in $G$ is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$. A path with $v_1 = v_k$ is called a $cycle$. A graph (without multiple edges) can have up to $n^2$ edges. 
-
-% We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L: V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R^2$ in the plane.
-
-\subsection{Shortest path problem}
-\label{sec:SPP}
-Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f: E \to \mathbb{R}$. 
-The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as a edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
-
-The shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
-Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
-Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
-And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
-
-For solving shortest path problems exist nowadays many algorithms. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
-Following list contains the essential shortest path problem algorithms, which provided solid ground in graph theory science:
-\begin{itemize}
-\item Dijkstra's algorithm
-\item Bellman-Ford algorithm
-\item Floyd-Warshall algorithm
-\item Johnson's algorithm 
-\end{itemize}
-
-Dijkstra's algorithm \cite{Dijkstra59} and Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve single-source shortest path (SSSP) problem. SSSP problem can be defined as: Given a directed graph $G = (V,E)$, with non-negative costs on each edge, and a selected source node $v \in V, \forall w \in V$, find the cost of the least cost path from $v$ to $w$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is greedy algorithm working with the graph were negative edges are not allowed. Bellman-Ford algorithm is non-greedy version of Dijkstra's algorithm which allows it to work with the graph having negative edges.
-
-Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. Floyd-Warshall algorithm iterates all vertices $v$ in order to find better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm first converts all the negative edges into positive one and then applies Dijsktra's algorithm on every node within the graph. 
-For sparse graphs the Johnson's algorithm provides better times than Floyd-Warshall algorithm \cite{Cormen01}.
+\chapter{Design of the application}
 
 \section{Dijkstra algorithm}
 \label{sec:dijsktra}
@@ -557,7 +558,7 @@ It is possible to improve this complexity by using heap instead of an array in o
 
 Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsection \ref{sec:SPP}. The main difference between these algorithms is repetitive checking of the nodes. Once Dijkstra algorithm closes a node, it will never be checked again. Bellman-Fold algorithm goes through each of the nodes and recalculates the path in case negative edges exists in the graph. Because of this extra step, it is slower then Dijkstra, but can detect whether the graph is valid or not.
 
-\section{Paralelization of Dijkstra algorithm}
+\section{Parallelization of Dijkstra algorithm}
 
 \section{User interface design}
 The application requires the spacial information as an input. 
@@ -569,7 +570,7 @@ Fully optimal GUI would allow user to select the position through the displayed 
 
 \chapter{Realisation}
 
-\section{Technology used}
+\section{Frameworks used}
 The goal of the thesis is to create complex desktop application with basic front-end to provide user proper control over the input data and general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (e.g. C\texttt{\#} Windows, ObjC iOS). 
 
 In direction of keeping my application as a whole simple, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make deployment on any server operating system effortless. Not to mention there are plenty open source libraries available making a realization of the whole project easily done.  
@@ -583,11 +584,34 @@ For reading the data files and following manipulation GDAL/ORG library was selec
 As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
 Since the dataset of the application is in Shapefile format, GDAL/ORG library provides optimal tools for reading and collecting information from our dataset.
 
-\section{•}
+\section{Server}
+
+
+
+\subsection{Data processing part}
+
+\subsubsection{Data}
+%TODO FITNESS, STORAGE, Source
+
+
+\subsection{Computation part}
+
+\subsubsection{Algorithm}
+
+\subsubsection{Parallelization}
+
+\section{Client}
+
+
+\chapter{Results}
+
+
+\section{Speed}
+
+\section{Preciseness}
 
 \setsecnumdepth{part}
 \chapter{Conclusion}
-
 
 \bibliographystyle{iso690}
 \bibliography{mybibliographyfile}
