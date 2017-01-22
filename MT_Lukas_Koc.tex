@@ -62,7 +62,14 @@
 
 \setsecnumdepth{part}
 \chapter{Introduction}
-%TODO
+
+\section{Motivation}
+The 21st century is often labelled as the century of data. Usage and gathering the data influence our lives on daily basis. Business, industry, fashion, society or transportation is transforming under the amount of data gathered and evaluated. 
+
+
+
+Applying the knowledge of graph theory, geography and computer science, the goal of the thesis is to create application finding ideal meeting place for a group of people. 
+Nowadays computers with multiprocessors or graphic cards are affordable for everyone, meaning paralellization of the computation is significant for every sophisticated application.
 
 \section{Geographic information system}
 Geographic information systems (GIS) are solving problems which are based on geospatial information. To achieve the goal special tools are being used such as visualization software, remote sensing and geography tools. Remote sensing tools gain information on specific objects or areas from a distance. Geography tools help to observe and research the environmental changes of the earth and its resources, its evolution of society and species. Visualization software, then, displays gathered data as 2D or 3D images \cite{Chen10}.
@@ -81,33 +88,24 @@ A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite s
 
 \subsection{Shortest path problem}
 \label{sec:SPP}
-Let $G = (V, E)$ be a directed graph whose edges are weighted by a function $f: E \to \mathbb{R}$. 
-The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as a edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
+Let $G = (V, E)$ be a directed graph whose edges are weighted by the function $f: E \to \mathbb{R}$. 
+The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as the edge lengths. A cycle whose edges sum to a negative value is \textit{negative cycle}.  
 
-The shortest-path problem consists in finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
+The shortest-path problem consists of finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
 Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
-Since our problem is based on the real world values (distance between two points) negative weights case does not occur it the rest of the thesis.
-And even if there are negative weights, but not negative cycles, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert in $O(n_m + n^2 \log n)$ time the original edge weights $f: A \to \mathbb{R}$ to non-negative arc weights $ f': A \to \mathbb{R}^+_0$ that result in the same shortest paths.
+Since our problem is based on real values (distance between two points), negative weights and cycles do not occur in the rest of the thesis.
+If there were negative weights, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert the original weighting function $f: A \to \mathbb{R}$ to non-negative function $ f': A \to \mathbb{R}^+_0$ in time $O(n_m + n^2 \log n)$, which results in the same shortest paths.
 
-For solving shortest path problems exist nowadays many algorithms. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
-Following list contains the essential shortest path problem algorithms, which provided solid ground in graph theory science:
-\begin{itemize}
-\item Dijkstra's algorithm
-\item Bellman-Ford algorithm
-\item Floyd-Warshall algorithm
-\item Johnson's algorithm 
-\end{itemize}
-
-Dijkstra's algorithm \cite{Dijkstra59} and Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve single-source shortest path (SSSP) problem. SSSP problem can be defined as: Given a directed graph $G = (V,E)$, with non-negative costs on each edge, and a selected source node $v \in V, \forall w \in V$, find the cost of the least cost path from $v$ to $w$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is greedy algorithm working with the graph were negative edges are not allowed. Bellman-Ford algorithm is non-greedy version of Dijkstra's algorithm which allows it to work with the graph having negative edges.
-
-Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. Floyd-Warshall algorithm iterates all vertices $v$ in order to find better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm first converts all the negative edges into positive one and then applies Dijsktra's algorithm on every node within the graph. 
-For sparse graphs the Johnson's algorithm provides better times than Floyd-Warshall algorithm \cite{Cormen01}.
-
+\section{Organisation of the Thesis}
+The thesis is structured as follows: First, the Chapter \ref{ch:DA} describes the desired attributes of the data, possible data sources and further manipulation with them. 
+The next Chapter \ref{ch:DOTA} focuses on the overall design of the application, beginning with the algorithms solving the SSSP problem and ending with the user interface.   
+The Chapter \ref{ch:Realisation} describes the specific implementation of the application with additional commentary. 
+The results of the application are concluded in Chapter \ref{ch:Results}.
 \setsecnumdepth{all}
 
 
 \chapter{Data Analysis}
-
+\label{ch:DA}
 
 \section{Data fitness}
 \label{S1: Good data}
@@ -348,11 +346,11 @@ IC:
 \end{array}
 $$
 
-Array $AA$ stores values of non-zero elements, array $IR$ stores the row index of the corresponding element and array $IC$ stores the column index of the corresponding element. The memory needed for storing matrix is now only $3N$ instead of the original $N^2$.
+Array $AA$ stores values of non-zero elements, array $IR$ stores the row index of the corresponding element and array $IC$ stores the column index of the corresponding element. The memory needed for storing the matrix is now only $3N$ instead of the original $N^2$.  The coordinate format excels with it's simplicity and flexibility.
 
-If the elements inside array $AA$ are listed by row, the array $IR$ could be transformed to store only indices of the beginning of each row instead. The size of newly defined array $IR$ is then $n+1$, where $n$ is number of rows in original matrix. On the last position ($+1$) is being written the number on non-zero elements within the original matrix. It also may be represented as address, where fictional $n+1$ row begins. 
+If the elements inside array $AA$ are listed by row, the array $IR$ could be transformed to store instead only indices of the beginning of each row. The size of newly defined array $IR$ is then $n+1$, where $n$ is the number of rows in the original matrix. On the last position ($+1$), the number of non-zero elements within the original matrix is being written. It also may be represented as an address, where fictional row begins on $n+1$ position. 
 
-Array $\textbf{A}$ then would be by this scheme described in the following way:
+Array $\textbf{A}$, then, would be by this scheme described as the following:
 
 $$
 \begin{array}{c}
@@ -381,11 +379,11 @@ $$
 
 
 
-The transformation of the $IR$ array and listing elements inside $AA$ by row is called Compressed Sparse Row (CSR) format. In scientific computing CSR format is most commonly used for vector-matrix multiplication while having low memory usage. On the other hand coordinate format excels with it\'s simplicity and flexibility.
-Compressed Sparse Row format through the years develops in many number of variations. 
-While storing columns instead of rows, we create a new scheme known as Compressed Sparse Column (CSC) format.
+The transformation of the $IR$ array and listing elements inside $AA$ by row is called Compressed Sparse Row (CSR) format. In scientific computing CSR format is most commonly used for vector-matrix multiplication while having low memory usage.
+Through the years, Compressed Sparse Row format developed to a number of variations. 
+For example storing columns instead of rows, a new scheme known as Compressed Sparse Column (CSC) format was created.
 
-The last scheme I would like to point out is the Ellpack-Itpack format which is very popular on vector machines. The Ellpack-Itpack format stores matrix in two 2-dimensional arrays of the same size $n \times N_{mpr}$, where $n$ is the number of rows of the original matrix and $N_{mpr}$ represents maximum of non-zero elements per row. The first array contains non-zero elements of original matrix. If the number of non-zero elements is less then the $N_{mpr}$, the rest of the row is filled with zeroes. The second array stores the information about the column in which specific non-zero element is located. For each zero in the first array can be added any number.
+The last scheme, I would like to point out, is called the Ellpack-Itpack format, which is very popular on vector machines. The Ellpack-Itpack format stores matrices in two 2-dimensional arrays of the same size $n \times N_{mpr}$, where $n$ is the number of rows of the original matrix and $N_{mpr}$ represents the maximum of non-zero elements per row. The first array contains non-zero elements of the original matrix. If the number of non-zero elements is less then the $N_{mpr}$, the rest of the row is filled with zeros. The second array stores the information about the column in which the specific non-zero element is located. For each zero in the first array, any number can be added.
 
 For the given matrix $\textbf{EIF}$:
 
@@ -402,7 +400,7 @@ $$
 \end{array}
 $$
 
-the Ellpack-Itpack format looks following:
+the Ellpack-Itpack format looks as followed:
  
 $$
 \begin{array}{lr}
@@ -430,13 +428,13 @@ $$
 %Both matrices and list stores equivalent information about the graph. From incidence matrix we can read which two edges share the same vertex (they are incident) and from adjacency matrix which two vertex are connected with an edge. Adjacency list stores for each vertex node edge information in form of linked list which brings two main benefits. 
 
 Adjacency lists in their essence compactly represent existing edges. 
-However, this comes at the cost of possibly slow lookup of specific edges.
-In case of unordered list, worst case lookup time for a specific edge can become O(n), since each list has length equal to degree of a vertex.
+However, this comes at the cost of possible slow lookups of specific edges.
+In case of unordered list, the worst case of a lookup time for a specific edge can become O(n), since each list has length equal to the degree of a vertex.
 On the other hand, looking up the neighbours of a vertex becomes trivial, and for a sparse or small graph the cost of iterating through the adjacency lists might be negligible.
 
-Adjacency matrices can use more space in order to provide constant lookup time. Since every possible entry exists you can check for the existence of an edge in constant time using indexes. However, lookup time for a neighbour becomes O(n) since it is needed to check all possible neighbours.
+Adjacency matrices can use more space in order to provide constant lookup times. Since every possible entry exists, it is possible to check for the existence of an edge in constant time using indexes. However, the lookup time for a neighbour becomes O(n) since it is needed to check all possible neighbours.
 
-Most real-world problems produce sparse and/or large graphs, for which adjacency list representations suit better.
+Data used in the application produce sparse and/or large graphs, for which adjacency list representations suit better.
 
 
 
@@ -459,19 +457,36 @@ The great circle distance takes into account the
 
 
 \chapter{Design of the application}
+\label{ch:DOTA}
+
+\section{SSSP algorithms}
+For solving shortest path problems exist nowadays many algorithms. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
+The following list contains the essential algorithms solving the shortest path problem, which lay the foundation in graph theory science:
+\begin{itemize}
+\item Dijkstra's algorithm
+\item Bellman-Ford algorithm
+\item Floyd-Warshall algorithm
+\item Johnson's algorithm 
+\end{itemize}
+
+The Dijkstra's algorithm \cite{Dijkstra59} and the Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve the single-source shortest path (SSSP) problem. SSSP problem can be defined as: Find the cost of the least cost path from $v$ to $\forall w \in V$, given a directed graph $G = (V,E)$ with non-negative costs on each edge and a selected source node $v \in V$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is a greedy algorithm working with the graph were negative edges are not allowed. The Bellman-Ford algorithm is a non-greedy version of the Dijkstra's algorithm which allows to work with graphs having negative edges.
+
+The Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. The Floyd-Warshall algorithm iterates all vertices $v$, in order to find a better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm, first, converts all the negative edges into positive ones and then, applies Dijsktra's algorithm on every node within the graph. 
+For sparse graphs, Johnson's algorithm provides faster computation time than Floyd-Warshall algorithm \cite{Cormen01}.
+
 
 \section{Dijkstra algorithm}
 \label{sec:dijsktra}
-Algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find shortest path between two nodes, but through the course of time among computer scientists is Dijkstra algorithm accepted as an algorithm finding path from one single node to all other nodes in graph. 
+The algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find the shortest path between two nodes, however the course of time, among computer scientists, Dijkstra algorithm was accepted as an algorithm finding a path from one single node to all other nodes in the graph. 
 
 
 % about  Mehlhorn, Kurt; Sanders, Peter (2008). Algorithms and Data Structures: The Basic Toolbox (PDF). Springer.
-Dijkstra algorithm was constructed to solve real world problem: How to get from one point to the other using shortest path possible. % Frana, Phil (August 2010). "An Interview with Edsger W. Dijkstra". Communications of the ACM. 53 (8): 41–47. doi:10.1145/1787234.1787249
-The main criteria used to define shortest path are either time or distance, both quantities having only positive values. If we convert these criteria into graph theory, all the edges of the graph, where graph represents our world and nodes positions in it, need to be also positive.
-Because of that, Dijkstra algorithm cannot be used to solve SSSP problem on graphs having negative values (as mentioned in previous chapter). However, the data available are based on real world problems as well therefore Dijkstra algorithm will be perfect foundation as an problem solving algorithm. 
+The Dijkstra algorithm was constructed to solve the applied problem: How to get from one point to another using the shortest path possible. % Frana, Phil (August 2010). "An Interview with Edsger W. Dijkstra". Communications of the ACM. 53 (8): 41–47. doi:10.1145/1787234.1787249
+The main criteria used to define the shortest path are either time or distance. Both quantities only have positive values. If these criteria are converted into graph theory, all the edges of the graph need to be also positive.
+The data available will only include possitive values, which are the nodes in the graph. Furthermore the graph will represent the geographical map. Therefore Dijkstra algorithm will be the choice of the problem solving algorithm. 
 
  \subsection{Definition}
-There are many variations of Dijkstra algorithm. Here is presented variation, where nodes can be in three states: $fresh, open $ and $closed$. For each node \textbf{n} function \texttt{dist}(\textbf{n}) represents distance from the starting node \textbf{s}. For unreachable nodes value return by this function will be undefined. Next to \texttt{dist} function there is also \texttt{prev}(\textbf{n}), which returns node for the shortest path back to node \textbf{s}.
+There are many variations of Dijkstra algorithm. Here is a presented variation, in which nodes can be in three states: $fresh, open $ and $closed$ (Algorithm \ref{algo_dijkstra}). For each node \textbf{n} the function \texttt{dist}(\textbf{n}) represents the distance from the starting node \textbf{s}. For unreachable nodes the value returned by this function will be undefined. Next to the function \texttt{dist}, there is also the function \texttt{prev}(\textbf{n}), which returns the node for the shortest path back to node \textbf{s}.
 
 \begin{algorithm}[H]
 \SetKwFunction{Dist}{dist}
@@ -499,7 +514,7 @@ There are many variations of Dijkstra algorithm. Here is presented variation, wh
 \caption{Dijkstra algorithm}\label{algo_dijkstra}
 \end{algorithm}
 
-On the line number \textbf{6} the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), where \textbf{w} is every other node having state $open$.
+On the line number \textbf{6} the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), where \textbf{w} is every other node having the state $open$.
 
 \subsection{Proof of correctness}
 
@@ -561,19 +576,20 @@ Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsec
 \section{Parallelization of Dijkstra algorithm}
 
 \section{User interface design}
-The application requires the spacial information as an input. 
-User should be able to insert the positions of people in order to find their meeting place and clearly see desired result. For that the user interface (UI) of our application should provide a way how to register and store spacial informations provided by the user. 
+The application requires the spacial information as the input. 
+Further, the user should be able to insert the positions of people in order to find a meeting, which is approximately of the same distance to all positions. For that, the user interface (UI) of the application should provide a way to register and store spacial information provided by the user. 
 
-Creating a fully satisfiable GUI is not main purpose of this thesis, so I have decided to create simple GUI, where user can insert geographical coordinates of participants and as a result he will receive single pair of coordinates of final destination. 
+Creating a fully satisfiable graphical user interface (GUI) is not main purpose of this thesis, so it was decided to create a simple GUI in which users can insert the geographical coordinates of participants. As a result, a single pair of coordinates of final destination will be received. 
 
-Fully optimal GUI would allow user to select the position through the displayed map of the dataset currently available. That way the effort of finding coordinates would be eliminated and general user-flow would be significantly improved. The same applies to the result of a application. User would see a marked point on the map to clearly see the meeting point. 
+A fully optimal GUI would allow users to select a position through the displayed map of the dataset available. That way finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. 
 
 \chapter{Realisation}
+\label{ch:Realisation}
 
 \section{Frameworks used}
-The goal of the thesis is to create complex desktop application with basic front-end to provide user proper control over the input data and general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (e.g. C\texttt{\#} Windows, ObjC iOS). 
+The goal of the thesis is to create complex desktop application with basic front-end to provide user proper control over the input data and general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (C\texttt{\#} Windows, ObjC iOS etc.). 
 
-In direction of keeping my application as a whole simple, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make deployment on any server operating system effortless. Not to mention there are plenty open source libraries available making a realization of the whole project easily done.  
+In direction of keeping the application as simple as possible, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make deployment on any server operating system effortless. Not to mention there are plenty open source libraries available making a realization of the whole project easily done.  
 
 %% QT 
 One of the external tools used for the purpose of the application is Qt framework. Qt provides cross-platform tools to create basic GUI and is classified as FOSS computer software, therefore fitting the purpose of the application being open source. 
@@ -604,7 +620,7 @@ Since the dataset of the application is in Shapefile format, GDAL/ORG library pr
 
 
 \chapter{Results}
-
+\label{ch:Results}
 
 \section{Speed}
 
