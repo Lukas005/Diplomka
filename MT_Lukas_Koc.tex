@@ -66,10 +66,10 @@
 \section{Motivation}
 The 21st century is often labelled as the century of data. Usage and gathering the data influence our lives on daily basis. Business, industry, fashion, society or transportation is transforming under the amount of data gathered and evaluated. 
 
+Alongside the growing of the amount of data collected, borders with European countries are loosening and it is possible for people to travel within Europe in order to discover new cultures or to find a job in the country of their interest. Most of the time it is an unknown location. Finding meeting point with the colleagues or friends, which might not know the location as well, might turn into difficult task.
 
-
-Applying the knowledge of graph theory, geography and computer science, the goal of the thesis is to create application finding ideal meeting place for a group of people. 
-Nowadays computers with multiprocessors or graphic cards are affordable for everyone, meaning paralellization of the computation is significant for every sophisticated application.
+Applying the knowledge of graph theory, geography and computer science, the goal of the thesis is to create application finding ideal meeting place for a group of people, saving time for everyone involved.
+Nowadays computers with multiprocessors or graphic cards are affordable for everyone, meaning paralellization of the computation is significant for every sophisticated application. Knowing that, the application should be designed to utilize possibilities of paralellization.
 
 \section{Geographic information system}
 Geographic information systems (GIS) are solving problems which are based on geospatial information. To achieve the goal special tools are being used such as visualization software, remote sensing and geography tools. Remote sensing tools gain information on specific objects or areas from a distance. Geography tools help to observe and research the environmental changes of the earth and its resources, its evolution of society and species. Visualization software, then, displays gathered data as 2D or 3D images \cite{Chen10}.
@@ -97,10 +97,13 @@ Since our problem is based on real values (distance between two points), negativ
 If there were negative weights, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert the original weighting function $f: A \to \mathbb{R}$ to non-negative function $ f': A \to \mathbb{R}^+_0$ in time $O(n_m + n^2 \log n)$, which results in the same shortest paths.
 
 \section{Organisation of the Thesis}
-The thesis is structured as follows: First, the Chapter \ref{ch:DA} describes the desired attributes of the data, possible data sources and further manipulation with them. 
-The next Chapter \ref{ch:DOTA} focuses on the overall design of the application, beginning with the algorithms solving the SSSP problem and ending with the user interface.   
-The Chapter \ref{ch:Realisation} describes the specific implementation of the application with additional commentary. 
-The results of the application are concluded in Chapter \ref{ch:Results}.
+The thesis is structured as follows: First, the Chapter \ref{ch:DA} describes the desired attributes of the data and finding possible data sources. The chapter then further explains how the data can be stored and processed in order to reduce the number of unnecessary nodes. 
+
+The next Chapter \ref{ch:DOTA} focuses on the overall design of the application, beginning with the algorithms solving the SSSP problem. The main algorithm used for our application is Dijkstra algorithm. In order to increase the computation time, the possible paralellization of Dijkstra algorithm is further explained. The application also requires basic user interface.
+
+The Chapter \ref{ch:Realisation} describes the specific implementation of the application. More specifically how the application is implemented within server and client part, which frameworks were used and additional commentary of the code. 
+
+The results of the application are concluded in Chapter \ref{ch:Results}, where we compare the results based on the accuracy and time comparison between parallel and single threaded implementation.
 \setsecnumdepth{all}
 
 
@@ -146,6 +149,7 @@ EuroGeographics provides data in following formats
 \item Shapefile
 \end{itemize}
 
+EuroGeographics yield reliable source of data required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled almost every time in order to download the dataset makes the data processing cumbersome.
 
 \subsection{OpenStreetMaps}
 OpenStreetMaps (OSM) is a project officially supported by the OSM Foundation.
@@ -161,6 +165,8 @@ Thanks to the team Mapzen and their Metro Extract project it is possible to down
 \item Shapefile
 \end{itemize}
 
+OSM data are regularly maintained by the community. Documentation to the data is well written, so that any discrepancy within the dataset can be easily resolved. The OSM format requires additional parsing in order operate with the data since it is not official GIS format, but projects as Mapzen provides additional format variety to choose from.
+
 \subsection{EEA}
 The European environmental agency (EEA) is an agency of European Union providing information about the environment for the public. According to their official site \cite{EEA16} it currently consists of 33 member countries.
 
@@ -175,6 +181,7 @@ Depending on the type, these data are provided in the following formats:
 
 Most of the datasets are displayed in interactive maps available on the \href{http://www.eea.europa.eu/data-and-maps}{EEA website}.
 
+After further investigation of the datasets provided by EEA, it seems they are not being updated regularly. In addition, most of the data sets are results of ecological studies or environmental researches (e.g. monitoring $CO_{2}$ or energy consumption).
 
 \subsection{European Observation Network for Territorial Development and Cohesion}
 The European Observation Network for Territorial Development and Cohesion (ESPON) 2013 Programme is mainly financed from European Regional Development Fund (ERDF) and its main goal is:
@@ -187,6 +194,10 @@ Data are available as soon as users register and accept the Terms \& Conditions.
 \item XML
 \item Excel file
 \end{itemize}
+
+Unfortunately, the data provided by ESPON are having a same disadvantage as data provided by EEA in previous section: maintainability. Our application require updated data sets in order to accurately compute the optimal meeting place. Investigating the ESPON page further, the ESPON project was separated into two phases, first phase starting in July 2008 -- February 2011 followed by second phase having a lifetime in span of February 2011 -- December 2014. 
+
+As a data source the OpenStreetMaps were chosen since the data provided are regularly maintained by the community. In addition, the whole documentation in for of the wikipage contains all necessary information to learn the user how to fast start working with the data. As a format was chosen a Shapefile format, allowing the application to work with additional attributes if necessary (e.g. street names, type of road etc.).
 
 \section{Format}
 Geographical data exist in various formats depending on type and usage of the data. Data representing the elevation of mountains are better stored in different format whereas data representing the location of points of interest. 
