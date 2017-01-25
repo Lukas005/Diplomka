@@ -55,6 +55,10 @@
 \renewcommand{\qedsymbol}{$\heartsuit$}
 %%%%%% Theorem package def
 
+%%%%%% Math def
+\DeclareMathOperator{\atantwo}{atan2}
+%%%%%% Math def
+
 \begin{document}
 
 % \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
@@ -152,6 +156,7 @@ EuroGeographics provides data in following formats
 EuroGeographics yield reliable source of data required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled almost every time in order to download the dataset makes the data processing cumbersome.
 
 \subsection{OpenStreetMaps}
+\label{subsec:DA_OSM}
 OpenStreetMaps (OSM) is a project officially supported by the OSM Foundation.
 OSM was created to build and provide open\footnote{Open data means for any purpose as long as the OSM and it's contributors are credited.} geographical data available to everyone.  
 
@@ -451,8 +456,10 @@ Data used in the application produce sparse and/or large graphs, for which adjac
 
 \section{Preprocessing}
 
+Data are being read from Shapefile source obtained via OpenStreetMaps. After further analysis of the Shapefile provided by Mapzen (Section \ref{subsec:DA_OSM}), each data entry is being represented as a line $\Rightarrow$ two nodes sharing an edge. At this point, the edge is missing its weight. Therefore, first step of preprocessing is to weight all the edges within the graph.
+
 \subsection{Great Circle Distance and Harvesine formulae}
-The cost of the edge should represent the price of getting from one node into the other. Our application is trying to find shortest path from multiple sources into one source, therefore the price should be based on the distance between source points and the final node, the shorter the better. 
+The weight of the edge should represent the price of getting from one node into the other. Our application is trying to find shortest path from multiple sources into one source, therefore the price should be based on the distance between source points and the final node, the shorter the better. 
 
 Each node has its specific coordinates $\Rightarrow$ latitude and longitude. This pair represents unique identifier for every node in the application. Let us have two nodes: node $n$ having coordinates $lat1$ and $long1$, and node $m$ having coordinates $lat2$ and $long2$. If $lat1$ = $lat2 \wedge long1 = long2$, then node $n = m$. If $n \neq m$, then at least one of the coordinates differs between nodes $n$ and $m$ meaning distance between these two nodes is greater than zero.
 
@@ -462,9 +469,19 @@ $$
 d = \sqrt{(\Delta x)^2 + (\Delta y)^2} = \sqrt{(x_2 - x_1 )^2 + (y_2 - y_1)^2}
 $$
 
-where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we map latitude on $x$-coordinate and longitude on $y$-coordinate, we would get distance between two real points, but in a two dimensional space. For computing the distance on the sphere it is needed to use great circle distance.
+where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we map latitude on $x$-coordinate and longitude on $y$-coordinate, we would get distance between two real points, but in a two dimensional space. For computing the distance on the Earth it is needed to use great circle distance.
 
-The great circle distance takes into account the 
+The great circle distance takes into account the curvature of the sphere, to provide more precise distance.
+
+To compute the great circle distance on a sphere, harvesine formula is used: 
+
+$$
+\begin{array}{l l}
+Harvesine formula: & a = \sin^2(\Delta \psi /2) + \cos \psi_1 \cdot \cos \psi_2 \cdot \sin^2(\Delta \lambda /2) \\
+& c = 2 \cdot \atantwo ( \sqrt{a}, \sqrt{1 - a} ) \\
+& d = R \cdot c
+\end{array}
+$$ 
 
 
 \chapter{Design of the application}
@@ -584,7 +601,11 @@ It is possible to improve this complexity by using heap instead of an array in o
 
 Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsection \ref{sec:SPP}. The main difference between these algorithms is repetitive checking of the nodes. Once Dijkstra algorithm closes a node, it will never be checked again. Bellman-Fold algorithm goes through each of the nodes and recalculates the path in case negative edges exists in the graph. Because of this extra step, it is slower then Dijkstra, but can detect whether the graph is valid or not.
 
+Dijkstra algorithm computes shortest paths from one single node to all of the others in the graph. However, the Meeting Scheduler application is searching optimal point given multiple input locations instead of single one. After applying Dijkstra algorithm on every input node, the graph instance now contains shortest paths for each input node. Therefore, every node in the graph holds an information about the distance to each of the input nodes. Within these nodes exists one node, having the optimal combination of shortest paths, which is the result the Meeting Scheduler application.
+This whole computation process leaves a lot of space for the performance optimization, especially parallelization. 
+
 \section{Parallelization of Dijkstra algorithm}
+As mentioned in previous section, the Meeting Scheduler application applies Dijkstra algorithm on each of the input nodes. As a result every node stores the information about the shortest path to each of the input nodes. 
 
 \section{User interface design}
 The application requires the spacial information as the input. 
