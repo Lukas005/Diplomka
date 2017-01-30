@@ -10,7 +10,7 @@
 % \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
 % \usepackage[latin2]{inputenc} % LaTeX source encoded as ISO-8859-2
 % \usepackage[cp1250]{inputenc} % LaTeX source encoded as Windows-1250
-
+\usepackage{float}
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{subfig} %subfigures
 \usepackage{amsmath, kbordermatrix, amssymb} %advanced maths
@@ -52,6 +52,7 @@
 %%%%%% Theorem package def
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
+\newtheorem{defin}{Definition}
 \renewcommand{\qedsymbol}{$\heartsuit$}
 %%%%%% Theorem package def
 
@@ -190,6 +191,7 @@ Vector type formats uses vertices as a basic unit. A vertex consists of x and y 
 
 
 \section{Possible sources}
+\label{sec:posSources}
 
 While searching for data, it was focused on sources providing free data of Europe, which are also available to the public. Further subsections describe sources which match the criteria mentioned in section \ref{S1: Good data}.
 
@@ -324,7 +326,9 @@ In mathematics, matrices can be divided into two groups: sparse matrices and den
 
 The amount of non-zero elements in the adjacency or incidence matrix depends purely on the degree of vertices in the graph. In both types of matrices, each row serves as a vertex and within non-zero values represent edges incident to the vertex. Depending on the graph is directed or undirected, the amount of non-zero elements in adjacency matrices will differ. Incidence matrices do not change their numbers, because they differ only in sign of the value. 
 
-For undirected graphs, the number of non-zero elements equals to $$ \sum_{v \in V} \textrm{deg(v)} = 2|E| $$ where $E$ is the set of all edges and $V$ the set of all vertices in the graph. The same principle applies to the directed graph of incidence matrices. For directed graphs of adjacency matrices, we can observe that the number of non-zero elements depend on the amount of outgoing edges $\Rightarrow$ out-degree, which is 
+For undirected graphs, the number of non-zero elements equals to $$ \sum_{v \in V} \textrm{deg(v)} = 2|E| $$ where $E$ is the set of all edges and $V$ the set of all vertices in the graph. 
+
+The same principle applies to the directed graph of incidence matrices. For directed graphs of adjacency matrices, we can observe that the number of non-zero elements depend on the amount of outgoing edges $\Rightarrow$ out-degree, which is 
 $$ \sum_{v \in V} \textrm{deg\textsuperscript{--}(v)} = |E| $$ where $E$ is the set of all edges, $V$ is the set of all vertices in a graph and $deg\textsuperscript{--}(v)$ function returns the number of outgoing edges from the vertex $v$.
 
 The reason for mentioning sparse matrices in the first place is that there are functions and operations which could be done only with the sparse matrices, providing better memory usage. The main motivations for this section are the storage schemes in which sparse matrix could be stored. The usage of storage schemes enable all the advantages of the regular matrix representation with significantly less memory usage since only the non-zero elements are being stored. According to Yousef Saad \cite{Saad03}, the main 3 storage schemes will be discussed. 
@@ -474,7 +478,7 @@ $$
 
 where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we map latitude on $x$-coordinate and longitude on $y$-coordinate, we would get the distance between two real points, but in a two dimensional space. For computing the distance on the Earth, it is needed to use the great circle distances.
 
-The great circle distance takes into account the curvature of the sphere, to provide more precise distance.
+The great circle distance takes into account the curvature of the sphere, to provide more precise distance. Using great circle distance allow the application to provide decent approximation between every two nodes (obtained from the data-source) connected via one edge.
 
 To compute the great circle distance on a sphere, the harvesine formula is used: 
 
@@ -486,6 +490,39 @@ Harvesine formula: & a = \sin^2(\Delta \psi /2) + \cos \psi_1 \cdot \cos \psi_2 
 \end{array}
 $$ 
 
+Currently, the Meeting Scheduler application can work with the selected data-source (Section \ref{sec:posSources}). The graph is being represented as an adjacency list with weighted edges based on the real life distance. However, most of the world applications work with large amount of data. Therefore, in order to handle big amount of data, it is possible to use either clustering or node reduction.
+
+\subsection{Clustering}
+
+\subsection{Node reduction}
+The Meeting scheduler transforms real world spacial data into a graph. Spacial data are widely used to map and describe the Earth. In order to be accurately describe any object of the surrounding it is necessary to record every little detail. Figure \ref{pic:Road} is displayed as an example. A road from point A to point B is interpreted as a bended line between two nodes. But in the spacial data it is represented by a group of linked nodes to depict the curvature of the road.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/road}
+\caption{Road on a map represented within the data}
+\label{pic:Road}
+\end{figure}
+
+For the purpose of finding meeting place, it is not required to have all the nodes forming the road saved in the memory. The road on Figure \ref{pic:Road} could be represented only as pair of nodes A and B. That way the other 4 nodes representing the road would could be deleted and therefore saving memory. 
+
+The nodes legitimate for removing will be called \textit{connecting} nodes. Within the scope of the thesis connecting node will be defined as following:
+
+\begin{defin}
+\label{def:connect}
+Connecting node is a node having at most one outgoing edge and at most one incoming edge. 
+\end{defin}
+
+Similar way it is possible to define transit node, which is the opposite of the connecting node. 
+
+\begin{defin}
+\label{def:transit}
+Transit node is a node having at least two outgoing edges or at least two incoming edges. 
+\end{defin}
+
+
+Locating and removing connecting nodes from the data source significantly reduce the number of nodes within the graph. However, removing every connecting node would cause the loss of accuracy, because the meeting point would be only located on the intersections or junctions of the roads. It would not be possible to be able to meet in the middle of the street. 
+Resolving the dilemma between memory and accuracy highly depends on the given data scenario. The possible solutions are either allowing the user to choose his own precision rate or leaving it up to the developer to decide how the data will be reduced. The solution to the problem used in this application will be further described in Realization Section \ref{subsec:dataprocessing}.
 
 \chapter{Design of the application}
 \label{ch:DOTA}
@@ -640,6 +677,7 @@ Since the dataset of the application is in Shapefile format, GDAL/ORG library pr
 
 
 \subsection{Data processing part}
+\label{subsec:dataprocessing}
 
 \subsubsection{Data}
 %TODO FITNESS, STORAGE, Source
