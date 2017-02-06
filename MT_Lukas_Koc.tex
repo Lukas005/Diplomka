@@ -20,6 +20,8 @@
 \usepackage{enumitem}
 \usepackage{dirtree} %directory tree visualisation
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
 % \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
@@ -61,7 +63,14 @@
 %%%%%% Math def
 
 \begin{document}
-
+\lstset{language=C++,
+		keywordstyle=\color{blue},
+        stringstyle=\color{red},
+        commentstyle=\color{green},
+        morecomment=[l][\color{magenta}]{\#},
+		tabsize=2,
+		basicstyle=\tiny,
+		literate={~} {$\sim$}{1}}
 % \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
 
@@ -189,11 +198,12 @@ Vector type formats uses vertices as a basic unit. A vertex consists of x and y 
 
 %Next very significant part of the choice is the data format. As was said in subsection HERE_ADD_SECTION well 
 
+The idea of the Meeting Scheduler is to create the graph from the data provided. The graph is by the definition a topological space. Therefore, the vector representation makes creating the graph more straightforward. In addition, the raster representation is by its nature fitted to quickly provide graphical overview of the geographical data.
 
 \section{Possible sources}
 \label{sec:posSources}
 
-While searching for data, it was focused on sources providing free data of Europe, which are also available to the public. Further subsections describe sources which match the criteria mentioned in section \ref{S1: Good data}.
+While searching for data, the main focus was not only on data in the vector type format, but also on sources providing free data of Europe available to the public. Further subsections describe sources which match the criteria mentioned in section \ref{S1: Good data}.
 
 %\subsection{Global map data}
 %Global map data provided and managed by International Steering Commitee for Global Mapping.
@@ -263,9 +273,11 @@ Data are available as soon as users register and accept the Terms \& Conditions.
 
 Unfortunately, the data provided by ESPON are having the same disadvantages as data provided by EEA in the previous section: maintainability. Our application requires updated data sets in order to accurately compute the optimal meeting place. Investigating the ESPON page further, the ESPON project was separated into two phases in order to analyse and deliver the goal. First phase starting in July 2008 until February 2011 followed by second phase having a lifetime span from February 2011 to December 2014. 
 
+
 As a data source the OpenStreetMaps were chosen, because the data provided are regularly maintained by the community. In addition, the documentation on OSM Wikipage contains all necessary information needed to learn the user how to immediately start working with the data. As a format was chosen, a Shapefile format, allowing the application to work with additional attributes if necessary (e.g. street names, type of road etc.).
 
 \section{Storage}
+\label{sec:storage}
 %TODO
 Since the data source and format question is resolved, the next step is to decide the representation of the graph in the memory. During the history of graph theory, three main representations are to choose from. In the following subsections a closer look on all three options will be taken.
 
@@ -462,10 +474,11 @@ Data used in the application produce sparse and/or large graphs, for which adjac
 
 
 \section{Preprocessing}
-
+\label{sec:preprocessing}
 Data are being read from Shapefile source obtained via OpenStreetMaps. After further analysis of the Shapefile provided by Mapzen (Section \ref{subsec:DA_OSM}), each data entry is being represented as a line $\Rightarrow$ two nodes sharing an edge. At this point, the edge is missing its weight. Therefore, first step of preprocessing is to weight all the edges within the graph.
 
 \subsection{Great Circle Distance and Harvesine formulae}
+\label{subsec:GCD}
 The weight of the edge should represent the price of getting from one node into the other. Our application is trying to find shortest path from multiple sources into one source, therefore the price should be based on the distance between source points and the final node, the shorter the better. 
 
 Each node has its specific coordinates $\Rightarrow$ latitude and longitude. This pair represents unique identifier for every node in the application. Let us have two nodes: node $n$ having coordinates $lat1$ and $long1$, and node $m$ having coordinates $lat2$ and $long2$. If $lat1$ = $lat2 \wedge long1 = long2$, then node $n = m$. If $n \neq m$, then at least one of the coordinates differs between nodes $n$ and $m$ meaning the distance between these two nodes is greater than zero.
@@ -683,23 +696,49 @@ Usage of classes and functions of Qt framework is very straightforward while pro
 %% GDAL
 For reading the data files and following manipulation, GDAL/ORG library was selected. GDAL is designed to read and write raster GIS formats. GDAL library is developed under Open Source Geospatial Foundation and released under the X/MIT license. 
 As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
-Since the dataset of the application is in Shapefile format, GDAL/ORG library provides optimal tools for reading and collecting information from our dataset.
+Since the dataset of the application is in Shapefile format (see Section \ref{sec:posSources}), GDAL/ORG library provides optimal tools for reading and collecting information from our dataset.
 
 \section{Server}
-The Meeting Scheduler application is structured using server-client model.
-Server is responsible for providing the clients with results for their requests, more specifically meeting point based on input received. To achieve that, server should be having dataset available 
+\label{sec:server}
+The Meeting Scheduler application is structured as a server-client model.
+Server is responsible for providing client the results of their requests, more specifically meeting point based on input received. To achieve that, server should be having dataset available and preprocessed, so that computation can start without any delay. Hence, server is split into two parts: data processing module and computation module.
+
+Data processing module is the part of the server ensuring the data are transformed in the corresponding directed graph. The graph will further be provided to another part of the server -- computation module. Both modules are further described in the following sections.
 
 
-\subsection{Data processing part}
-\label{subsec:dataprocessing}
+\subsection{Data processing module}
+\label{subsec:dataprocessing} 
+Role of the data processing module is to transform gathered dataset into directed graph. The dataset is represented with the specific GIS file format, more specifically Shapefile format provided by team Mapzen (see Section \ref{subsec:DA_OSM}). Data processing module is able to read the selected format and extract all the nodes from the transport points. These nodes represents vertices in the graph. 
 
-\subsubsection{Data}
+Afterwards, the edges are extracted from the relations of the nodes. In addition, each edge obtains the cost based on the great circle distance (see Section \ref{subsec:GCD}) between the points. Together with vertices the full graph is complete.
+
+Based on the size of the graph, the amount of nodes can be reduced using node reduction or the structure of the graph can be modified by clustering. Both methods are described in Section \ref{sec:preprocessing}. These changes to the graph obtained are shortening the computation time for the cost of accuracy.
+
+\subsubsection{Data-reader class}
 %TODO FITNESS, STORAGE, Source
-Dataset was obtained from OSM 
+The application is reading data through the class called \texttt{DataReader}. The structure of the class is displayed in Listing \ref{lst:DataReader}. The constructor requires the string, which is representing the path to the Shapefile data-file. Within the constructor the GDAL library opens the file and set the pointer \texttt{GDALDataset * pDS} to the dataset within the input file.
 
+After having the dataset initialized, next step is to load the features within. 
+\begin{lstlisting}[frame=single, caption={DataReader class}, label={lst:DataReader}]
+class DataReader
+{
+private:
+    GDALDataset * pDS;
+    OGRLayer * pLayer;
+    int featureCount;
 
-\subsection{Computation part}
+public:
+    DataReader(std::string );
+    int InitLayer(int);
+    NodePair GetNodesFromCurrentLine() const;
+    int GetLayerSize() const;
+    double static DistanceBetweenTwoPoints(Node * , Node * );
+    ~DataReader();
+};
+\end{lstlisting}
 
+\subsection{Computation module}
+\label{subsec:server_comp}
 \subsubsection{Algorithm}
 
 \subsubsection{Parallelization}
