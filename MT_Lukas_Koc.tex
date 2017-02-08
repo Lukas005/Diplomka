@@ -506,6 +506,7 @@ $$
 Currently, the Meeting Scheduler application can work with the selected data-source (Section \ref{sec:posSources}). The graph is being represented as an adjacency list with weighted edges based on the real life distance. However, most of the world applications work with large amount of data. Therefore, in order to handle big amount of data, it is possible to use either clustering or node reduction, both described in following sections.
 
 \subsection{Clustering}
+\label{sec:Clustering}
 Clustering is a method to group multiple nodes based on similarity into one set - a cluster. 
 Let $G = (V, E)$ be a directed graph
 Applying clustering multiple times on different groups of nodes, leaves the graph to be represented with these clusters instead of the nodes. If node in first cluster has an edge to another node within the second cluster, first and second cluster are connected with a node as well. 
@@ -515,6 +516,7 @@ Applying clustering multiple times on different groups of nodes, leaves the grap
 
 
 \subsection{Node reduction}
+\label{sec:NodeReduction}
 The Meeting scheduler transforms real world spacial data into a graph. Spacial data are widely used to map and describe the Earth. In order to be accurately describe any object of the surrounding it is necessary to record every little detail. Figure \ref{pic:Road} is displayed as an example. A road from point A to point B is interpreted as a bended line between two nodes. But in the spacial data it is represented by a group of linked nodes to depict the curvature of the road.
 
 \begin{figure}[H]
@@ -788,12 +790,21 @@ public:
     Node * FindClosest(std::pair<double, double>);
     std::map<std::pair<double, double>, double * > CreateDistArray(int);
     static void RemoveDistArray(std::map<std::pair<double, double>, double *> &);
-    int ReachableNodesCount();
     ~Graph();
 };
 \end{lstlisting}
 
-\texttt{Graph} is storing its nodes in the STL map structure, mapping the coordinates to a specific node. That causes each node to be stored at the most once.
+\texttt{Graph} is storing nodes in the STL map structure, mapping the coordinates to a specific node. That causes each node to be stored once at the most. The class is constructed with \texttt{ConstructGraph(DataReader *)} using the \texttt{DataReader} as an argument. Within this method, the dataset is being read, every feature is being analysed and saved in form of the graph into \texttt{map<pair<double, double>, Node * > Nodes}.
+
+Another noticeable method is \texttt{FindClosest(pair<double, double>)}. It is used to locate the closest node to the specific location. This method is required in order to locate the input of the user in the graph. Again, the method is using great circle distance to find the closest node to the input. 
+On the other hand, it is needed to go through the whole graph and measure the distances for each node. 
+This leaves the room for optimization of the application.
+
+Except of the generic support methods, there are methods called \texttt{CreateDistArray(int)} and \texttt{RemoveDistArray(map<pair<double, double> > *}. Distance array represents the structure, in which the results of the Dijkstra algorithm are stored. It is a map, mapping the coordinates to the array of distance values. The size of the array is equal to the number of user inputs. Therefore, the distance array stores for every input the distance to every node in the graph. 
+\texttt{RemoveDistArray(..)} method serves as a destructor for distance array.
+
+The distance array is being used as a argument for the Dijkstra algorithm, further described in Section \ref{subsec:server_comp}. After storing all the results for each input node, the last step is to go through all the vertices within array and select the one with the shortest distances to each input node.
+
 
 \subsection{Computation module}
 \label{subsec:server_comp}
@@ -807,6 +818,27 @@ Client provides basic GUI for the user. The user can thought the GUI connect to 
 
 \chapter{Results}
 \label{ch:Results}
+
+For testing as the dataset was chosen the city Prague, capital of Czech republic. The dataset is available in two versions. First version consist of all the transport nodes available within the area. 
+The dataset is displayed with QGIS Desktop software on the Figure \ref{pic:dataset1}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/praguedatasetL}
+\caption{Dataset containing the tranportation nodes in the Prague region}
+\label{pic:dataset1}
+\end{figure}
+
+The second version has reduced the number of the nodes using the node reduction technique (see Section \ref{sec:NodeReduction}) with tolerance 200 meters. After every 200 meters one connecting node is being removed.
+The second dataset is also displayed with QGIS Desktop software on the Figure \ref{pic:dataset2}.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/praguedatasetS}
+\caption{Generalized version of the main Prague dataset}
+\label{pic:dataset2}
+\end{figure}
+
+The clustering method described in the Section \ref{sec:Clustering} was not used in order to better measure the differences between sequential and parallel solution of the given problem. 
+
 
 \section{Speed}
 
