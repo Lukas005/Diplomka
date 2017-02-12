@@ -94,16 +94,47 @@ This thesis uses knowledge gathered through the course of time in geographic inf
 
 
 \section{Problem description}
+Within this chapter, first it is necessary to define terms from graph theory, since they are being used in scope of the whole thesis. 
+\subsection{Graph theory definitions}
 
-\subsection{Directed graph}
-A directed simple \textit{graph} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. The number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$ throughout this thesis. A $path$ in $G$ is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$. A path with $v_1 = v_k$ is called a $cycle$. A graph (without multiple edges) can have up to $n^2$ edges. 
+\begin{defin}
+A \textbf{graph G} is an ordered pair G = (V, E). Non-empty set V contains
+vertices (or nodes) and a set E contains edges. Each edge has either one
+or two vertices associated with it, called its endpoints. An edge is said to connect its endpoints.
+A graph (without multiple edges) can have up to $n^2$ edges.
+\end{defin}
+
+The number of vertices $|V|$ is denoted by $N$ and the number of edges $|E|$ is denoted by $m$ throughout this thesis. 
+
+\begin{defin}
+Two vertices are called \textbf{adjacent} if they share a common edge, in which case the common edge is said to join the two vertices. An edge and a vertex on that edge are called \textbf{incident}.
+\end{defin}
+
+\begin{defin}
+A \textbf{directed simple \textit{graph}} $G$ is a pair $(V, E)$, where $V$ is a finite set of \textit{vertices} and $E \subseteq V \times V$ are the $edges$ of a graph $G$. 
+\end{defin}
+
+\begin{defin}
+A \textbf{walk} in graph is any sequence of adjacent distinct edges. A \textbf{path} in graph is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$.  A path with $v_1 = v_k$ is called a \textbf{cycle}.  The \textbf{length} of a path is the number of edges that it uses.
+\end{defin}
+
+\begin{defin}
+Let $G = (V, E)$ be a directed graph, whose edges are weighted by the function $f: E \to \mathbb{R}$, associating each edge with the real number called the \textbf{weight}. 
+The length of a path is the sum of the weights of its edges. This graph is called \textbf{weighted graph}.  
+\end{defin}
+
+In this sense the weights can be reinterpreted as the edge lengths. A cycle whose edges sum to a negative value is a \textit{\textbf{negative cycle}}. 
+
+\begin{defin}
+Given a graph G, the \textbf{distance} d(x,y) between two vertices x and y is the length of the shortest path from x to y, considering all possible paths in G from x to y. 
+\end{defin}
+
 
 % We call a graph \textit{sparse}, if $m \in O(n)$. We assume that we are given a layout $L: V \to R^2$ of the graph in the Euclidean plane. For ease of notation, we will identify a node $v \in V$ with its location $L(v) \in R^2$ in the plane.
 
 \subsection{Shortest path problem}
 \label{sec:SPP}
-Let $G = (V, E)$ be a directed graph whose edges are weighted by the function $f: E \to \mathbb{R}$. 
-The length of a path is the sum of the weights of its edges. In this sense the weights can be reinterpreted as the edge lengths. A cycle whose edges sum to a negative value is a \textit{negative cycle}.  
+
 
 The shortest-path problem consists of finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
 Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
@@ -505,10 +536,10 @@ $$
 
 Currently, the Meeting Scheduler application can work with the selected data-source (Section \ref{sec:posSources}). The graph is being represented as an adjacency list with weighted edges based on the real life distance. However, most of the world applications work with large amount of data. Therefore, in order to handle big amount of data, it is possible to use either clustering or node reduction, both described in following sections.
 
-\subsection{Clustering}
+\subsection{Graph clustering}
 \label{sec:Clustering}
-Clustering is a method to group multiple nodes based on similarity into one set - a cluster. 
-Let $G = (V, E)$ be a directed graph
+Clustering is a method to group multiple nodes based on similarity into one set -- a cluster, as described in Schaeffer \cite{Schaeffer07}. However in some of the clustering literature, a cluster in a graph is called a community \cite{Newman04}.
+
 Applying clustering multiple times on different groups of nodes, leaves the graph to be represented with these clusters instead of the nodes. If node in first cluster has an edge to another node within the second cluster, first and second cluster are connected with a node as well. 
 
 
@@ -542,8 +573,14 @@ Similar way it is possible to define transit node, which is the opposite of the 
 Transit node is a node having at least two outgoing edges or at least two incoming edges. 
 \end{defin}
 
-Examples of connecting and transit nodes are depicted on Figure.
+Examples of connecting and transit nodes are depicted on Figure \ref{pic:CaTnodes}.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/CaTNodes}
+\caption{Example of the transit and connecting nodes.}
+\label{pic:CaTnodes}
+\end{figure}
 
 
 Locating and removing connecting nodes from the data source significantly reduce the number of nodes within the graph. However, removing every connecting node would cause the loss of accuracy, because the meeting point would be only located on the intersections or junctions of the roads. It would not be possible to be able to meet in the middle of the street. 
@@ -673,20 +710,30 @@ This whole computation process leaves a lot of space for the performance optimiz
 As mentioned in the previous section, the Meeting Scheduler application applies Dijkstra algorithm on each of the input nodes. As a result, every node stores information about the shortest path to each of the other input nodes. 
 
 \section{User interface design}
+\label{sec:UIDesign}
 The application requires the spacial information as input. 
 Further, the user should be able to insert the positions of people in order to find a meeting point, which is approximately of the same distance to all positions. For that, the user interface (UI) of the application should provide a way to register and store spacial information provided by the users. 
 
 Creating a fully satisfiable graphical user interface (GUI) is not main purpose of this thesis. So it was decided to create a simple GUI in which users can insert the geographical coordinates of participants. As a result, a single pair of coordinates of final destination will be received. 
 
-A fully optimal GUI would allow users to select a position through the displayed map of the dataset available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. 
+A fully optimal GUI would allow users to select a position through the displayed map of the dataset available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. Example of fully optimal GUI is displayed on Figure \ref{fig:OptUI}.
 
-The suboptimal GUI should look as on Figure TODO. First, the interface should provide the way to connect to the server, so the communication between server and client could be established. Further, there are several input boxes allowing the user to insert the position of the people. Last, the interface provides the user current status of the application through the logging service. Not only to deliver the result, but also to inform the user about the whole process, for example whether the data inserted are incorrect or the connection has been lost.
+
+\begin{figure}[H]
+\centering
+\includegraphics[resolution=125]{pics/OptimalUI}
+\caption{Design of fully optimal user interface.}
+\label{fig:OptUI}
+\end{figure}
+
+The goal of the thesis is to create suboptimal user interface. First, the interface should provide the way to connect to the server, so the communication between server and client could be established. Further, there are several input boxes allowing the user to insert the position of the people. Last, the interface provides the user current status of the application through the logging service. Not only to deliver the result, but also to inform the user about the whole process, for example whether the data inserted are incorrect or the connection has been lost.
 Creating suboptimal user interface is described in the next chapter in Section \ref{sec:RClient}.
 
 \chapter{Realisation}
 \label{ch:Realisation}
 
 \section{Technology used}
+\label{sec:TechUsed}
 The goal of the thesis is to create complex desktop application with basic front-end to provide users proper control over the input data and the general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (C\texttt{\#} Windows, ObjC iOS etc.). 
 
 In direction of keeping the application as simple as possible, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make the deployment on any server operating system effortless. Not to mention there are plenty open source libraries available, making a realization of the whole project easily done.  
@@ -702,7 +749,30 @@ Since the dataset of the application is in Shapefile format (see Section \ref{se
 
 \section{Server}
 \label{sec:server}
-The Meeting Scheduler application is structured as a server-client model.
+The Meeting Scheduler application is structured as a server-client model using TCP protocol. As defined in the Linux information project \cite{TCP17}:  \textit{``TCP uses error correction and data stream control techniques to ensure that packets to arrive at their intended destinations uncorrupted and in the correct sequence, thereby making the point-to-point connection virtually error-free.''} 
+
+This feature is expensive, when the amount of data is constant and large (e.g. file transfer). For data streaming is more appropriate user datagram protocol (UDP) \cite{Kurose10}.
+However, the Meeting scheduler server and client communicate with using only small sized messages in form of coordinates, therefore the TCP provide optimal solution. 
+
+The \textit{Server} class implementation in Listing \ref{lst:Server} is straightforward and self-explanatory, providing methods to establish connection between client and server and allow further communication.
+
+\begin{lstlisting}[frame=single, caption={\texttt{Server} class}, label={lst:Server}]
+class Server
+{
+private:
+    int sock, sockclient;
+	struct sockaddr_in serv_addr, cli_addr;
+    char buffer[512];
+public:
+    Server(int );
+    int Listen();
+    int ReadFromClient(char *);
+    int WriteToClient(std::string );
+    void CloseClientSocket();
+    ~Server();
+};
+\end{lstlisting}
+
 Server is responsible for providing client the results of their requests, more specifically meeting point based on input received. To achieve that, server should be having dataset available and preprocessed, so that computation can start without any delay. Hence, server is split into two parts: data processing module and computation module.
 
 Data processing module is the part of the server ensuring the data are transformed in the corresponding directed graph. The graph will further be provided to another part of the server -- computation module. Both modules are further described in the following sections.
@@ -740,13 +810,6 @@ public:
 
 Having the dataset initialized, next step is to load the features within. Features are conained within the layers. Calling the method \texttt{InitLayer(int)}, the layer is initialised, seting the pointer \texttt{pLayer} to the first feature available. The argument of the function determines the index of the layer, if the dataset contains more layers. \texttt{OGRFeature} is a container holding a geometry and the attributes of the feature. Geometry types are displayed on the Figure \ref{pic:OGRGeo}, obtained from official GDAL documentation \cite{GDAL17}. 
 
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{pics/classOGRGeometry}
-\caption{Inheritance diagram for OGRGeometry}
-\label{pic:OGRGeo}
-\end{figure}
 
 
 After analysis of the dataset, the geometry of the road is represented as a \texttt{OGRLineString} class. Therefore, every feature contains two nodes connected together via an edge. Method\texttt{GetNodesFromCurrentFeature()} reads the first feature within the layer and returns a pair of nodes connected via edge in form of \texttt{NodePair} structure. \texttt{NodePair} structure contains two pointers to the \texttt{Node} class. 
@@ -808,13 +871,36 @@ The distance array is being used as a argument for the Dijkstra algorithm, furth
 
 \subsection{Computation module}
 \label{subsec:server_comp}
+Computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after update of the dataset. Thereafter, the server waits in the stand-by mode, expecting the client to send the input coordinates. 
+
 \subsubsection{Algorithm}
 
 \subsubsection{Parallelization}
 
 \section{Client}
 \label{sec:RClient}
-Client provides basic GUI for the user. The user can thought the GUI connect to the remote server and afterwards enter locations of the people. Client provides the user with the data 
+Client provides basic GUI for the user. The user thought the client connects to the remote server and send the server locations of the people.
+The appearance of the current UI was created by Qt framework as mentioned in the beginning of the Section \ref{sec:TechUsed}. According to Section \ref{sec:UIDesign}, the final version of the user interface is presented in the Figure \ref{pic:UIFinal}.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/UIFinal}
+\caption{User interface of the application}
+\label{pic:UIFinal}
+\end{figure}
+
+The client is split into left and right section. Left section enables the user to enter the locations of the people. The edit blocks for other persons are uneditable, until every person before contains valid input. For example, after entering location and name of the first person, the fields for the second person become editable. After entering proper data into each person's fields, the user is notified in the \textit{Result window} the next person is available. 
+
+The input required for the application is only set of latitudes and longitudes in order to find the meeting place. However, the user interface allows the user to enter the name of the person. This enhances the general user flow, providing the user to associate the location of the coordinates with the name.
+
+In the right section of the client the \textit{Result window} and \textit{Connection} is located. After every action user makes, the \textit{Result window} updates according to the current state of the client or server.
+
+\textit{Connection} allows the user to connect to the server using server address and port. The server and client are connected via transmission control protocol (TCP) as explained in the beginning of the Section \ref{sec:server}. After setting up the connection with the server it is possible to begin the algorithm by pressing \textit{Search} button. Result is afterwards displayed in the \textit{Result window}. Button \textit{Clear} erases all the message in the \textit{Result window}. At last, button \textit{Close} naturally closes the application.
+
+
+Implemented client is not so far of fully optimal user interface mentioned in Section \ref{sec:UIDesign} and meets all the requirements of the sub-optimal version of the UI. 
+
 
 \chapter{Results}
 \label{ch:Results}
@@ -837,8 +923,7 @@ The second dataset is also displayed with QGIS Desktop software on the Figure \r
 \label{pic:dataset2}
 \end{figure}
 
-The clustering method described in the Section \ref{sec:Clustering} was not used in order to better measure the differences between sequential and parallel solution of the given problem. 
-
+The clustering method described in the Section \ref{sec:Clustering} was not used in order to better measure the differences between sequential and parallel solution for the given problem. 
 
 \section{Speed}
 
@@ -868,6 +953,7 @@ The clustering method described in the Section \ref{sec:Clustering} was not used
 	\item[OOP] Object Oriented Programming
 	\item[OSM] OpenStreetMaps
 	\item[SSSP] Single-source shortest path
+	\item[TCP] Transmission Client Protocol
 	\item[XML] Extensible markup language
 	
 	
@@ -875,6 +961,13 @@ The clustering method described in the Section \ref{sec:Clustering} was not used
 
 \chapter{GDAL/OGR diagrams}
 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{pics/classOGRGeometry}
+\caption{Inheritance diagram for OGRGeometry}
+\label{pic:OGRGeo}
+\end{figure}
 
 
 \chapter{Contents of enclosed CD}
