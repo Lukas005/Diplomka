@@ -7,15 +7,13 @@
 
 \documentclass[thesis=M,english]{FITthesis}[2012/10/20]
 
-% \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
-% \usepackage[latin2]{inputenc} % LaTeX source encoded as ISO-8859-2
-% \usepackage[cp1250]{inputenc} % LaTeX source encoded as Windows-1250
+
 \usepackage{float}
 \usepackage{graphicx} %graphics files inclusion
-% \usepackage{subfig} %subfigures
+
 \usepackage{amsmath, kbordermatrix, amssymb} %advanced maths
 \usepackage{amsthm} %theorems and lemmas
-% \usepackage{amssymb} %additional math symbols
+
 \usepackage[linesnumbered,lined,boxed]{algorithm2e}
 \usepackage{enumitem}
 \usepackage{dirtree} %directory tree visualisation
@@ -66,11 +64,13 @@
 \lstset{language=C++,
 		keywordstyle=\color{blue},
         stringstyle=\color{red},
-        commentstyle=\color{green},
+        commentstyle=\color{cyan},
         morecomment=[l][\color{magenta}]{\#},
 		tabsize=2,
 		basicstyle=\tiny,
-		literate={~} {$\sim$}{1}}
+		literate={~} {$\sim$}{1},
+		literate={->} {$\rightarrow$}{1},
+		}
 % \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
 
@@ -874,6 +874,95 @@ The distance array is being used as a argument for the Dijkstra algorithm, furth
 Computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after update of the dataset. Thereafter, the server waits in the stand-by mode, expecting the client to send the input coordinates. 
 
 \subsubsection{Algorithm}
+After receiving the input coordinates from the client, the application is ready to start the computation. 
+The main computation algorithm is Dijkstra algorithm (see Section \ref{sec:dijsktra}). Dijkstra algorithm is solving SSSP problem. The application is using Dijkstra algorithm for each of the input nodes, resulting having shortest distances to all nodes in the graph and choosing the most suitable one.
+
+The version of sequential Dijkstra algorithm uses priority queue based on the distance to process every node in the graph. Priority queue affects the computation time of the algorithm based on the structure \cite{Chen07}. 
+
+The priority queue needs to have operations:
+\begin{description}
+
+\item[ExtractMin] to get vertex with minimum distance for all the vertices, whose shortest distance is not found yet
+\item[DecreaseKey] to update the distance of adjacent vertices of currently	extracted vertex; if the distance is smaller, update the information in the queue
+
+\end{description}
+
+The operations above are guaranteed by \textit{Set} container in C\texttt{++} STL. \textit{Set} keeps all its keys in sorted order \cite{STL17}. Hence, minimum distant vertex will always be at the beginning, allowing to extract the vertex with minimum distance (\textbf{ExtractMin}) and update distances of all other adjacent vertices accordingly (\textbf{DecreaseKey}) $\Rightarrow$ if any vertex's distance become smaller, delete its previous entry and insert new updated entry.
+
+The implementation of the sequential Dijkstra algorithm is located in Listing \ref{lst:SeqDijkstra}. The method has three arguments. First argument \texttt{g} represent the graph storing all the information about the nodes. Second argument \texttt{source} is a pair of coordinates defining the input node. Third argument \texttt{dist} is a container, storing the distances from every input node to every other node in the graph. Last argument is an index of the input node.
+
+\begin{lstlisting}[frame=single, caption={Sequential Dijkstra algorithm}, label={lst:SeqDijkstra}, breaklines=true]
+void MeetingScheduler::SequentialDijkstra(Graph * g , 
+		std::pair<double, double> source, 
+		std::map<std::pair<double , double>, double * > & dist, 
+		int input_index)
+{
+    // init priority queue based on the distance
+    set< pair< double, PD > > pq;
+
+    // insert first node to the queue
+    pq.insert(make_pair( 0, source ));
+    dist[source][input_index] = 0;
+
+
+    while (!pq.empty()) {
+        // ExtarctMin from the queue
+        pair< double, PD> tmp = *(pq.begin());
+        pq.erase(pq.begin());
+        PD u = tmp.second;
+        Node * n = g->GetNode(u);
+
+        // iterate trough the adjacent nodes
+        for (int i = 0; i < n->GetEdgesCount(); i++) {
+            pair<Node*, double> node_edge = n->GetNode(i);
+            double dist_temp  = dist[u][input_index] + node_edge.second;
+            if (dist[node_edge.first->GetCoords()][input_index] > dist_temp)
+            {
+                // 	removing already existing entry from the set; 
+                //	for finalized nodes this step is unreacheable
+                if(dist[node_edge.first->GetCoords()][input_index]!=DBL_MAX)
+                {
+                    pq.erase(pq.find(make_pair(
+                    	dist[node_edge.first->GetCoords()][input_index], 
+                    	node_edge.first->GetCoords())));
+                }
+
+                dist[node_edge.first->GetCoords()][input_index] = dist_temp;
+                pq.insert(make_pair(
+                	dist[node_edge.first->GetCoords()][input_index], 
+                	node_edge.first->GetCoords()));
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+Time complexity depends of the structure used in \textit{Set} container. According to SGI documentation \cite{STL17}, all the \textit{Set} operations (e.g. insert, delete) take logarithmic time. Therefore, the solution in Listing \ref{lst:SeqDijkstra} is $O(E \log V)$.
+
+The method depicted in Listing \ref{lst:SeqDijkstra} is called for each input node the server receives from the client. Result of each all is stored within one structure -- \texttt{dist}. When Dijkstra algorithm finished computing the distances for every input, the next step is to find the node with the best combination of the distances.
+
+\subsubsection{Finding the result}
+
+As described in previous section, each node has the information about the shortest distance to all the input nodes. The optimal node needs to have the shortest and uniform uniform distances from every input node. Therefore, the summation and standard deviation is computed for every node. 
+
+The node with the shortest distances to every input node needs to have smallest summation of all the distances. The standard deviation of all the distances achieve the uniformity, therefore every person has it to the meeting place relatively equal (based on the value of the standard deviation). 
+
+The standard deviation (represented as a Greek letter $\sigma$) in statistics measure the the amount of variation or dispersion of a set of data values \cite{Bland96}. The smaller the value of the standard deviation is, the more similar the values are. Choosing the result with the smallest standard deviation ensures the uniformity of the result.
+The formula used to compute discrete standard deviation for the node $v$ look as follows:
+$$
+	\sigma_v = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \overline{x})^2}
+$$
+where $N$ is the amount of input nodes,  $x_i$ is distance from the input at index $i$ to the node $v$ and $\overline{x}$ is mean value of all the distances to the node $v$. 
+
+The optimal node needs to have the summation and standard deviation of all the distances to smallest. With growing summation of distances, the fitness of the node is less desired. The same applies to the standard deviation of the distances. Hence, to it is possible to put the summation and standard deviation into the relation. The fitness value of the node is represented as a multiplication of those two values. The node with the smallest fitness value is the optimal node. 
+
+\subsubsection{Analysis of the fitness}
+In previous paragraph was defined the fitness value of the node as a multiplication of summation and standard deviation. Since the distance values are from $[0, \infty)$ interval, the summation of them can be from $[0, \infty)$ interval as well. If the summation of the distances is $0$, then all the distances are also $0$. That means all the input nodes are located in the same location. This edge case is already handled in the UI layer of the application, therefore the summation is from the interval $(0, \infty)$.
+
+The standard deviation is in general (as well as the summation) from $[0, \infty)$. If standard deviation equals $0$, it means all the values are the same. Ideally, the optimal node should have standard deviation of the distances equal to $0$. However, this fact can completely override the contribution of the summation in the fitness value. Using real world data, it is possible that input nodes have equal distances to multiple nodes, but with different values \footnote{with increasing number of input nodes the probability of having $\sigma$ decreases}. In Figure is shown a simple example for two input nodes.
+
+Therefore, there is a special handling of this case, where standard deviation equals zero. During the processing of all the nodes the summation of the currently optimal node is stored. If another node with same fitness is found, node with the smaller summation is chosen as the optimal node.
+
 
 \subsubsection{Parallelization}
 
@@ -899,7 +988,7 @@ In the right section of the client the \textit{Result window} and \textit{Connec
 \textit{Connection} allows the user to connect to the server using server address and port. The server and client are connected via transmission control protocol (TCP) as explained in the beginning of the Section \ref{sec:server}. After setting up the connection with the server it is possible to begin the algorithm by pressing \textit{Search} button. Result is afterwards displayed in the \textit{Result window}. Button \textit{Clear} erases all the message in the \textit{Result window}. At last, button \textit{Close} naturally closes the application.
 
 
-Implemented client is not so far of fully optimal user interface mentioned in Section \ref{sec:UIDesign} and meets all the requirements of the sub-optimal version of the UI. 
+Implemented client is not far of fully optimal user interface mentioned in Section \ref{sec:UIDesign} and meets all the requirements of the sub-optimal version of the UI. 
 
 
 \chapter{Results}
