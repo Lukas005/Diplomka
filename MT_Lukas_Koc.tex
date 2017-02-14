@@ -43,8 +43,8 @@
 \abstractCS{V n{\v e}kolika v{\v e}t{\' a}ch shr{\v n}te obsah a p{\v r}{\' i}nos t{\' e}to pr{\' a}ce v {\v c}esk{\' e}m jazyce.}
 
 \placeForDeclarationOfAuthenticity{Prague}
-\keywordsCS{Replace with comma-separated list of keywords in Czech.}
-\keywordsEN{Replace with comma-separated list of keywords in English.}
+\keywordsCS{teorie grafů, Dijkstrův algoritmus, hledání nejkratší cesty v grafu, paralelizace, zpracování dat, OSM}
+\keywordsEN{graph theory, Dijkstra algorithm, single source shortest path, parallel algorithm, data processing, OSM}
 \declarationOfAuthenticityOption{1} %select as appropriate, according to the desired license (integer 1-6)
 
 % \website{http://site.example/thesis} %optional thesis URL
@@ -245,7 +245,7 @@ EuroGeographics is the membership association consisting of 60 organizations and
 
 EuroGeographics association provides the following products: EuroBoundaryMap, EuroGlobalMap, EuroRegionalMap and EuroDEM.
 EuroBoundary map mostly covers borders and administrative informations, EuroDEM map is commonly used for environmental change research or hydrologic modelling.
-EuroGlobalMap and EuroRegionalMap consists of many datasets: the administrative boundaries, the water network, the transport network etc. 
+EuroGlobalMap and EuroRegionalMap consists of many data sets: the administrative boundaries, the water network, the transport network etc. 
 In order to download the data it is required to fill up the registration form.
 
 EuroGeographics provides data in following formats
@@ -255,7 +255,7 @@ EuroGeographics provides data in following formats
 \item Shapefile
 \end{itemize}
 
-EuroGeographics yield reliable source of data required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled repeatedly in order to download the dataset would make the data processing to be a bottleneck.
+EuroGeographics yield reliable source of data required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled repeatedly in order to download the data set would make the data processing to be a bottleneck.
 
 \subsection{OpenStreetMaps}
 \label{subsec:DA_OSM}
@@ -272,12 +272,12 @@ Thanks to the Mapzen team and their Metro Extract project it is possible to down
 \item Shapefile
 \end{itemize}
 
-OSM data are regularly maintained by the community. Documentation to the data is well written, so that any discrepancy within the dataset can be easily resolved. The OSM format requires additional parsing in order to operate with the data, since it is not official GIS format. However, projects as Mapzen provide also additional format varieties to choose from.
+OSM data are regularly maintained by the community. Documentation to the data is well written, so that any discrepancy within the data set can be easily resolved. The OSM format requires additional parsing in order to operate with the data, since it is not official GIS format. However, projects as Mapzen provide also additional format varieties to choose from.
 
 \subsection{EEA}
 The European environmental agency (EEA) is an agency of the European Union providing information about the environment for the public. According to their official site \cite{EEA16} it currently consists of 33 member countries.
 
-EEA offers various different datasets, maps and graphs about national designated areas, ecosystem types of Europe, water state and quality, national communications etc. 
+EEA offers various different data sets, maps and graphs about national designated areas, ecosystem types of Europe, water state and quality, national communications etc. 
 
 Depending on the type, these data are provided in the following formats:
 \begin{itemize}
@@ -286,9 +286,9 @@ Depending on the type, these data are provided in the following formats:
 \item Shapefile
 \end{itemize} 
 
-Most of the datasets are displayed in interactive maps available on the \href{http://www.eea.europa.eu/data-and-maps}{EEA website}.
+Most of the data sets are displayed in interactive maps available on the \href{http://www.eea.europa.eu/data-and-maps}{EEA website}.
 
-After further investigation of the datasets provided by EEA, it seems they are not being updated regularly. In addition, most of the data sets are results of ecological studies or environmental researches (e.g. monitoring $CO_{2}$ or energy consumption). Since the Meeting Scheduler application requires transportation datasets, the EEA does not provide fitting data.
+After further investigation of the data sets provided by EEA, it seems they are not being updated regularly. In addition, most of the data sets are results of ecological studies or environmental researches (e.g. monitoring $CO_{2}$ or energy consumption). Since the Meeting Scheduler application requires transportation data sets, the EEA does not provide fitting data.
 
 \subsection{European Observation Network for Territorial Development and Cohesion}
 The European Observation Network for Territorial Development and Cohesion (ESPON) 2013 Programme is mainly financed from European Regional Development Fund (ERDF) and its main goal is:
@@ -538,10 +538,21 @@ Currently, the Meeting Scheduler application can work with the selected data-sou
 
 \subsection{Graph clustering}
 \label{sec:Clustering}
-Clustering is a method to group multiple nodes based on similarity into one set -- a cluster, as described in Schaeffer \cite{Schaeffer07}. However in some of the clustering literature, a cluster in a graph is called a community \cite{Newman04}.
+Clustering is a method to group multiple nodes based on similarity into one set -- a cluster. However in some of the clustering literature, a cluster in a graph is called a community \cite{Newman04}. An example of clustering is displayed on the Figure \ref{pic:Clustering}.
 
-Applying clustering multiple times on different groups of nodes, leaves the graph to be represented with these clusters instead of the nodes. If node in first cluster has an edge to another node within the second cluster, first and second cluster are connected with a node as well. 
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{pics/clustering}
+\caption{Clustering applied on the graph of a social network \cite{Griffen17}}
+\label{pic:Clustering}
+\end{figure}
+
+In survey made by S. E. Schaeffer \cite{Schaeffer07} is clustering formally defines as follow: \textit{``Given a data set, the goal of clustering is to divide data set into clusters such that the elements assigned to a particular cluster are similar or connected in some predefined sense.''}
+
+Survey further describes two approaches: global clustering and local clustering. In global clustering, in the output of the clustering method every vertex of the input graph is assigned to a cluster. However, in the local clustering, only certain amount of vertices are assigned to the cluster. 
+
+The local approach is more suitable for large graphs, since global clustering is computationally demanding for massive data sets. The running time of a clustering algorithm should not grow faster than $O(n)$ in order to be scalable. Local clustering is based on the graph format, which allows access to connected subgraphs or adjacency lists of nearby vertices. Therefore, the clusters can be computed one at a time based on limited view of the graph topology \cite{Schaeffer07}.
 
 
 
@@ -705,9 +716,17 @@ Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsec
 
 Dijkstra algorithm computes shortest paths from one single node to all of the others in the graph. However, the Meeting Scheduler application is searching for an optimal point given multiple input locations instead of single one. After applying Dijkstra algorithm on every input node, the graph instance now contains shortest paths for each input node. Therefore, every node in the graph holds an information about the distance to each of the input nodes. Within these nodes exists one node, having the optimal combination of shortest paths, which is the result at the Meeting Scheduler application.
 This whole computation process leaves a lot of space for the performance optimization, especially the parallelization. 
-
+\newpage
 \section{Parallelization of Dijkstra algorithm}
-As mentioned in the previous section, the Meeting Scheduler application applies Dijkstra algorithm on each of the input nodes. As a result, every node stores information about the shortest path to each of the other input nodes. 
+The development of information technology together with the a wide range of attention in graph theory research, a variety of algorithm and graph structures have been proposed \cite{Peng09}. Nowadays, the algorithms for serial SSSP optimization have reached the time limitation. The only solution to improve the performance efficiently lies in parallel computation. 
+
+N. Jasika, N. Alispahic et al.\cite{Jasika12} measured the performances of two implementations of Dijkstra algorithm. One was executed on dual-core processor i5 with OpenMP and second with OpenCL. The measurement of the performances were not as fast as expected. Among possible reasons mentioned are the code were not efficient enough and the input data set was small enough, therefore more time was spend on synchronization instead of parallel computation.
+
+Two major issues inherent to Dijkstra algorithm were pointed out in the article: limited explicit parallelism and excessive synchronization. Therefore, Dijkstra algorithm represent a challenging example of an algorithm difficult to accelerate. Mainly because it relies on priority queue (see Section \ref{sec:dijsktra}).
+
+The case study made by P. Bogdan \cite{Bogdan15} focuses as well on creating a parallel application for the Dijkstra algorithm with a high degree of efficiency. The study proposes the Dijkstra algorithm useful in cases having big density of nodes. Therefore, the algorithm is one of the first steps towards improving systems in fields such as computer networks, GPS systems or node localization in 3D wireless sensor networks.
+
+Parallelization of Dijkstra algorithm represent is among the toughest parallel problems in graph theory. The key to provide better performances is to identify blocks of code possible for parallelization. The identification of the parallel blocks and solution is described in the Section \ref{sec:real_parallelization}.
 
 \section{User interface design}
 \label{sec:UIDesign}
@@ -716,7 +735,7 @@ Further, the user should be able to insert the positions of people in order to f
 
 Creating a fully satisfiable graphical user interface (GUI) is not main purpose of this thesis. So it was decided to create a simple GUI in which users can insert the geographical coordinates of participants. As a result, a single pair of coordinates of final destination will be received. 
 
-A fully optimal GUI would allow users to select a position through the displayed map of the dataset available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. Example of fully optimal GUI is displayed on Figure \ref{fig:OptUI}.
+A fully optimal GUI would allow users to select a position through the displayed map of the data set available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. Example of fully optimal GUI is displayed on Figure \ref{fig:OptUI}.
 
 
 \begin{figure}[H]
@@ -745,7 +764,7 @@ Usage of classes and functions of Qt framework is very straightforward while pro
 %% GDAL
 For reading the data files and following manipulation, GDAL/ORG library was selected. GDAL is designed to read and write raster GIS formats. GDAL library is developed under Open Source Geospatial Foundation and released under the X/MIT license. 
 As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
-Since the dataset of the application is in Shapefile format (see Section \ref{sec:posSources}), GDAL/ORG library provides optimal tools for reading and collecting information from our dataset.
+Since the data set of the application is in Shapefile format (see Section \ref{sec:posSources}), GDAL/ORG library provides optimal tools for reading and collecting information from our data set.
 
 \section{Server}
 \label{sec:server}
@@ -773,14 +792,14 @@ public:
 };
 \end{lstlisting}
 
-Server is responsible for providing client the results of their requests, more specifically meeting point based on input received. To achieve that, server should be having dataset available and preprocessed, so that computation can start without any delay. Hence, server is split into two parts: data processing module and computation module.
+Server is responsible for providing client the results of their requests, more specifically meeting point based on input received. To achieve that, server should be having data set available and preprocessed, so that computation can start without any delay. Hence, server is split into two parts: data processing module and computation module.
 
 Data processing module is the part of the server ensuring the data are transformed in the corresponding directed graph. The graph will further be provided to another part of the server -- computation module. Both modules are further described in the following sections.
 
 
 \subsection{Data processing module}
 \label{subsec:dataprocessing} 
-Role of the data processing module is to transform gathered dataset into directed graph. The dataset is represented with the specific GIS file format, more specifically Shapefile format provided by team Mapzen (see Section \ref{subsec:DA_OSM}). The dataset obtained has already been partially processed, so it contains only features describing transportation (e.g. road or rails). Data processing module is able to read the selected format and extract all the nodes from the transport points. These nodes represents vertices in the graph. 
+Role of the data processing module is to transform gathered data set into directed graph. The data set is represented with the specific GIS file format, more specifically Shapefile format provided by team Mapzen (see Section \ref{subsec:DA_OSM}). The data set obtained has already been partially processed, so it contains only features describing transportation (e.g. road or rails). Data processing module is able to read the selected format and extract all the nodes from the transport points. These nodes represents vertices in the graph. 
 
 Afterwards, the edges are extracted from the relations of the nodes. In addition, each edge obtains the cost based on the great circle distance (see Section \ref{subsec:GCD}) between the points. Together with vertices the full graph is complete.
 
@@ -788,7 +807,7 @@ Based on the size of the graph, the amount of nodes can be reduced using node re
 
 \subsubsection{Data-reader class}
 %TODO FITNESS, STORAGE, Source
-The application is reading data through the class called \texttt{DataReader}. The structure of the class is displayed in Listing \ref{lst:DataReader}. The constructor requires the string, which is representing the path to the Shapefile data-file. Within the constructor the GDAL library opens the file and set the pointer \texttt{GDALDataset * pDS} to the dataset within the input file.
+The application is reading data through the class called \texttt{DataReader}. The structure of the class is displayed in Listing \ref{lst:DataReader}. The constructor requires the string, which is representing the path to the Shapefile data-file. Within the constructor the GDAL library opens the file and set the pointer \texttt{GDALDataset * pDS} to the data set within the input file.
 
 \begin{lstlisting}[frame=single, caption={\texttt{DataReader} class}, label={lst:DataReader}]
 class DataReader
@@ -808,11 +827,11 @@ public:
 };
 \end{lstlisting}
 
-Having the dataset initialized, next step is to load the features within. Features are conained within the layers. Calling the method \texttt{InitLayer(int)}, the layer is initialised, seting the pointer \texttt{pLayer} to the first feature available. The argument of the function determines the index of the layer, if the dataset contains more layers. \texttt{OGRFeature} is a container holding a geometry and the attributes of the feature. Geometry types are displayed on the Figure \ref{pic:OGRGeo}, obtained from official GDAL documentation \cite{GDAL17}. 
+Having the data set initialized, next step is to load the features within. Features are conained within the layers. Calling the method \texttt{InitLayer(int)}, the layer is initialised, seting the pointer \texttt{pLayer} to the first feature available. The argument of the function determines the index of the layer, if the data set contains more layers. \texttt{OGRFeature} is a container holding a geometry and the attributes of the feature. Geometry types are displayed on the Figure \ref{pic:OGRGeo}, obtained from official GDAL documentation \cite{GDAL17}. 
 
 
 
-After analysis of the dataset, the geometry of the road is represented as a \texttt{OGRLineString} class. Therefore, every feature contains two nodes connected together via an edge. Method\texttt{GetNodesFromCurrentFeature()} reads the first feature within the layer and returns a pair of nodes connected via edge in form of \texttt{NodePair} structure. \texttt{NodePair} structure contains two pointers to the \texttt{Node} class. 
+After analysis of the data set, the geometry of the road is represented as a \texttt{OGRLineString} class. Therefore, every feature contains two nodes connected together via an edge. Method\texttt{GetNodesFromCurrentFeature()} reads the first feature within the layer and returns a pair of nodes connected via edge in form of \texttt{NodePair} structure. \texttt{NodePair} structure contains two pointers to the \texttt{Node} class. 
 
 The last method within \texttt{DataReader} class to point out is static function\texttt{DistanceBetweenTwoPoints(Node*,Node*)}. The method takes two nodes as arguments and returns the great circle distance between them. It is static since it is not needed to be dependent on any object of the \texttt{DataReader} class.
 
@@ -857,7 +876,7 @@ public:
 };
 \end{lstlisting}
 
-\texttt{Graph} is storing nodes in the STL map structure, mapping the coordinates to a specific node. That causes each node to be stored once at the most. The class is constructed with \texttt{ConstructGraph(DataReader *)} using the \texttt{DataReader} as an argument. Within this method, the dataset is being read, every feature is being analysed and saved in form of the graph into \texttt{map<pair<double, double>, Node * > Nodes}.
+\texttt{Graph} is storing nodes in the STL map structure, mapping the coordinates to a specific node. That causes each node to be stored once at the most. The class is constructed with \texttt{ConstructGraph(DataReader *)} using the \texttt{DataReader} as an argument. Within this method, the data set is being read, every feature is being analysed and saved in form of the graph into \texttt{map<pair<double, double>, Node * > Nodes}.
 
 Another noticeable method is \texttt{FindClosest(pair<double, double>)}. It is used to locate the closest node to the specific location. This method is required in order to locate the input of the user in the graph. Again, the method is using great circle distance to find the closest node to the input. 
 On the other hand, it is needed to go through the whole graph and measure the distances for each node. 
@@ -871,7 +890,7 @@ The distance array is being used as a argument for the Dijkstra algorithm, furth
 
 \subsection{Computation module}
 \label{subsec:server_comp}
-Computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after update of the dataset. Thereafter, the server waits in the stand-by mode, expecting the client to send the input coordinates. 
+Computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after update of the data set. Thereafter, the server waits in the stand-by mode, expecting the client to send the input coordinates. 
 
 \subsubsection{Algorithm}
 After receiving the input coordinates from the client, the application is ready to start the computation. 
@@ -965,6 +984,7 @@ Therefore, there is a special handling of this case, where standard deviation eq
 
 
 \subsubsection{Parallelization}
+\label{sec:real_parallelization}
 
 \section{Client}
 \label{sec:RClient}
@@ -994,21 +1014,21 @@ Implemented client is not far of fully optimal user interface mentioned in Secti
 \chapter{Results}
 \label{ch:Results}
 
-For testing as the dataset was chosen the city Prague, capital of Czech republic. The dataset is available in two versions. First version consist of all the transport nodes available within the area. 
-The dataset is displayed with QGIS Desktop software on the Figure \ref{pic:dataset1}.
+For testing as the data set was chosen the city Prague, capital of Czech republic. The data set is available in two versions. First version consist of all the transport nodes available within the area. 
+The data set is displayed with QGIS Desktop software on the Figure \ref{pic:dataset1}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{pics/praguedatasetL}
-\caption{Dataset containing the tranportation nodes in the Prague region}
+\caption{Data set containing the tranportation nodes in the Prague region}
 \label{pic:dataset1}
 \end{figure}
 
 The second version has reduced the number of the nodes using the node reduction technique (see Section \ref{sec:NodeReduction}) with tolerance 200 meters. After every 200 meters one connecting node is being removed.
-The second dataset is also displayed with QGIS Desktop software on the Figure \ref{pic:dataset2}.
+The second data set is also displayed with QGIS Desktop software on the Figure \ref{pic:dataset2}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{pics/praguedatasetS}
-\caption{Generalized version of the main Prague dataset}
+\caption{Generalized version of the main Prague data set}
 \label{pic:dataset2}
 \end{figure}
 
@@ -1020,6 +1040,9 @@ The clustering method described in the Section \ref{sec:Clustering} was not used
 
 \setsecnumdepth{part}
 \chapter{Conclusion}
+
+\section{Future Work}
+
 
 \bibliographystyle{iso690}
 \bibliography{mybibliographyfile}
