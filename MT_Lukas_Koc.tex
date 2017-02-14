@@ -980,14 +980,14 @@ The optimal node needs to have the smallest summation and standard deviation of 
 \subsubsection{Analysis of the fitness}
 In previous paragraph the fitness value of the node as a multiplication of summation and standard deviation was defined. Since the distance values are within $[0, \infty)$ interval, the summation of them can be within $[0, \infty)$ interval as well. If the summation of the distances is $0$, all of the distances are also $0$. That means all the input nodes are located in the same location. This edge case is already handled in the UI layer of the application, therefore, the summation is within the interval $(0, \infty)$.
 
-The standard deviation is in general (as well as the summation) from $[0, \infty)$. If standard deviation equals $0$, it means all the values are the same. Ideally, the optimal node should have a standard deviation of the distances equal to $0$. However, this fact can completely override the contribution of the summation in the fitness value. Using real world data, it is possible that input nodes have equal distances to multiple nodes, but with different values \footnote{with increasing number of input nodes the probability of having $\sigma$ decreases}. In Figure \ref{fig:TInodes} shows such example for two input nodes.
+The standard deviation is in general (as well as the summation) from $[0, \infty)$. If standard deviation equals $0$, it means all the values are the same. Ideally, the optimal node should have a standard deviation of the distances equal to $0$. However, this fact can completely override the contribution of the summation in the fitness value. Using real world data, it is possible that input nodes have equal distances to multiple nodes, but with different values \footnote{with increasing number of input nodes the probability of having $\sigma$ decreases}. In Figure \ref{fig:TInodes} an example of two input nodes is shown.
 
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[resolution=100]{pics/TInodes}
-\caption{Example on two possible result nodes for nodes A and B, based purely on smallest value of standard deviation. Node in the middle is having smaller summation of the distances, therefore being the optimal result.}
+\caption{An example of two possible result nodes for node A and B, based on the smallest value of the standard deviation. The node in the middle is having the smaller summation of distances. Therefore, it is the optimal result.}
 \label{fig:TInodes}
 \end{figure}
 
