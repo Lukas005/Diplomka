@@ -80,21 +80,21 @@
 \section{Motivation}
 The 21st century is often titled as the century of data. Usage and gathering data influences our lives on a daily basis. Industry, fashion, society, transportation etc. is transforming under the amount of data gathered and evaluated. 
 
-Alongside the growing amount of data collected, borders of European countries are loosening and it is possible for people to travel within Europe in order to discover new cultures or to find a job in the country of their interest. Most of the time it the location is unknown. Finding meeting points with colleagues or friends, which might have limited knowledge about the area too, might turn into a difficult task.
+Growing amount of data are being collected, borders of EU countries are loosening and people are discovering new cultures and jobs in a mare global manner. Most of the time the new location is unknown. Finding meeting locations with colleagues or friends, which may have a limited knowledge about the area too, can turn into a difficult task.
 
-Applying the knowledge of graph theory, geography and computer science, the goal of the thesis is to create an application finding ideal meeting place for a group of people, saving time for everyone involved.
-Nowadays, computers with multiprocessors or graphic cards are affordable for everyone. Therefore, paralellization of every sophisticated application is becoming significant. Knowing that, the application should be designed to utilize possibilities of paralellization.
+The goal of the thesis is to create an application finding the ideal meeting place for a group of people to save time of everyone involved by applying the knowledge of graph theory, geography and computer science.
+Nowadays, computers with multiprocessors or graphic cards are affordable for everyone. Therefore, paralellization of sophisticated applications is becoming highly significant. Knowing that, the application should be designed to utilize possibilities of paralellization.
 
 \section{Geographic information system}
-Geographic information systems (GIS) are solving problems which are based on geospatial information. To achieve the goal special tools are being used such as visualization software, remote sensing and geography tools. Remote sensing tools gain information on specific objects or areas from a distance. Geography tools help to observe and research the environmental changes of the earth and its resources, evolution of society and species. Visualization software, then, displays gathered data as 2D or 3D images \cite{Chen10}.
+Geographic information systems (GIS) are solving problems which are based on geospatial information. To achieve the goal, special tools are being used such as visualization software, remote sensing and geography tools. Remote sensing tools gain information on specific objects or areas from a distance. Geography tools help to observe and research the environmental changes of the earth and its resources, evolution of society and species. Visualization software, then, displays gathered data as 2D or 3D images \cite{Chen10}.
 
-With a drastic change of modern technologies and enormous amount of data a new science was born---geographic information science---which is focusing on geographic concepts, applications and systems. The new science opens doors to new problems and issues at a global scale, not easily imaginable a few years ago. 
+With a drastic change of modern technologies and enormous amount of data piling up, a new science was born---geographic information science---which is focusing on geographic concepts, applications and systems. The new science opens doors to new problems and issues at a global scale, not easily imaginable a few years ago. 
 
-This thesis uses knowledge gathered through the course of time in geographic information science to map graph theory problems on real life data. The developed application belongs to the software category GIS software. 
+This thesis uses knowledge gathered through the course of time in geographic information science to map graph theory problems on real life data. Therefore, the developed application belongs to the software category GIS software. 
 
 
 \section{Problem description}
-Within this chapter, first it is necessary to define terms from graph theory, since they are being used in scope of the whole thesis. 
+Within this chapter, first it is necessary to define terms from graph theory, since they are being used regularly throughout the thesis. 
 \subsection{Graph theory definitions}
 
 \begin{defin}
@@ -115,7 +115,7 @@ A \textbf{directed simple \textit{graph}} $G$ is a pair $(V, E)$, where $V$ is a
 \end{defin}
 
 \begin{defin}
-A \textbf{walk} in graph is any sequence of adjacent distinct edges. A \textbf{path} in graph is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$.  A path with $v_1 = v_k$ is called a \textbf{cycle}.  The \textbf{length} of a path is the number of edges that it uses.
+A \textbf{walk} in graph is any sequence of adjacent distinct edges. A \textbf{path} in a graph is a sequence of vertices $v_1, v_2 \dots ,v_k$ such that $(v_i,v_{i+1}) \in E$ for all $1 \leq i < k$.  A path with $v_1 = v_k$ is called a \textbf{cycle}.  The \textbf{length} of a path is the number of edges that it uses.
 \end{defin}
 
 \begin{defin}
@@ -138,17 +138,17 @@ Given a graph G, the \textbf{distance} d(x,y) between two vertices x and y is th
 
 The shortest-path problem consists of finding a path of minimum length from a given source $s \in V$ to a given target $t \in V$.
 Note that the problem is only well defined for all pairs, if $G$ does not contain negative cycles.
-Since our problem is based on real values (distance between two points), negative weights and cycles do not occur in the rest of the thesis.
-If there were negative weights, it is possible, using Johnson's algorithm \cite{Johnson77}, to convert the original weighting function $f: A \to \mathbb{R}$ to non-negative function $ f': A \to \mathbb{R}^+_0$ in time $O(n_m + n^2 \log n)$, which results in the same shortest paths.
+Since our problem is based on real values (distance between two points), negative weights and cycles do not occur in thesis.
+If there were negative weights, it would be possible to use Johnson's algorithm \cite{Johnson77} to convert the original weighting function $f: A \to \mathbb{R}$ to a non-negative function $ f': A \to \mathbb{R}^+_0$ in time $O(n_m + n^2 \log n)$, which results in the same shortest paths.
 
 \section{Organisation of the Thesis}
 The thesis is structured as follows: First, the Chapter \ref{ch:DA} describes the desired attributes of the data and finding possible data sources. The chapter, further, explains how the data can be stored and processed in order to reduce the number of unnecessary nodes. 
 
-Chapter \ref{ch:DOTA} focuses on the overall design of the application, beginning with the algorithms solving the SSSP problem. The main algorithm used for our application is Dijkstra algorithm. In order to decrease the computation time, the possible paralellization of Dijkstra algorithm is further explained. The application also requires a basic user interface, which will be described in Chapter \ref{ch:DOTA}.
+Chapter \ref{ch:DOTA} focuses on the overall design of the application, beginning with the algorithms solving the single source shortest path (SSSP) problem. The main algorithm used for the application is Dijkstra algorithm. In order to decrease the computation time, the possible paralellization of Dijkstra algorithm is further explained. The application also requires a basic user interface, which will be also described in Chapter \ref{ch:DOTA}.
 
-The Chapter \ref{ch:Realisation} describes the specific implementation of the application. More specifically how the application is implemented within server and client part, which frameworks were used and additional commentary of the code. 
+In Chapter \ref{ch:Realisation}, the specific implementation of the application is illustrated. More specifically; how the application is implemented within server and client part, which frameworks were used and additional commentary of the code can be found. 
 
-The results of the application are concluded in Chapter \ref{ch:Results}, in which the results based on the accuracy and time comparison between parallel and single threaded implementation are compared.
+The results of the application are portrayed in Chapter \ref{ch:Results}. Therefore, the results based on the accuracy and time are compared between parallel and single threaded implementation.
 \setsecnumdepth{all}
 
 
@@ -157,7 +157,7 @@ The results of the application are concluded in Chapter \ref{ch:Results}, in whi
 
 \section{Data fitness}
 \label{S1: Good data}
-As stated in Koc 2014 \cite{Koc14}, proficient functioning of the application requires a fitting data source. The application needs to work with reliable and (preferably) daily updated data. The area of coverage should not be limiting the application, so that a high number of users would find it convenient. The data format should be unified in order to make manipulation and management effective. Choosing the correct data format also enables the application to combine different data sources.
+As stated in Koc \cite{Koc14}, a proficient functioning of the application requires appropriate data source. The application needs to work with reliable and (preferably) daily updated data. The area of coverage should not be limiting, so that a high number of people would be able to use it. The data format should be unified in order to make manipulation and management effective. Choosing the correct data format also enables the application to combine different data sources.
 
 To sum up the data are required to follow certain criteria:
 \begin{itemize}
@@ -171,11 +171,11 @@ To sum up the data are required to follow certain criteria:
 
 
 \section{Data format}
-Geographical data exist in various formats depending on type and usage of the data. Data representing the elevation of mountains are better stored in a different format compared to data representing the location of a point of interest. 
+Geographical data exist in various formats depending on type and usage of the data. Data representing the elevation of mountains are preferably stored in a different format compared to data representing the location of a point of interest. 
 Most of the existing formats typically fall into two main categories: vector format or raster format. 
 
 % According to Esri's GIS dictionary %TODO cite
-Both offer two different ways how to represent spatial data. However, the differences between vector and raster data types are equivalent to those in the graphic design world. The Figure \ref{pic:RasterVector}, which graphically explains how these two types process given data, serves for a better understanding.
+Both types offer two different ways to represent spatial data. However, the differences between vector and raster data types are equivalent to those in the graphic design world. The Figure \ref{pic:RasterVector}, which graphically explains how these two types process given data, serves for a better understanding.
 %http://i.stack.imgur.com/Y84dG.png
 
 \begin{figure}[h]
@@ -185,7 +185,7 @@ Both offer two different ways how to represent spatial data. However, the differ
 \label{pic:RasterVector}
 \end{figure}
 
-Both representations carry various set of advantages and disadvantages. These will be described in the following subsections.
+Both, raster and vector representations carry various sets of advantages and disadvantages as well as different definitions. Therefore, these will be described in the following subsections.
 
 % http://data.geocomm.com/helpdesk/formats.html
 \subsection{Raster representation}
@@ -229,12 +229,12 @@ Vector type formats uses vertices as a basic unit. A vertex consists of x and y 
 
 %Next very significant part of the choice is the data format. As was said in subsection HERE_ADD_SECTION well 
 
-The idea of the Meeting Scheduler is to create the graph from the data provided. The graph is by the definition a topological space. Therefore, the vector representation makes creating the graph more straightforward. In addition, the raster representation is by its nature fitted to quickly provide graphical overview of the geographical data.
+The idea of the Meeting Scheduler is to create a graph from the data provided to find the closest location. The graph is by definition a topological space. Therefore, the vector representation makes creating graphs more straightforward. The raster representation is by its nature designed to quickly provide graphical overview of the geographical data.
 
 \section{Possible sources}
 \label{sec:posSources}
 
-While searching for data, the main focus was not only on data in the vector type format, but also on sources providing free data of Europe available to the public. Further subsections describe sources which match the criteria mentioned in section \ref{S1: Good data}.
+While searching for data, the main focus was not only laid on data in vector type format, but also on sources providing free data of Europe available to the public. In the following subsections are described sources which match these as well as the criteria mentioned in section \ref{S1: Good data}.
 
 %\subsection{Global map data}
 %Global map data provided and managed by International Steering Commitee for Global Mapping.
@@ -244,7 +244,7 @@ While searching for data, the main focus was not only on data in the vector type
 EuroGeographics is the membership association consisting of 60 organizations and 46 countries. It was created in the year 2002, when the Comit{\' e}e Europ{\' e}en des Responsables de la Cartographie Officielle (CERCO) and the Multi-purpose European Ground Related Information Network (MEGRIN) merged together. Its goal is to gather and collect spatial and infrastructural data of Europe \cite{Euro16}. 
 
 EuroGeographics association provides the following products: EuroBoundaryMap, EuroGlobalMap, EuroRegionalMap and EuroDEM.
-EuroBoundary map mostly covers borders and administrative informations, EuroDEM map is commonly used for environmental change research or hydrologic modelling.
+EuroBoundary map mostly covers borders and administrative informations, EuroDEM map is commonly used for environmental change research or hydrologic modelling \cite{Euro16}.
 EuroGlobalMap and EuroRegionalMap consists of many data sets: the administrative boundaries, the water network, the transport network etc. 
 In order to download the data it is required to fill up the registration form.
 
@@ -255,29 +255,29 @@ EuroGeographics provides data in following formats
 \item Shapefile
 \end{itemize}
 
-EuroGeographics yield reliable source of data required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled repeatedly in order to download the data set would make the data processing to be a bottleneck.
+EuroGeographics yield a reliable source of data, which would be required by our application. Shapefile format can contain geographical data providing an option of additional attributes for the data. However, the registration form which needs to be filled repeatedly, in order to download the data set, would make the data processing to the bottleneck.
 
 \subsection{OpenStreetMaps}
 \label{subsec:DA_OSM}
 OpenStreetMaps (OSM) is a project officially supported by the OSM Foundation.
-OSM was created to build and provide open\footnote{Open data means for any purpose as long as the OSM and it's contributors are credited.} geographical data available to everyone.  
+OSM was created to build and provide open\footnote{Open data means, that it can be used for any purpose and by anyone as long as the OSM and it's contributors are credited.} geographical data available to everyone.  
 
 The OMS project was inspired by Wikipedia and is working in the same manner: Users are contributing their maps, gps measurements, aerial photographs etc. Since OSM creation in 2004, its community has significantly increased and the data are being updated daily.
-OSM provides data in .osm format, which follows XML rules.
+OSM provides data in .osm format, which follows XML rules \cite{OSM17}.
 
-In course of time a lot of projects were created which work with OSM maps.
-Thanks to the Mapzen team and their Metro Extract project it is possible to download any major city data in additional two GIS data formats:
+In course of time, various projects were created which work with OSM maps.
+Thanks to the Mapzen team and their Metro Extract project it is possible to download any major city data in additional two GIS data formats\cite{OSM17}:
 \begin{itemize}
 \item Geojson
 \item Shapefile
 \end{itemize}
 
-OSM data are regularly maintained by the community. Documentation to the data is well written, so that any discrepancy within the data set can be easily resolved. The OSM format requires additional parsing in order to operate with the data, since it is not official GIS format. However, projects as Mapzen provide also additional format varieties to choose from.
+OSM data are regularly maintained by the community. Documentation to the data is well written, so that any discrepancy within the data set can be easily resolved. The OSM format requires additional parsing in order to operate with the data, since it is not official GIS format. However, projects as Mapzen provide also additional format varieties to choose from \cite{Mapzen17}.
 
 \subsection{EEA}
 The European environmental agency (EEA) is an agency of the European Union providing information about the environment for the public. According to their official site \cite{EEA16} it currently consists of 33 member countries.
 
-EEA offers various different data sets, maps and graphs about national designated areas, ecosystem types of Europe, water state and quality, national communications etc. 
+EEA offers various different data sets, maps and graphs of national designated areas, ecosystem types of Europe, water state and quality, national communications etc \cite{EEA16}.
 
 Depending on the type, these data are provided in the following formats:
 \begin{itemize}
@@ -288,7 +288,7 @@ Depending on the type, these data are provided in the following formats:
 
 Most of the data sets are displayed in interactive maps available on the \href{http://www.eea.europa.eu/data-and-maps}{EEA website}.
 
-After further investigation of the data sets provided by EEA, it seems they are not being updated regularly. In addition, most of the data sets are results of ecological studies or environmental researches (e.g. monitoring $CO_{2}$ or energy consumption). Since the Meeting Scheduler application requires transportation data sets, the EEA does not provide fitting data.
+After further investigation of the data sets provided by EEA, it seems they are not being updated regularly. In addition, most of the data sets are results of ecological studies or environmental researches (e.g. monitoring $CO_{2}$ or energy consumption)\cite{EEA16}. Since the Meeting Scheduler application requires transportation data sets, the EEA does not provide fitting data.
 
 \subsection{European Observation Network for Territorial Development and Cohesion}
 The European Observation Network for Territorial Development and Cohesion (ESPON) 2013 Programme is mainly financed from European Regional Development Fund (ERDF) and its main goal is:
@@ -302,15 +302,15 @@ Data are available as soon as users register and accept the Terms \& Conditions.
 \item Excel file
 \end{itemize}
 
-Unfortunately, the data provided by ESPON are having the same disadvantages as data provided by EEA in the previous section: maintainability. Our application requires updated data sets in order to accurately compute the optimal meeting place. Investigating the ESPON page further, the ESPON project was separated into two phases in order to analyse and deliver the goal. First phase starting in July 2008 until February 2011 followed by second phase having a lifetime span from February 2011 to December 2014. 
+Unfortunately, the data provided by ESPON are having the same disadvantages as data provided by EEA in the previous section: maintainability. Our application requires updated data sets in order to accurately compute the optimal meeting place. Investigating the ESPON page further, the ESPON project was separated into two phases in order to analyse and deliver the goal. First phase starting in July 2008 until February 2011 followed by second phase having a lifetime span from February 2011 to December 2014 \cite{ESPON13}. 
 
 
-As a data source the OpenStreetMaps were chosen, because the data provided are regularly maintained by the community. In addition, the documentation on OSM Wikipage contains all necessary information needed to learn the user how to immediately start working with the data. As a format was chosen, a Shapefile format, allowing the application to work with additional attributes if necessary (e.g. street names, type of road etc.).
+The OpenStreetMaps were chosen as a data source, because the data provided are regularly maintained by the community. In addition, the documentation on OSM Wikipage contains all necessary information needed to learn the user how to immediately start working with the data. A Shapefile format was chosen as data format, allowing the application to work with additional attributes if necessary (e.g. street names, type of road etc.).
 
 \section{Storage}
 \label{sec:storage}
 %TODO
-Since the data source and format question is resolved, the next step is to decide the representation of the graph in the memory. During the history of graph theory, three main representations are to choose from. In the following subsections a closer look on all three options will be taken.
+Since the data source and format question is resolved, the next step is to decide the representation of the graph in the memory. During the history of graph theory, four main representations were established and can be chosen from. In the following subsections a closer look on all four options will be taken.
 
 \subsection{Adjacency list}
 An adjacency list stores a graph as a list of vertices. Each vertex, then, contains an information about its adjacent vertices in form of a linked list. 
@@ -365,16 +365,16 @@ v_{4} & 0  & 0  & -1 & 0  & 0  & 1
 
 
 \subsection{Sparse matrix}
-In mathematics, matrices can be divided into two groups: sparse matrices and dense matrices. The definition might sound somehow vague, but sparse matrices are matrices containing huge amount of zero elements. A dense matrix is the exact opposite: containing very few zero elements. In previous subsections, it is noticeable that each of the matrices (adjacency and incidence) consist of various zero elements and only a few values are actually useful.
+In mathematics, matrices can be divided into two groups: sparse matrices and dense matrices. The definition might sound somehow vague, but sparse matrices are matrices containing huge amount of zero elements. A dense matrix is the exact opposite: containing very few zero elements \cite{Bondy76}. In previous subsections, it is noticeable that each of the matrices (adjacency and incidence) consist of various zero elements and only a few values are actually useful.
 
-The amount of non-zero elements in the adjacency or incidence matrix depends purely on the degree of vertices in the graph. In both types of matrices, each row serves as a vertex and within non-zero values represent edges incident to the vertex. Depending on the graph is directed or undirected, the amount of non-zero elements in adjacency matrices will differ. Incidence matrices do not change their numbers, because they differ only in sign of the value. 
+The amount of non-zero elements in the adjacency or incidence matrix depends purely on the degree of vertices in the graph. In both types of matrices, each row serves as a vertex and within non-zero values represent edges incident to the vertex. Depending on the graph, which can be directed or undirected, the amount of non-zero elements in adjacency matrices will differ. Incidence matrices do not change their numbers, because they differ only in sign of the value \cite{Bondy76}. 
 
 For undirected graphs, the number of non-zero elements equals to $$ \sum_{v \in V} \textrm{deg(v)} = 2|E| $$ where $E$ is the set of all edges and $V$ the set of all vertices in the graph. 
 
 The same principle applies to the directed graph of incidence matrices. For directed graphs of adjacency matrices, we can observe that the number of non-zero elements depend on the amount of outgoing edges $\Rightarrow$ out-degree, which is 
-$$ \sum_{v \in V} \textrm{deg\textsuperscript{--}(v)} = |E| $$ where $E$ is the set of all edges, $V$ is the set of all vertices in a graph and $deg\textsuperscript{--}(v)$ function returns the number of outgoing edges from the vertex $v$.
+$$ \sum_{v \in V} \textrm{deg\textsuperscript{--}(v)} = |E| $$ where $E$ is the set of all edges, $V$ is the set of all vertices in a graph and $deg\textsuperscript{--}(v)$ function returns the number of outgoing edges from the vertex $v$ \cite{Bondy76}.
 
-The reason for mentioning sparse matrices in the first place is that there are functions and operations which could be done only with the sparse matrices, providing better memory usage. The main motivations for this section are the storage schemes in which sparse matrix could be stored. The usage of storage schemes enable all the advantages of the regular matrix representation with significantly less memory usage since only the non-zero elements are being stored. According to Yousef Saad \cite{Saad03}, the main 3 storage schemes will be discussed. 
+The reason for mentioning sparse matrices in the first place is that there are functions and operations which could be done only with the sparse matrices, providing better memory usage. The main motivation for this section is the storage scheme in which sparse matrix could be stored. The usage of storage schemes enable all the advantages of regular matrix representation with significantly less memory usage since only the non-zero elements are being stored. According to Yousef Saad \cite{Saad03}, the main 3 storage schemes will be discussed. 
 
 The coordinate format belongs to the simplest storage schemes of sparse matrices. The data structure consists of three arrays: 
 \begin{itemize}
@@ -382,7 +382,7 @@ The coordinate format belongs to the simplest storage schemes of sparse matrices
 \item an integer array containing their row indices 
 \item an integer array containing their column indices
 \end{itemize}
-All three arrays are of length $N$, which is the number of non-zero elements.
+All three arrays are of length $N$, which is the number of non-zero elements \cite{Saad03}.
 
 Taking a closer look at the adjacency $\textbf{A}$ matrix from section \ref{subsec:AdjMatrix}. Clearly this matrix contains less non-zero elements, therefore it is an example of a sparse matrix. Using the coordinate format, matrix $\textbf{A}$ looks the following:
 
@@ -447,9 +447,9 @@ $$
 
 The transformation of the $IR$ array and listing elements inside $AA$ by row is called Compressed Sparse Row (CSR) format. In scientific computing CSR format is most commonly used for vector-matrix multiplication while having low memory usage.
 Through the years, Compressed Sparse Row format developed to a number of variations. 
-For example storing columns instead of rows, a new scheme known as Compressed Sparse Column (CSC) format was created.
+For example storing columns instead of rows, a new scheme known as Compressed Sparse Column (CSC) format was created \cite{Saad03}.
 
-The last scheme, I would like to point out, is called the Ellpack-Itpack format, which is very popular on vector machines. The Ellpack-Itpack format stores matrices in two 2-dimensional arrays of the same size $n \times N_{mpr}$, where $n$ is the number of rows of the original matrix and $N_{mpr}$ represents the maximum of non-zero elements per row. The first array contains non-zero elements of the original matrix. If the number of non-zero elements is less then the $N_{mpr}$, the rest of the row is filled with zeros. The second array stores the information about the column in which the specific non-zero element is located. For each zero in the first array, any number can be added.
+The last scheme, I would like to point out, is called the Ellpack-Itpack format, which is very popular on vector machines\cite{Saad03}. The Ellpack-Itpack format stores matrices in two 2-dimensional arrays of the same size $n \times N_{mpr}$, where $n$ is the number of rows of the original matrix and $N_{mpr}$ represents the maximum of non-zero elements per row. The first array contains non-zero elements of the original matrix. If the number of non-zero elements is less then the $N_{mpr}$, the rest of the row is filled with zeros. The second array stores the information about the column in which the specific non-zero element is located. For each zero in the first array, any number can be added.
 
 For the given matrix $\textbf{EIF}$:
 
@@ -495,22 +495,22 @@ $$
 
 Adjacency lists in their essence compactly represent existing edges. 
 However, this comes at the cost of possible slow lookups of specific edges.
-In case of unordered list, the worst case of a lookup time for a specific edge can become O(n), since each list has length equal to the degree of a vertex.
+In case of an unordered list, the worst case concerning the lookup time for a specific edge can become O(n) since each list has length equal to the degree of a vertex.
 On the other hand, looking up the neighbours of a vertex becomes trivial, and for a sparse or small graph the cost of iterating through the adjacency lists might be negligible.
 
 Adjacency matrices can use more space in order to provide constant lookup times. Since every possible entry exists, it is possible to check for the existence of an edge in constant time using indexes. However, the lookup time for a neighbour becomes O(n) since it is needed to check all possible neighbours.
 
-Data used in the application produce sparse and/or large graphs, for which adjacency list representations suit better.
+Data used in the application produce sparse and/or large graphs, for which adjacency list representation is suited better.
 
 
 
 \section{Preprocessing}
 \label{sec:preprocessing}
-Data are being read from Shapefile source obtained via OpenStreetMaps. After further analysis of the Shapefile provided by Mapzen (Section \ref{subsec:DA_OSM}), each data entry is being represented as a line $\Rightarrow$ two nodes sharing an edge. At this point, the edge is missing its weight. Therefore, first step of preprocessing is to weight all the edges within the graph.
+Data are being read from Shapefile source obtained via OpenStreetMaps. After further analysis of the Shapefile provided by Mapzen (Section \ref{subsec:DA_OSM}), each data entry is being represented as a line $\Rightarrow$ two nodes sharing an edge. At this point, the edge is missing its weight. Therefore, first step of preprocessing is to weight all the edges within the graph, described in following sections.
 
 \subsection{Great Circle Distance and Harvesine formulae}
 \label{subsec:GCD}
-The weight of the edge should represent the price of getting from one node into the other. Our application is trying to find shortest path from multiple sources into one source, therefore the price should be based on the distance between source points and the final node, the shorter the better. 
+The weight of the edge should represent the price of getting from one node into the other. Our application is trying to find the shortest path from multiple sources into one source. Therefore, the price should be based on the distance between source points and the final node, the shorter the better. 
 
 Each node has its specific coordinates $\Rightarrow$ latitude and longitude. This pair represents unique identifier for every node in the application. Let us have two nodes: node $n$ having coordinates $lat1$ and $long1$, and node $m$ having coordinates $lat2$ and $long2$. If $lat1$ = $lat2 \wedge long1 = long2$, then node $n = m$. If $n \neq m$, then at least one of the coordinates differs between nodes $n$ and $m$ meaning the distance between these two nodes is greater than zero.
 
@@ -520,9 +520,9 @@ $$
 d = \sqrt{(\Delta x)^2 + (\Delta y)^2} = \sqrt{(x_2 - x_1 )^2 + (y_2 - y_1)^2}
 $$
 
-where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we map latitude on $x$-coordinate and longitude on $y$-coordinate, we would get the distance between two real points, but in a two dimensional space. For computing the distance on the Earth, it is needed to use the great circle distances.
+where $d$ is a distance between the nodes $(x_1, y_1)$ and $(x_2, y_2)$. If we map latitude on $x$-coordinate and longitude on $y$-coordinate, we would get the distance between two real points, but in a two dimensional space. For computing the distance on Earth, it is needed to use the great circle distances.
 
-The great circle distance takes into account the curvature of the sphere, to provide more precise distance. Using great circle distance allow the application to provide decent approximation between every two nodes (obtained from the data-source) connected via one edge.
+The great circle distance takes into account the curvature of the sphere, to provide more precise distance. Using great circle distance allows the application to provide decent approximation between every two nodes (obtained from the data-source) connected via one edge.
 
 To compute the great circle distance on a sphere, the harvesine formula is used: 
 
@@ -534,11 +534,11 @@ Harvesine formula: & a = \sin^2(\Delta \psi /2) + \cos \psi_1 \cdot \cos \psi_2 
 \end{array}
 $$ 
 
-Currently, the Meeting Scheduler application can work with the selected data-source (Section \ref{sec:posSources}). The graph is being represented as an adjacency list with weighted edges based on the real life distance. However, most of the world applications work with large amount of data. Therefore, in order to handle big amount of data, it is possible to use either clustering or node reduction, both described in following sections.
+The Meeting Scheduler application is designed to work with the selected data-source (Section \ref{sec:posSources}). The graph is being represented as an adjacency list with weighted edges based on the real life distance. However, most of the world applications work with large amount of data. Therefore, in order to handle big amount of data, it is possible to use either clustering or node reduction, both described in following sections.
 
 \subsection{Graph clustering}
 \label{sec:Clustering}
-Clustering is a method to group multiple nodes based on similarity into one set -- a cluster. However in some of the clustering literature, a cluster in a graph is called a community \cite{Newman04}. An example of clustering is displayed on the Figure \ref{pic:Clustering}.
+Clustering is a method to group multiple nodes based on similarity into one set -- a cluster. However, in some of the clustering literature, a cluster in a graph is also called a community \cite{Newman04}. An example of clustering is displayed on Figure \ref{pic:Clustering}.
 
 
 \begin{figure}[h]
@@ -548,18 +548,18 @@ Clustering is a method to group multiple nodes based on similarity into one set 
 \label{pic:Clustering}
 \end{figure}
 
-In survey made by S. E. Schaeffer \cite{Schaeffer07} is clustering formally defines as follow: \textit{``Given a data set, the goal of clustering is to divide data set into clusters such that the elements assigned to a particular cluster are similar or connected in some predefined sense.''}
+In survey conducted by S. E. Schaeffer \cite{Schaeffer07}, clustering is formally defined as followed: \textit{``Given a data set, the goal of clustering is to divide the data set into clusters such that the elements assigned to a particular cluster are similar or connected in some predefined sense.''}
 
-Survey further describes two approaches: global clustering and local clustering. In global clustering, in the output of the clustering method every vertex of the input graph is assigned to a cluster. However, in the local clustering, only certain amount of vertices are assigned to the cluster. 
+The survey further describes two approaches: global clustering and local clustering. In global clustering, every vertex of the input graph is assigned to a cluster, which is the output of the clustering method. However, in the local clustering, only a certain amount of vertices are assigned to clusters. 
 
-The local approach is more suitable for large graphs, since global clustering is computationally demanding for massive data sets. The running time of a clustering algorithm should not grow faster than $O(n)$ in order to be scalable. Local clustering is based on the graph format, which allows access to connected subgraphs or adjacency lists of nearby vertices. Therefore, the clusters can be computed one at a time based on limited view of the graph topology \cite{Schaeffer07}.
+The local approach is more suitable for large graphs, since global clustering is computationally demanding for massive data sets. The running time of a clustering algorithm should not grow faster than $O(n)$ in order to be scalable. Local clustering is based on the graph format, which allows access to connected subgraphs or adjacency lists of nearby vertices. Therefore, the clusters can be computed one at a time based on the limited view of the graph topology \cite{Schaeffer07}.
 
 
 
 
 \subsection{Node reduction}
 \label{sec:NodeReduction}
-The Meeting scheduler transforms real world spacial data into a graph. Spacial data are widely used to map and describe the Earth. In order to be accurately describe any object of the surrounding it is necessary to record every little detail. Figure \ref{pic:Road} is displayed as an example. A road from point A to point B is interpreted as a bended line between two nodes. But in the spacial data it is represented by a group of linked nodes to depict the curvature of the road.
+The Meeting scheduler transforms real world spacial data into a graph. Spacial data are widely used to map and describe the Earth. In order to be accurately describe any object of the surrounding it is necessary to record every little detail. Figure \ref{pic:Road} displays an example. A road from point A to point B is interpreted as a bended line between two nodes. But in the spacial data it is represented by a group of linked nodes to depict the curvature of the road.
 
 \begin{figure}[H]
 \centering
@@ -568,7 +568,7 @@ The Meeting scheduler transforms real world spacial data into a graph. Spacial d
 \label{pic:Road}
 \end{figure}
 
-For the purpose of finding meeting place, it is not required to have all the nodes forming the road saved in the memory. The road on Figure \ref{pic:Road} could be represented only as pair of nodes A and B. That way the other 4 nodes representing the road would could be deleted and therefore saving memory. 
+For the purpose of finding the optimal meeting place between 2 and more people, it is not required to have all the nodes forming the road saved in the memory. The road on Figure \ref{pic:Road} could be represented only as a pair of nodes, A and B. That way the other 4 nodes representing the road would could be deleted and therefore memory would be conserved. 
 
 The nodes legitimate for removing will be called \textit{connecting} nodes. Within the scope of the thesis connecting node will be defined as following:
 
@@ -577,31 +577,31 @@ The nodes legitimate for removing will be called \textit{connecting} nodes. With
 Connecting node is a node having at most one outgoing edge and at most one incoming edge. 
 \end{defin}
 
-Similar way it is possible to define transit node, which is the opposite of the connecting node. 
+It is possible to define transit node in a similar way, which is the opposite of the connecting node. 
 
 \begin{defin}
 \label{def:transit}
 Transit node is a node having at least two outgoing edges or at least two incoming edges. 
 \end{defin}
 
-Examples of connecting and transit nodes are depicted on Figure \ref{pic:CaTnodes}.
+An examples of a connecting and a transit node is depicted on Figure \ref{pic:CaTnodes}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{pics/CaTNodes}
-\caption{Example of the transit and connecting nodes.}
+\caption{An example of a transit and a connecting node.}
 \label{pic:CaTnodes}
 \end{figure}
 
 
 Locating and removing connecting nodes from the data source significantly reduce the number of nodes within the graph. However, removing every connecting node would cause the loss of accuracy, because the meeting point would be only located on the intersections or junctions of the roads. It would not be possible to be able to meet in the middle of the street. 
-Resolving the dilemma between memory and accuracy highly depends on the given data scenario. The possible solutions are either allowing the user to choose his own precision rate or leaving it up to the developer to decide how the data will be reduced. The solution to the problem used in this application will be further described in Realization Section \ref{subsec:dataprocessing}.
+Resolving the dilemma between memory and accuracy highly depends on the given data scenario. The possible solutions are either allowing the user to choose his own precision rate or leaving it up to the developer to decide how the data will be reduced. The solution to the problem used in this application will be further described in the Realization Section \ref{subsec:dataprocessing}.
 
 \chapter{Design of the application}
 \label{ch:DOTA}
 
 \section{The shortest path algorithms}
-Nowadays, for solving the shortest path problems exist many algorithms. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
+Nowadays, many algorithms exist for solving the shortest path problems exist. Most of them evolved from their predecessors. Each of them solves the problem with different parameters. 
 The following list contains the essential algorithms solving the shortest path problem, which lay the foundation in graph theory science:
 \begin{itemize}
 \item Dijkstra's algorithm
@@ -610,7 +610,7 @@ The following list contains the essential algorithms solving the shortest path p
 \item Johnson's algorithm 
 \end{itemize}
 
-The Dijkstra's algorithm \cite{Dijkstra59} and the Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve the single-source shortest path (SSSP) problem. SSSP problem can be defined as: Find the cost of the least cost path from $v$ to $\forall w \in V$, given a directed graph $G = (V,E)$ with non-negative costs on each edge and a selected source node $v \in V$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is a greedy algorithm working with the graph were negative edges are not allowed. The Bellman-Ford algorithm is a non-greedy version of the Dijkstra's algorithm which allows to work with graphs having negative edges.
+The Dijkstra's algorithm \cite{Dijkstra59} and the Bellman-Ford algorithm \cite{Bellman58, FordFulkerson62} solve the single-source shortest path (SSSP) problem. SSSP problem can be defined as: Find the cost of the least cost path from $v$ to $\forall w \in V$, given a directed graph $G = (V,E)$ with non-negative costs on each edge and a selected source node $v \in V$. The cost of a path is simply the sum of the costs on the edges traversed by the path. Dijkstra's algorithm is a greedy algorithm working with the graph were negative edges are not allowed \cite{Dijkstra59}. The Bellman-Ford algorithm is a non-greedy version of the Dijkstra's algorithm which allows to work with graphs having negative edges \cite{Bellman58, FordFulkerson62}.
 
 The Floyd-Warshall algorithm \cite{Warshall62, Floyd56} and Johnson's algorithm \cite{Johnson77} solve the all-pair shortest path (APSP) problem. The Floyd-Warshall algorithm iterates all vertices $v$, in order to find a better path for every pair going through $v$ in time $O(N^3)$. Johnson's algorithm, first, converts all the negative edges into positive ones and then, applies Dijsktra's algorithm on every node within the graph. 
 For sparse graphs, Johnson's algorithm provides faster computation time than Floyd-Warshall algorithm \cite{Cormen01}.
@@ -618,16 +618,15 @@ For sparse graphs, Johnson's algorithm provides faster computation time than Flo
 
 \section{Dijkstra algorithm}
 \label{sec:dijsktra}
-The algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find the shortest path between two nodes, however the course of time, among computer scientists, Dijkstra algorithm was accepted as an algorithm finding a path from one single node to all other nodes in the graph. 
+The algorithm was conceived by Edsger Wybe Dijkstra in 1956 and was officially published in 1959. Dijkstra's original idea was to find the shortest path between two nodes \cite{Frana10}. However, over the course of time, among computer scientists, Dijkstra algorithm was accepted as an algorithm finding a path from one single node to all other nodes in the graph \cite{Mehlhorn08}. 
 
 
-% about  Mehlhorn, Kurt; Sanders, Peter (2008). Algorithms and Data Structures: The Basic Toolbox (PDF). Springer.
-The Dijkstra algorithm was constructed to solve the applied problem: How to get from one point to another using the shortest path possible. % Frana, Phil (August 2010). "An Interview with Edsger W. Dijkstra". Communications of the ACM. 53 (8): 41–47. doi:10.1145/1787234.1787249
-The main criteria used to define the shortest path are either time or distance. Both quantities only have positive values. If these criteria are converted into graph theory, all the edges of the graph need to be also positive.
-The data available will only include possitive values, which are the nodes in the graph. Furthermore the graph will represent the geographical map. Therefore Dijkstra algorithm will be the choice of the problem solving algorithm. 
+The Dijkstra algorithm was constructed to solve the applied problem: How to get from one point to another using the shortest path possible \cite{Frana10}.
+The main criteria used to define the shortest path are either time or distance. Both quantities only have positive values. If these criteria are converted into graph theory, all the edges of the graph need to be positive as well.
+The data available will only include possitive values, which are the nodes in the graph. Furthermore the graph will represent the geographical map. Therefore, Dijkstra algorithm will be the algorithm of choice for solving SSSP. 
 
  \subsection{Definition}
-There are many variations of Dijkstra algorithm. Here is a presented variation, in which nodes can be in three states: $fresh, open $ and $closed$ (Algorithm \ref{algo_dijkstra}). For each node \textbf{n} the function \texttt{dist}(\textbf{n}) represents the distance from the starting node \textbf{s}. For unreachable nodes the value returned by this function will be undefined. Next to the function \texttt{dist}, there is also the function \texttt{prev}(\textbf{n}), which returns the node for the shortest path back to node \textbf{s}.
+There are many variations of Dijkstra algorithm \cite{Mehlhorn08}. Here is a presented variation, in which nodes can be found in three states: $fresh, open $ and $closed$ (Algorithm \ref{algo_dijkstra}). For each node \textbf{n} the function \texttt{dist}(\textbf{n}) represents the distance from the starting node \textbf{s}. For unreachable nodes the value returned by this function will be undefined. Next to the function \texttt{dist}, there is also the function \texttt{prev}(\textbf{n}), which returns the node for the shortest path back to node \textbf{s}.
 
 \begin{algorithm}[H]
 \SetKwFunction{Dist}{dist}
@@ -655,7 +654,7 @@ There are many variations of Dijkstra algorithm. Here is a presented variation, 
 \caption{Dijkstra algorithm}\label{algo_dijkstra}
 \end{algorithm}
 
-On the line number \textbf{6} in Algorithm \ref{algo_dijkstra}, the choice of the node \textbf{u} means choosing the \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), in which \textbf{w} is every other node having the state $open$.
+On the line number \textbf{6} in Algorithm \ref{algo_dijkstra}, the choice of the node \textbf{u} means choosing \textbf{u} with \texttt{dist}(\textbf{u}) $ \leq $ \texttt{dist}(\textbf{w}), in which \textbf{w} is every other node having the state $open$.
 
 \subsection{Proof of correctness}
 
@@ -688,45 +687,45 @@ From the description of the algorithm and previous lemma, it is clear that the s
 
 %%%%% Theorem 3
 \begin{theorem}
-Let $A$ be a set of closed nodes. The length already found path from $v_0$ to $v$ is the length of the shortest path $v_0 v_1 \dots v_k v$, where nodes $v_0, v_1, \dots , v_k$ are in set $A$.
+Let $A$ be a set of closed nodes. The length of already found path from $v_0$ to $v$ is the length of the shortest path $v_0 v_1 \dots v_k v$, where nodes $v_0, v_1, \dots , v_k$ are in set $A$.
 \end{theorem}
 %%%%% Theorem 3
 
 %%%%% Proof 3
 \begin{proof}
-The proof is by induction on the number of steps executed. The theorem clearly is correct before and after the first step. 
+The proof is constructed by induction of numbers of steps executed. The theorem is clearly correct before and after the first step. 
 
-Let $w$ be a node with a state set to closed in the last step. Let us consider a node $v$ which is closed.
-If $v=w$, then the theorem is trivial. In the opposite case we will show, that there is the shortest path from $v_0$ to $v$ through nodes in set $A$ not containing the node $w$. Set $L$ as a length of the path from $v_0$ to $v$ through the nodes in $A$ without $w$. Because in each step we choose the node with the lowest \texttt{dist}(\textbf{u}) and \texttt{dist} of chosen nodes in each step represents a non-decreasing sequence (weight of the edges are positive). Then the length of the path from $v_0$ to $w$ through nodes in $A$ is at least $D$. Because we have chosen the $D$ we know, there exists a path from $v_0$ to $v$ through nodes in $A$ which is not using node $w$.
+Let $w$ be a node with the state set closed in the last step. Let us consider a node $v$ which is closed.
+If $v=w$, then the theorem is trivial. In the opposite case we will show, that there is a shortest path from $v_0$ to $v$ through nodes in set $A$ not containing the node $w$. Set $L$ as length of the path from $v_0$ to $v$ through the nodes in $A$ without $w$. Because in each step we choose the node with the lowest \texttt{dist}(\textbf{u}) and \texttt{dist} of chosen nodes in each step represents a non-decreasing sequence (weight of the edges are positive). Then the length of the path from $v_0$ to $w$ through nodes in $A$ is at least $D$. Because we have chosen $D$ we know, there exists a path from $v_0$ to $v$ through nodes in $A$ which is not using node $w$.
 
 Now let us consider a node $v$ which is not closed. Let $v_0 v_1 \dots v_k v$ be the shortest path from $v_0$ to $v$, where $\forall v_0, v_1, \dots v_k v \in A$. 
-If $v_k = w$, then we changed the \texttt{dist} to the length of this path in current step. If $v_k \neq w$ then $v_0 v_1 \dots v_k$ is the shortest path from $v_0$ to $v_k$ through nodes in $A$ and so we can assume that no nodes $v_0, v_1, \dots v_k $ is not $w$ (according to last paragraph). Hence, the length of the path was already set to the correct value before the current step.
+If $v_k = w$, then we changed the \texttt{dist} to the length of this path in current step. If $v_k \neq w$ then $v_0 v_1 \dots v_k$ is the shortest path from $v_0$ to $v_k$ through nodes in $A$. Therefore, we can assume that no nodes $v_0, v_1, \dots v_k $ is not $w$ (according to last paragraph). Hence, the length of the path was already set to the correct value before the current step.
 
 Due to the fact, that after the last step the set $A$ contained only the nodes, into which exists a path from node $v_0$, we have proven the correctness of Dijkstra algorithm.
 \end{proof}
 %%%%% Proof 3
 
 \subsection{Time complexity}
-Now from Algorithm \ref{algo_dijkstra}, we can compute the time general complexity of Dijkstra algorithm. Let us assume we use the array in order to store the distances for all the $N$ nodes. As proven in Theorem \ref{theorem2}, the whole algorithm will execute at the most $N$ steps, in each we are choosing the node from the set of \textit{fresh} nodes having size $O(N)$. In each step we also need to check the number of nodes, which are being connected via edges outgoing from the currently checked node. Number of these checks in total is equal to at most $O(E)$, where $E$ is a number of edges in the input graph. To sum up the time complexity equals to $O(N^2 + M)$, i.e. $O(N^2)$ since $E$ can be at the most $N^2$.
+Now from Algorithm \ref{algo_dijkstra}, we can compute the time general complexity of Dijkstra algorithm. Let us assume we use the array in order to store the distances for all the $N$ nodes. As proven in Theorem \ref{theorem2}, the whole algorithm will execute at the most $N$ steps, in each we are choosing the node from the set of \textit{fresh} nodes having size $O(N)$. In each step we also need to check the number of nodes, which are being connected via edges outgoing from the currently checked node. Number of these checks in total is equal to at most $O(E)$, where $E$ is a number of edges in the input graph. To sum up the time complexity, it equals to $O(N^2 + M)$, i.e. $O(N^2)$ since $E$ can be at the most $N^2$.
 
 It is possible to improve this complexity by using heap instead of an array in order to store the distances. In the beginning, the heap will contain $N$ elements and in each step this number will be reduced by one: We find and delete the smallest one in time of $O(\log{N})$ and adjusting the distances of the neighbours, which take $O(E\log{n})$ through all the edges. In total, the time complexity of the algorithm is $O((N+M) \log{N})$. As mentioned in Section \ref{sec:dijsktra} for real life applications, we expect the graph having a form of a sparse graph, meaning for $M << N^2$ the heap version of the algorithm will provide much more better results.
 
 
 Dijkstra algorithm is very similar to Bellman-Ford algorithm mentioned in subsection \ref{sec:SPP}. The main difference between these algorithms is repetitive checking of the nodes. Once Dijkstra algorithm closes a node, it will never be checked again. Bellman-Fold algorithm goes through each of the nodes and recalculates the path in case negative edges exists in the graph. Because of this extra step, it is slower then Dijkstra, but can detect whether the graph is valid or not.
 
-Dijkstra algorithm computes shortest paths from one single node to all of the others in the graph. However, the Meeting Scheduler application is searching for an optimal point given multiple input locations instead of single one. After applying Dijkstra algorithm on every input node, the graph instance now contains shortest paths for each input node. Therefore, every node in the graph holds an information about the distance to each of the input nodes. Within these nodes exists one node, having the optimal combination of shortest paths, which is the result at the Meeting Scheduler application.
+Dijkstra algorithm computes the shortest paths from one single node to all of the others in the graph. However, the Meeting Scheduler application is searching for an optimal point given multiple input locations instead of a single one. After applying Dijkstra algorithm on every input node, the graph instance now contains the shortest paths for each input node. Therefore, every node in the graph holds an information about the distance to each of the input nodes. Within these nodes exists one node, having the optimal combination of the shortest paths, which is the result at the Meeting Scheduler application.
 This whole computation process leaves a lot of space for the performance optimization, especially the parallelization. 
 \newpage
 \section{Parallelization of Dijkstra algorithm}
-The development of information technology together with the a wide range of attention in graph theory research, a variety of algorithm and graph structures have been proposed \cite{Peng09}. Nowadays, the algorithms for serial SSSP optimization have reached the time limitation. The only solution to improve the performance efficiently lies in parallel computation. 
+The development of information technology together with the wide range of attention in graph theory research, a variety of algorithms and graph structures have been proposed \cite{Peng09}. Nowadays, the algorithms for serial SSSP optimization have reached the time limitation. The only solution to improve the performance efficiently lies in parallel computation. 
 
-N. Jasika, N. Alispahic et al.\cite{Jasika12} measured the performances of two implementations of Dijkstra algorithm. One was executed on dual-core processor i5 with OpenMP and second with OpenCL. The measurement of the performances were not as fast as expected. Among possible reasons mentioned are the code were not efficient enough and the input data set was small enough, therefore more time was spend on synchronization instead of parallel computation.
+N. Jasika et al.\cite{Jasika12} measured the performances of two implementations of Dijkstra algorithm. One was executed on dual-core processor i5 with OpenMP and second with OpenCL. The measurement of the performances were not as fast as expected. Among possible reasons mentioned were the code, which was not efficient enough, and the input data set, which was small enough. Therefore, more time was spend on synchronization instead of parallel computation.
 
-Two major issues inherent to Dijkstra algorithm were pointed out in the article: limited explicit parallelism and excessive synchronization. Therefore, Dijkstra algorithm represent a challenging example of an algorithm difficult to accelerate. Mainly because it relies on priority queue (see Section \ref{sec:dijsktra}).
+Two major issues inherent to Dijkstra algorithm were pointed out in the article: limited explicit parallelism and excessive synchronization. Therefore, Dijkstra algorithm represent a challenging example of an algorithm, which is difficult to accelerate. Mainly because it relies on priority queue (see Section \ref{sec:dijsktra}).
 
-The case study made by P. Bogdan \cite{Bogdan15} focuses as well on creating a parallel application for the Dijkstra algorithm with a high degree of efficiency. The study proposes the Dijkstra algorithm useful in cases having big density of nodes. Therefore, the algorithm is one of the first steps towards improving systems in fields such as computer networks, GPS systems or node localization in 3D wireless sensor networks.
+The case study made by P. Bogdan \cite{Bogdan15} focuses as well on creating a parallel application using Dijkstra algorithm with a high degree of efficiency. The study proposes that Dijkstra algorithm is very useful in cases of a high density of nodes. Therefore, the algorithm is one of the first steps towards improving the systems in fields such as computer networks, GPS systems or node localization in 3D wireless sensor networks.
 
-Parallelization of Dijkstra algorithm represent is among the toughest parallel problems in graph theory. The key to provide better performances is to identify blocks of code possible for parallelization. The identification of the parallel blocks and solution is described in the Section \ref{sec:real_parallelization}.
+Parallelization of Dijkstra algorithm represents one of the toughest parallel problems in graph theory. The key to provide better performances is to identify blocks of code possible for parallelization. The identification of the parallel blocks and solutions is described in the Section \ref{sec:real_parallelization}.
 
 \section{User interface design}
 \label{sec:UIDesign}
@@ -735,13 +734,13 @@ Further, the user should be able to insert the positions of people in order to f
 
 Creating a fully satisfiable graphical user interface (GUI) is not main purpose of this thesis. So it was decided to create a simple GUI in which users can insert the geographical coordinates of participants. As a result, a single pair of coordinates of final destination will be received. 
 
-A fully optimal GUI would allow users to select a position through the displayed map of the data set available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. Example of fully optimal GUI is displayed on Figure \ref{fig:OptUI}.
+A fully optimal GUI would allow users to select a position through the displayed map of the data set available. Finding exact coordinates would be further transcribed into a marked point on the map and the general user-flow would be significantly improved, because the user would see a marked point on the map which would be the meeting point. Example of a fully optimal GUI is displayed in Figure \ref{fig:OptUI}.
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[resolution=125]{pics/OptimalUI}
-\caption{Design of fully optimal user interface.}
+\caption{Design of a fully optimal user interface.}
 \label{fig:OptUI}
 \end{figure}
 
@@ -753,17 +752,17 @@ Creating suboptimal user interface is described in the next chapter in Section \
 
 \section{Technology used}
 \label{sec:TechUsed}
-The goal of the thesis is to create complex desktop application with basic front-end to provide users proper control over the input data and the general overview over the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (C\texttt{\#} Windows, ObjC iOS etc.). 
+The goal of the thesis is to create a complex desktop application with a basic front-end to provide users with proper control over the input data and the general overview of the application. In addition, the technology used should be cross-platform. In general, modern high-level programming languages prefer one platform over the other (C\texttt{\#} Windows, ObjC iOS etc.). However, to satisfy as many users as possible usage in all platforms is desired.
 
 In direction of keeping the application as simple as possible, the main computation part of the application is written in C\texttt{++} language, which provides great computing performances on any platform while offering OOP principles in order to create more complex applications. In addition, C\texttt{++} based back-end will make the deployment on any server operating system effortless. Not to mention there are plenty open source libraries available, making a realization of the whole project easily done.  
 
 %% QT 
-One of the external tools used for the purpose of the application is Qt framework. Qt provides cross-platform tools to create basic GUI and is classified as FOSS computer software. Therefore, fitting the purpose of the application being open source. 
-Usage of classes and functions of Qt framework is very straightforward while producing fully functional GUI as a front end for the application. 
+One of the external tools used for the purpose of the application is Qt framework. Qt provides cross-platform tools to create basic GUI and is classified as FOSS\footnote{Free and open-source software} computer software. Therefore, fitting the purpose of the application being open source. 
+Usage of classes and functions of Qt framework is very straightforward while producing fully functional GUI as a front end for the application\cite{QT17}. 
 
 %% GDAL
-For reading the data files and following manipulation, GDAL/ORG library was selected. GDAL is designed to read and write raster GIS formats. GDAL library is developed under Open Source Geospatial Foundation and released under the X/MIT license. 
-As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
+For reading the data files and following manipulation, GDAL/ORG library was selected. GDAL is designed to read and write raster GIS formats. GDAL library is developed under Open Source Geospatial Foundation and released under the X/MIT license\cite{GDAL17}. 
+As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats \cite{GDAL117}. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
 Since the data set of the application is in Shapefile format (see Section \ref{sec:posSources}), GDAL/ORG library provides optimal tools for reading and collecting information from our data set.
 
 \section{Server}
@@ -799,11 +798,13 @@ Data processing module is the part of the server ensuring the data are transform
 
 \subsection{Data processing module}
 \label{subsec:dataprocessing} 
-Role of the data processing module is to transform gathered data set into directed graph. The data set is represented with the specific GIS file format, more specifically Shapefile format provided by team Mapzen (see Section \ref{subsec:DA_OSM}). The data set obtained has already been partially processed, so it contains only features describing transportation (e.g. road or rails). Data processing module is able to read the selected format and extract all the nodes from the transport points. These nodes represents vertices in the graph. 
+The role of the data processing module is to transform gathered data sets into directed graph. The data set is represented with the specific GIS file format, more specifically Shapefile format provided by team Mapzen (see Section \ref{subsec:DA_OSM}). The data set obtained has already been partially processed, so it contains only features describing transportation (e.g. road or rails). The data processing module is able to read the selected format and extract all the nodes from the transport points. These nodes represents vertices in the graph. 
 
 Afterwards, the edges are extracted from the relations of the nodes. In addition, each edge obtains the cost based on the great circle distance (see Section \ref{subsec:GCD}) between the points. Together with vertices the full graph is complete.
 
-Based on the size of the graph, the amount of nodes can be reduced using node reduction or the structure of the graph can be modified by clustering. Both methods are described in Section \ref{sec:preprocessing}. These changes to the graph obtained are shortening the computation time for the cost of accuracy.
+Based on the size of the graph, the amount of nodes can be reduced using node reduction or the structure of the graph can be modified by clustering. Both methods are described in Section \ref{sec:preprocessing}. These changes to the graph obtained are shortening the computation time for the cost of accuracy. 
+
+The following subsection describes the implementation of the data-reader class, allowing to read and further manipulate the data, e.g. transforming the data into the graph structure. This class represent essential step in data processing module.
 
 \subsubsection{Data-reader class}
 %TODO FITNESS, STORAGE, Source
@@ -827,13 +828,13 @@ public:
 };
 \end{lstlisting}
 
-Having the data set initialized, next step is to load the features within. Features are conained within the layers. Calling the method \texttt{InitLayer(int)}, the layer is initialised, seting the pointer \texttt{pLayer} to the first feature available. The argument of the function determines the index of the layer, if the data set contains more layers. \texttt{OGRFeature} is a container holding a geometry and the attributes of the feature. Geometry types are displayed on the Figure \ref{pic:OGRGeo}, obtained from official GDAL documentation \cite{GDAL17}. 
+Having the data set initialized, the next step is to load the features within. Features are conained within the layers. Calling the method \texttt{InitLayer(int)}, the layer is initialised, seting the pointer \texttt{pLayer} to the first feature available. The argument of the function determines the index of the layer, if the data set contains more layers. \texttt{OGRFeature} is a container holding a geometry and the attributes of the feature. Geometry types are displayed on the Figure \ref{pic:OGRGeo}, obtained from official GDAL documentation \cite{GDAL17}. 
 
 
 
 After analysis of the data set, the geometry of the road is represented as a \texttt{OGRLineString} class. Therefore, every feature contains two nodes connected together via an edge. Method\texttt{GetNodesFromCurrentFeature()} reads the first feature within the layer and returns a pair of nodes connected via edge in form of \texttt{NodePair} structure. \texttt{NodePair} structure contains two pointers to the \texttt{Node} class. 
 
-The last method within \texttt{DataReader} class to point out is static function\texttt{DistanceBetweenTwoPoints(Node*,Node*)}. The method takes two nodes as arguments and returns the great circle distance between them. It is static since it is not needed to be dependent on any object of the \texttt{DataReader} class.
+The last method within \texttt{DataReader} class to point out is the static function\texttt{DistanceBetweenTwoPoints(Node*,Node*)}. The method takes two nodes as arguments and returns the great circle distance between them. It is static since it is not needed to be dependent on any object of the \texttt{DataReader} class.
 
 \begin{lstlisting}[frame=single, caption={\texttt{Node} class}, label={lst:Node}]
 class Node{
@@ -890,25 +891,26 @@ The distance array is being used as a argument for the Dijkstra algorithm, furth
 
 \subsection{Computation module}
 \label{subsec:server_comp}
-Computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after update of the data set. Thereafter, the server waits in the stand-by mode, expecting the client to send the input coordinates. 
+The computation module uses the graph constructed by the data processing module. Data processing is needed only at the start of the server or after updating the data set. Thereafter, the server waits in stand-by mode, expecting the client to send the input coordinates. Next subsection describes the algorithm, which initiates immediately after establishing the connection with the client and transferring the input data from the user.
+
 
 \subsubsection{Algorithm}
 After receiving the input coordinates from the client, the application is ready to start the computation. 
-The main computation algorithm is Dijkstra algorithm (see Section \ref{sec:dijsktra}). Dijkstra algorithm is solving SSSP problem. The application is using Dijkstra algorithm for each of the input nodes, resulting having shortest distances to all nodes in the graph and choosing the most suitable one.
+The main computation algorithm is Dijkstra algorithm (see Section \ref{sec:dijsktra}). Dijkstra algorithm is solving SSSP problem. The application is using Dijkstra algorithm for each of the input nodes, resulting in the shortest distances to all nodes in the graph and choosing the most suitable one.
 
-The version of sequential Dijkstra algorithm uses priority queue based on the distance to process every node in the graph. Priority queue affects the computation time of the algorithm based on the structure \cite{Chen07}. 
+The version of sequential Dijkstra algorithm uses a priority queue based on the distance to process every node in the graph. A priority queue affects the computation time of the algorithm based on the structure of priority queue \cite{Chen07}. 
 
-The priority queue needs to have operations:
+The priority queue needs to have following operations, in order to be useful for an algorithm:
 \begin{description}
 
-\item[ExtractMin] to get vertex with minimum distance for all the vertices, whose shortest distance is not found yet
-\item[DecreaseKey] to update the distance of adjacent vertices of currently	extracted vertex; if the distance is smaller, update the information in the queue
+\item[ExtractMin] to get a vertex with a minimum distance for all the vertices, whose shortest distance is not yet found
+\item[DecreaseKey] to update the distance of adjacent vertices of currently	extracted vertex; If the distance is smaller than currently found optimum, update the information in the queue
 
 \end{description}
 
-The operations above are guaranteed by \textit{Set} container in C\texttt{++} STL. \textit{Set} keeps all its keys in sorted order \cite{STL17}. Hence, minimum distant vertex will always be at the beginning, allowing to extract the vertex with minimum distance (\textbf{ExtractMin}) and update distances of all other adjacent vertices accordingly (\textbf{DecreaseKey}) $\Rightarrow$ if any vertex's distance become smaller, delete its previous entry and insert new updated entry.
+The operations above are guaranteed by \textit{Set} container in C\texttt{++} STL. \textit{Set} keeps all its keys in sorted order \cite{STL17}. Hence, a minimum distant vertex will always be at the beginning, allowing to extract the vertex with the minimum distance (\textbf{ExtractMin}) and update the distances of all other adjacent vertices accordingly (\textbf{DecreaseKey}) $\Rightarrow$ if any vertex's distance become smaller, delete its previous entry and insert new updated entry.
 
-The implementation of the sequential Dijkstra algorithm is located in Listing \ref{lst:SeqDijkstra}. The method has three arguments. First argument \texttt{g} represent the graph storing all the information about the nodes. Second argument \texttt{source} is a pair of coordinates defining the input node. Third argument \texttt{dist} is a container, storing the distances from every input node to every other node in the graph. Last argument is an index of the input node.
+The implementation of the sequential Dijkstra algorithm is located in Listing \ref{lst:SeqDijkstra}. The method has three arguments. The first argument \texttt{g} represent the graph storing all the information about the nodes. The second argument \texttt{source} is a pair of coordinates defining the input node. The third argument \texttt{dist} is a container, storing the distances from every input node to every other node in the graph. The last argument is an index of the input node.
 
 \begin{lstlisting}[frame=single, caption={Sequential Dijkstra algorithm}, label={lst:SeqDijkstra}, breaklines=true]
 void MeetingScheduler::SequentialDijkstra(Graph * g , 
@@ -956,31 +958,41 @@ void MeetingScheduler::SequentialDijkstra(Graph * g ,
 }
 \end{lstlisting}
 
-Time complexity depends of the structure used in \textit{Set} container. According to SGI documentation \cite{STL17}, all the \textit{Set} operations (e.g. insert, delete) take logarithmic time. Therefore, the solution in Listing \ref{lst:SeqDijkstra} is $O(E \log V)$.
+Time complexity depends on the structure used in \textit{Set} container. According to SGI documentation \cite{STL17}, all the \textit{Set} operations (e.g. insert, delete) take logarithmic time. Therefore, the solution in Listing \ref{lst:SeqDijkstra} is $O(E \log V)$.
 
-The method depicted in Listing \ref{lst:SeqDijkstra} is called for each input node the server receives from the client. Result of each all is stored within one structure -- \texttt{dist}. When Dijkstra algorithm finished computing the distances for every input, the next step is to find the node with the best combination of the distances.
+The method depicted in Listing \ref{lst:SeqDijkstra} is called for each input node, the server receives from the client. The result of each is stored within one structure -- \texttt{dist}. When Dijkstra algorithm finished computing the distances for every input, the next step is to find the node with the best combination of distances.
 
 \subsubsection{Finding the result}
 
-As described in previous section, each node has the information about the shortest distance to all the input nodes. The optimal node needs to have the shortest and uniform uniform distances from every input node. Therefore, the summation and standard deviation is computed for every node. 
+As described in the previous section, each node has the information of the shortest distance to all input nodes. The optimal node needs to have the shortest and uniform distance from every input node. Therefore, the summation and standard deviation is computed for every node. 
 
-The node with the shortest distances to every input node needs to have smallest summation of all the distances. The standard deviation of all the distances achieve the uniformity, therefore every person has it to the meeting place relatively equal (based on the value of the standard deviation). 
+The node with the shortest distances to every input node needs to have the smallest summation of all distances. The standard deviation of all the distances achieve uniformity. Therefore, every person has a relatively equal distance to the meeting place (based on the value of the standard deviation). 
 
-The standard deviation (represented as a Greek letter $\sigma$) in statistics measure the the amount of variation or dispersion of a set of data values \cite{Bland96}. The smaller the value of the standard deviation is, the more similar the values are. Choosing the result with the smallest standard deviation ensures the uniformity of the result.
-The formula used to compute discrete standard deviation for the node $v$ look as follows:
+The standard deviation (represented as a Greek letter $\sigma$) in statistics measures the amount of variation or dispersion of a set of data values \cite{Bland96}. The smaller the value of the standard deviation is, the more similar the values are. Choosing the result with the smallest standard deviation ensures the uniformity of the result.
+The formula used to compute discrete standard deviation for the node $v$ looks as follows:
 $$
 	\sigma_v = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \overline{x})^2}
 $$
 where $N$ is the amount of input nodes,  $x_i$ is distance from the input at index $i$ to the node $v$ and $\overline{x}$ is mean value of all the distances to the node $v$. 
 
-The optimal node needs to have the summation and standard deviation of all the distances to smallest. With growing summation of distances, the fitness of the node is less desired. The same applies to the standard deviation of the distances. Hence, to it is possible to put the summation and standard deviation into the relation. The fitness value of the node is represented as a multiplication of those two values. The node with the smallest fitness value is the optimal node. 
+The optimal node needs to have the smallest summation and standard deviation of all the distances. With growing summation of distances, the fitness of the node is less desired. The same applies to the standard deviation of the distances. Hence, it is possible to put the summation and standard deviation into the relation, creating the fitness value. Therefore, the fitness value of the node is represented as a multiplication of those two values. The node with the smallest fitness value is the optimal node. 
 
 \subsubsection{Analysis of the fitness}
-In previous paragraph was defined the fitness value of the node as a multiplication of summation and standard deviation. Since the distance values are from $[0, \infty)$ interval, the summation of them can be from $[0, \infty)$ interval as well. If the summation of the distances is $0$, then all the distances are also $0$. That means all the input nodes are located in the same location. This edge case is already handled in the UI layer of the application, therefore the summation is from the interval $(0, \infty)$.
+In previous paragraph the fitness value of the node as a multiplication of summation and standard deviation was defined. Since the distance values are within $[0, \infty)$ interval, the summation of them can be within $[0, \infty)$ interval as well. If the summation of the distances is $0$, all of the distances are also $0$. That means all the input nodes are located in the same location. This edge case is already handled in the UI layer of the application, therefore, the summation is within the interval $(0, \infty)$.
 
-The standard deviation is in general (as well as the summation) from $[0, \infty)$. If standard deviation equals $0$, it means all the values are the same. Ideally, the optimal node should have standard deviation of the distances equal to $0$. However, this fact can completely override the contribution of the summation in the fitness value. Using real world data, it is possible that input nodes have equal distances to multiple nodes, but with different values \footnote{with increasing number of input nodes the probability of having $\sigma$ decreases}. In Figure is shown a simple example for two input nodes.
+The standard deviation is in general (as well as the summation) from $[0, \infty)$. If standard deviation equals $0$, it means all the values are the same. Ideally, the optimal node should have a standard deviation of the distances equal to $0$. However, this fact can completely override the contribution of the summation in the fitness value. Using real world data, it is possible that input nodes have equal distances to multiple nodes, but with different values \footnote{with increasing number of input nodes the probability of having $\sigma$ decreases}. In Figure \ref{fig:TInodes} shows such example for two input nodes.
 
-Therefore, there is a special handling of this case, where standard deviation equals zero. During the processing of all the nodes the summation of the currently optimal node is stored. If another node with same fitness is found, node with the smaller summation is chosen as the optimal node.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[resolution=100]{pics/TInodes}
+\caption{Example on two possible result nodes for nodes A and B, based purely on smallest value of standard deviation. Node in the middle is having smaller summation of the distances, therefore being the optimal result.}
+\label{fig:TInodes}
+\end{figure}
+
+
+There is a special handling of this case, if the standard deviation equals zero. During the processing of all the nodes the summation of the currently optimal node is stored. If another node with the same fitness is found, node with the smaller summation is chosen as the optimal node. 
 
 
 \subsubsection{Parallelization}
@@ -988,7 +1000,7 @@ Therefore, there is a special handling of this case, where standard deviation eq
 
 \section{Client}
 \label{sec:RClient}
-Client provides basic GUI for the user. The user thought the client connects to the remote server and send the server locations of the people.
+The client provides basic GUI for the user. The user thought the client connects to the remote server and send the server locations of people.
 The appearance of the current UI was created by Qt framework as mentioned in the beginning of the Section \ref{sec:TechUsed}. According to Section \ref{sec:UIDesign}, the final version of the user interface is presented in the Figure \ref{pic:UIFinal}.
 
 
@@ -999,9 +1011,9 @@ The appearance of the current UI was created by Qt framework as mentioned in the
 \label{pic:UIFinal}
 \end{figure}
 
-The client is split into left and right section. Left section enables the user to enter the locations of the people. The edit blocks for other persons are uneditable, until every person before contains valid input. For example, after entering location and name of the first person, the fields for the second person become editable. After entering proper data into each person's fields, the user is notified in the \textit{Result window} the next person is available. 
+The client is split into left and right section. Left section enables the user to enter the locations of people. The edit blocks for other people are uneditable until every person before contains a valid input. For example, after entering the location and the name of the first person, the fields for the second person become editable. After entering proper data into each person's fields, the user is notified in the \textit{Result window} that the next person is available. 
 
-The input required for the application is only set of latitudes and longitudes in order to find the meeting place. However, the user interface allows the user to enter the name of the person. This enhances the general user flow, providing the user to associate the location of the coordinates with the name.
+The input required for the application is only a set of latitudes and longitudes in order to locate the position of the person and further use the locations to find a node in the graph and ultimately the optimal meeting point. However, the user interface allows the user to enter the name of the person. This enhances the general user flow, providing the user to associate the location of the coordinates with the name.
 
 In the right section of the client the \textit{Result window} and \textit{Connection} is located. After every action user makes, the \textit{Result window} updates according to the current state of the client or server.
 
@@ -1014,8 +1026,8 @@ Implemented client is not far of fully optimal user interface mentioned in Secti
 \chapter{Results}
 \label{ch:Results}
 
-For testing as the data set was chosen the city Prague, capital of Czech republic. The data set is available in two versions. First version consist of all the transport nodes available within the area. 
-The data set is displayed with QGIS Desktop software on the Figure \ref{pic:dataset1}.
+For testing the data set of city Prague, capital of Czech republic, was chosen. The data set is available in two versions. First version consist of all the transport nodes available within the area. 
+The data set is displayed with QGIS Desktop software on Figure \ref{pic:dataset1}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{pics/praguedatasetL}
@@ -1023,16 +1035,16 @@ The data set is displayed with QGIS Desktop software on the Figure \ref{pic:data
 \label{pic:dataset1}
 \end{figure}
 
-The second version has reduced the number of the nodes using the node reduction technique (see Section \ref{sec:NodeReduction}) with tolerance 200 meters. After every 200 meters one connecting node is being removed.
+The second version has a reduced number of nodes using the node reduction technique (see Section \ref{sec:NodeReduction}) with a tolerance of 200 meters. After every 200 meters, one connecting node is being removed.
 The second data set is also displayed with QGIS Desktop software on the Figure \ref{pic:dataset2}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{pics/praguedatasetS}
-\caption{Generalized version of the main Prague data set}
+\caption{Generalized version of the main Prague data set (reduced number of nodes)}
 \label{pic:dataset2}
 \end{figure}
 
-The clustering method described in the Section \ref{sec:Clustering} was not used in order to better measure the differences between sequential and parallel solution for the given problem. 
+The second preprocessing technique described in the Section \ref{sec:Clustering} -- clustering method -- was not used in order to better measure the differences between sequential and parallel solution for the given problem. 
 
 \section{Speed}
 
@@ -1054,13 +1066,14 @@ The clustering method described in the Section \ref{sec:Clustering} was not used
 % \printglossaries
 \begin{description}
 	\item[APSP] All-pair shortest path
-	\item[CERCO] Comit{\' e}e Europ{\' e}en des Responsables de la Cartographie Officielle\item[GUI] Graphical user interface
+	\item[CERCO] Comit{\' e}e Europ{\' e}en des Responsables de la Cartographie Officielle
 	\item[DEM] Digital Elevation Model
 	\item[ERDF] European Regional Development Fund
 	\item[ESPON] European Observation Network for Territorial Development and Cohesion
 	\item[FOSS] Free and Open-Source Software
 	\item[GDAL] Geospatial Data Abstraction Library
 	\item[GIS] Geographic information systems	
+	\item[GUI] Graphical user interface
 	\item[MEGRIN] Multi-purpose European Ground Related Information Network
 	\item[OOP] Object Oriented Programming
 	\item[OSM] OpenStreetMaps
@@ -1071,7 +1084,7 @@ The clustering method described in the Section \ref{sec:Clustering} was not used
 	
 \end{description}
 
-\chapter{GDAL/OGR diagrams}
+\chapter{GDAL/OGR diagram}
 
 
 \begin{figure}[H]
