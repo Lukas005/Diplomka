@@ -765,6 +765,10 @@ For reading the data files and following manipulation, GDAL/ORG library was sele
 As an addition to the GDAL is the ORG library which enables usage of simple features for vector formats. Together the whole GDAL/ORG library supports most of the GIS formats \cite{GDAL117}. %cite "GDAL Raster Formats". GDAL - Geospatial Data Abstraction Library. 2011-06-05.	
 Since the data set of the application is in Shapefile format (see Section \ref{sec:posSources}), GDAL/ORG library provides optimal tools for reading and collecting information from our data set.
 
+%% OpenMP --- HERE BABY :))
+To parallelize the sequential algorithm of the application was chosen the application programming interface (API) OpenMP. OpenMP supports multi-platform parallel programming in C/C\texttt{++} and Fortran \cite{OpenMP17}. OpenMP provides simple and flexible interface for developing parallel applications. Its multi-platform possibility makes the Meeting Scheduler easier to be deployed on any machine, while trying to use the full potential of the machine to speed up the application. In addition, supported C/C\texttt{++} language fits to the language the application is written in.
+%% THE END FOR YOU :)) Love you!
+
 \section{Server}
 \label{sec:server}
 The Meeting Scheduler application is structured as a server-client model using TCP protocol. As defined in the Linux information project \cite{TCP17}:  \textit{``TCP uses error correction and data stream control techniques to ensure that packets to arrive at their intended destinations uncorrupted and in the correct sequence, thereby making the point-to-point connection virtually error-free.''} 
@@ -895,6 +899,7 @@ The computation module uses the graph constructed by the data processing module.
 
 
 \subsubsection{Algorithm}
+\label{subsec:alg}
 After receiving the input coordinates from the client, the application is ready to start the computation. 
 The main computation algorithm is Dijkstra algorithm (see Section \ref{sec:dijsktra}). Dijkstra algorithm is solving SSSP problem. The application is using Dijkstra algorithm for each of the input nodes, resulting in the shortest distances to all nodes in the graph and choosing the most suitable one.
 
@@ -994,10 +999,73 @@ The standard deviation is in general (as well as the summation) from $[0, \infty
 
 There is a special handling of this case, if the standard deviation equals zero. During the processing of all the nodes the summation of the currently optimal node is stored. If another node with the same fitness is found, node with the smaller summation is chosen as the optimal node. 
 
+% BEGIN HERE BABY <3 |
+% BEGIN HERE BABY <3 |
+% BEGIN HERE BABY <3 v
+
+The approach chosen to find the result node requires to go trough every node and calculate the fitness value from each distance to the input nodes. The time complexity of this approach is $N * m$, where $N$ represents a number of nodes in graph and $m$ is a number of input nodes. The number of input nodes is expected be significantly less then the number of nodes in the graph. Hence, the time complexity of finding the result node is $O(N)$. 
+
+The focus of the next section is laid on improving the run time of the application using parallelization.
 
 \subsubsection{Parallelization}
 \label{sec:real_parallelization}
+The parallelization is powerful tool, how to speed up any application. Nowadays, multiprocessor computers are available and affordable for everyone. Therefore, the programmer should always assume the application will be running on computer with more than one CPU. Same applies to the Meeting Scheduler application.
 
+Automatic parallelization of sequential program by a compiler is an idea, on which many researches has been done. Unfortunately it has only limited success, as J. P. Shen and M. H. Lipasti stated in their work \cite{Shen04}. Hence, it is up to the programmers to analyse the code and made the parallelization manually.
+
+The first step needed to be done is to identify parts of the code, which could be run in parallel. The run of the server application can be described in four simple steps: data reading, graph creation, searching the shortest distances and finding the result node. Data reading followed by creation of the graph are operations which are executed only once on the start of the server. Therefore, parallization of these parts of the code would not bring significant difference, especially to the user. 
+
+The priority is to speed up the run time of the whole process of searching the optimal meeting place.
+The process is described by the pseudo-code in Algorithm \ref{pseudoMS}.
+
+\begin{algorithm}[H]
+\SetKwData{DA}{distances}
+\SetKwData{G}{G}
+\SetKwData{RN}{result\_node}
+\SetKw{In}{in}
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\SetKwFunction{CreateDA}{CreateDistanceArray}
+\SetKwFunction{Fitness}{NodeFitness}
+\SetKwFunction{Dijkstra}{Dijkstra}
+\Input{Graph G, Input coordinates}
+\Output{Location of the meeting point}
+
+\BlankLine
+\DA $\leftarrow$ \CreateDA{\G}\;
+\ForEach{input coordinate $c$}{\Dijkstra{\G, $c$, \DA}\;} 
+
+\ForEach{node n \In \DA}{
+	\If{\Fitness{\RN} $>$ \Fitness{n}}{\RN $\leftarrow$ n}
+
+}
+\Return{\RN}
+\caption{Pseudo-code of the Meeting Scheduler application}
+\label{pseudoMS}
+\end{algorithm}
+
+In the Algorithm \ref{pseudoMS}, there are three parts possible for parallelization. 
+The first part is function \texttt{CreateDistanceArray}. It is simple function creating the copy of the coordinates, running in linear time $O(n)$, since it must go trough every node in the graph. Given the number of processors $p$, the function can run in parallel with the time complexity $O(N/p)$.
+
+The second part is calling the Dijkstra algorithm $m$ times for each input node. Sequential time of Dijkstra algorithm stated in Section \ref{subsec:alg} is O$(E \log V)$. Since the graph is based on real world data, it is not expected the number of edges to be $E = c . V$, where $c$ is a constant and $V$ number of nodes in the graph. Hence, the complexity of the second part is equal to $O(m \cdot N \log N)$. Paralleling the \texttt{for} loop in second part, it is possible to achieve complexity $(m/p \cdot N \log N)$.
+
+The third part looks similar to the first one, where the \texttt{for} loop iterates trough every node in the graph. However, function \texttt{NodeFitness} contains iteration in order to analyse the distances for every input. Therefore, combining the first loop iterating $N$ times and \texttt{NodeFitness} function performing $m$ steps, the total time complexity of the third part is $O(m \cdot N)$. Running the outer loop in parallel, the time complexity is $O(m \cdot N/p)$.
+
+All together, the total time complexity of the paralleled application is $O(N/p + m/p \cdot N \log N + m \cdot N/p)$. Knowing sequential and parallel time complexity, it is possible to measure the parallel speedup. According to \cite{Tvrdik10}, Parallel speedup $S(N, p)$, where $N$ is a size of the data and $p$ number of processors, is defined as followed: 
+\begin{equation}
+S(N, p) = \frac{SU(N)}{T(N,p)}
+\end{equation}
+Putting the analysis into the equation, we receive:
+
+\begin{align*}
+S(N, p) &= \frac{N + m \cdot N \log N + m \cdot N}{N/p + m/p \cdot N \log N + m \cdot N/p} =  \\
+&= \frac{N + m \cdot N \log N + m \cdot N}{(1/p)(N + m \cdot N \log N + m \cdot N)} = \frac{1}{1/p} = p
+\end{align*}
+
+When $S(N, p) = \theta(p)$, it is called linear speedup \cite{Tvrdik10}. Hence, our application has possibility to achieve linear speedup. However, the speedup is limited by the number of input nodes, given by user. The parallel run time of the second part is tightly connected to calling Dijkstra function in parallel, depending on the number of input nodes. Therefore, the real speedup is more likely expected to be $S(N, p) = m/N$.
+
+To create parallel code was chosen the application programming interface OpenMP, described in the Section \ref{sec:TechUsed}.
+
+\newpage
 \section{Client}
 \label{sec:RClient}
 The client provides basic GUI for the user. The user thought the client connects to the remote server and send the server locations of people.
@@ -1065,8 +1133,10 @@ The second preprocessing technique described in the Section \ref{sec:Clustering}
 \chapter{Acronyms}
 % \printglossaries
 \begin{description}
+	\item[API] Application Programming Interface
 	\item[APSP] All-pair shortest path
 	\item[CERCO] Comit{\' e}e Europ{\' e}en des Responsables de la Cartographie Officielle
+	\item[CPU] Central Processing Unit
 	\item[DEM] Digital Elevation Model
 	\item[ERDF] European Regional Development Fund
 	\item[ESPON] European Observation Network for Territorial Development and Cohesion
