@@ -36,7 +36,9 @@
 \author{Luk{\' a}{\v s} Koc} %author's name without academic degrees
 \authorWithDegrees{Bc. Luk{\' a}{\v s} Koc} %author's name with academic degrees
 \supervisor{Ing. Jan Baier}
-\acknowledgements{THANKS (remove entirely in case you do not with to thank anyone)}
+\acknowledgements{I would like to thank to my supervisor, Ing. Jan Baier, for providing excellent guidance, constructive criticism and friendly advices during the whole time.
+Another huge thanks goes my family and girlfriend for endless support, patience and comfort during my studies.
+}
 
 \abstractEN{Summarize the contents and contribution of your work in a few sentences in English language.}
 
@@ -538,7 +540,7 @@ The Meeting Scheduler application is designed to work with the selected data-sou
 
 \subsection{Graph clustering}
 \label{sec:Clustering}
-Clustering is a method to group multiple nodes based on similarity into one set -- a cluster. However, in some of the clustering literature, a cluster in a graph is also called a community \cite{Newman04}. An example of clustering is displayed on Figure \ref{pic:Clustering}.
+Clustering is a method to group multiple nodes based on similarity into one set -- a cluster. However in some of the literature covering clustering, a cluster in a graph is also called a community \cite{Newman04}. An example of clustering is displayed on Figure \ref{pic:Clustering}.
 
 
 \begin{figure}[h]
@@ -548,7 +550,7 @@ Clustering is a method to group multiple nodes based on similarity into one set 
 \label{pic:Clustering}
 \end{figure}
 
-In survey conducted by S. E. Schaeffer \cite{Schaeffer07}, clustering is formally defined as followed: \textit{``Given a data set, the goal of clustering is to divide the data set into clusters such that the elements assigned to a particular cluster are similar or connected in some predefined sense.''}
+In the survey conducted by S. E. Schaeffer \cite{Schaeffer07}, clustering is formally defined as followed: \textit{``Given a data set, the goal of clustering is to divide the data set into clusters such that the elements assigned to a particular cluster are similar or connected in some predefined sense.''}
 
 The survey further describes two approaches: global clustering and local clustering. In global clustering, every vertex of the input graph is assigned to a cluster, which is the output of the clustering method. However, in the local clustering, only a certain amount of vertices are assigned to clusters. 
 
@@ -811,7 +813,7 @@ Based on the size of the graph, the amount of nodes can be reduced using node re
 The following subsection describes the implementation of the data-reader class, allowing to read and further manipulate the data, e.g. transforming the data into the graph structure. This class represent essential step in data processing module.
 
 \subsubsection{Data-reader class}
-%TODO FITNESS, STORAGE, Source
+
 The application is reading data through the class called \texttt{DataReader}. The structure of the class is displayed in Listing \ref{lst:DataReader}. The constructor requires the string, which is representing the path to the Shapefile data-file. Within the constructor the GDAL library opens the file and set the pointer \texttt{GDALDataset * pDS} to the data set within the input file.
 
 \begin{lstlisting}[frame=single, caption={\texttt{DataReader} class}, label={lst:DataReader}]
@@ -999,23 +1001,19 @@ The standard deviation is in general (as well as the summation) from $[0, \infty
 
 There is a special handling of this case, if the standard deviation equals zero. During the processing of all the nodes the summation of the currently optimal node is stored. If another node with the same fitness is found, node with the smaller summation is chosen as the optimal node. 
 
-% BEGIN HERE BABY <3 |
-% BEGIN HERE BABY <3 |
-% BEGIN HERE BABY <3 v
-
-The approach chosen to find the result node requires to go trough every node and calculate the fitness value from each distance to the input nodes. The time complexity of this approach is $N * m$, where $N$ represents a number of nodes in graph and $m$ is a number of input nodes. The number of input nodes is expected be significantly less then the number of nodes in the graph. Hence, the time complexity of finding the result node is $O(N)$. 
+The approach chosen to find the result node requires to go trough every node and calculate the fitness value from each distance to the input nodes. The time complexity of this approach is $N \cdot m$, where $N$ represents a number of nodes in graph and $m$ is a number of input nodes. The number of input nodes is expected be significantly less then the number of nodes in the graph. Hence, the time complexity of finding the result node is $O(N)$. 
 
 The focus of the next section is laid on improving the run time of the application using parallelization.
 
 \subsubsection{Parallelization}
 \label{sec:real_parallelization}
-The parallelization is powerful tool, how to speed up any application. Nowadays, multiprocessor computers are available and affordable for everyone. Therefore, the programmer should always assume the application will be running on computer with more than one CPU. Same applies to the Meeting Scheduler application.
+The parallelization is powerful tool for speeding up any application. Nowadays, multiprocessor computers are available and affordable for everyone. Therefore, the programmer should always assume that the application will be running on a computer with more than one CPU. The same applies to application of the Meeting Scheduler.
 
-Automatic parallelization of sequential program by a compiler is an idea, on which many researches has been done. Unfortunately it has only limited success, as J. P. Shen and M. H. Lipasti stated in their work \cite{Shen04}. Hence, it is up to the programmers to analyse the code and made the parallelization manually.
+Automatic parallelization of a sequential program by a compiler is an idea, on which many researches have been working. Unfortunately it had only limited success as stated by J. P. Shen and M. H. Lipasti in their work \cite{Shen04}. Hence, it is up to the programmers to analyse the code and provide the parallelization manually.
 
-The first step needed to be done is to identify parts of the code, which could be run in parallel. The run of the server application can be described in four simple steps: data reading, graph creation, searching the shortest distances and finding the result node. Data reading followed by creation of the graph are operations which are executed only once on the start of the server. Therefore, parallization of these parts of the code would not bring significant difference, especially to the user. 
+The first step is to identify parts of the code, which could be running in parallel. The run of the server application can be described in four simple steps: data reading, graph creation, searching for the shortest distances and finding the result node. Data reading followed by creation of the graph are operations which are executed only once on the start of the server. Therefore, parallization of these parts of the code would not bring significant improvements, especially to the user. 
 
-The priority is to speed up the run time of the whole process of searching the optimal meeting place.
+The main priority of parallelization needs to be the speed up of the run time of the process of searching for the optimal meeting place.
 The process is described by the pseudo-code in Algorithm \ref{pseudoMS}.
 
 \begin{algorithm}[H]
@@ -1042,15 +1040,16 @@ The process is described by the pseudo-code in Algorithm \ref{pseudoMS}.
 \caption{Pseudo-code of the Meeting Scheduler application}
 \label{pseudoMS}
 \end{algorithm}
+\bigskip
 
-In the Algorithm \ref{pseudoMS}, there are three parts possible for parallelization. 
-The first part is function \texttt{CreateDistanceArray}. It is simple function creating the copy of the coordinates, running in linear time $O(n)$, since it must go trough every node in the graph. Given the number of processors $p$, the function can run in parallel with the time complexity $O(N/p)$.
+As seen in the Algorithm \ref{pseudoMS}, three possible parts for parallelization were identified. 
+The first part is the function \texttt{CreateDistanceArray}. It is a simple function used for creating a copy of the coordinates, which is running in linear time $O(n)$ since it must go trough every node in the graph. Given the number of processors $p$, the function can run in parallel with the time complexity $O(N/p)$.
 
-The second part is calling the Dijkstra algorithm $m$ times for each input node. Sequential time of Dijkstra algorithm stated in Section \ref{subsec:alg} is O$(E \log V)$. Since the graph is based on real world data, it is not expected the number of edges to be $E = c . V$, where $c$ is a constant and $V$ number of nodes in the graph. Hence, the complexity of the second part is equal to $O(m \cdot N \log N)$. Paralleling the \texttt{for} loop in second part, it is possible to achieve complexity $(m/p \cdot N \log N)$.
+The second part, on which parallalization would have an impact on, is calling the Dijkstra algorithm $m$ times for each input node. Sequential time of Dijkstra algorithm stated in Section \ref{subsec:alg} is O$(E \log V)$. Since the graph is based on real world data, it is not expected that the number of edges to be $E = c . V$, where $c$ is a constant and $V$ the number of nodes in the graph. Hence, the complexity of the second part is equal to $O(m \cdot N \log N)$. By paralleling the \texttt{for} loop, which was identified in the second part, it is possible to achieve a time complexity $(m/p \cdot N \log N)$.
 
-The third part looks similar to the first one, where the \texttt{for} loop iterates trough every node in the graph. However, function \texttt{NodeFitness} contains iteration in order to analyse the distances for every input. Therefore, combining the first loop iterating $N$ times and \texttt{NodeFitness} function performing $m$ steps, the total time complexity of the third part is $O(m \cdot N)$. Running the outer loop in parallel, the time complexity is $O(m \cdot N/p)$.
+Example three for implementing parallalization looks similar to the first, where the \texttt{for} loop iterates trough every node in the graph. However, the function \texttt{NodeFitness} contains an iteration in order to analyse the distances for every input. Therefore, by combining the first loop's iterating $N$ times and the \texttt{NodeFitness} function performing $m$ steps, the total time of complexity of the third part is $O(m \cdot N)$. Running the outer loop in parallel, the time complexity is $O(m \cdot N/p)$.
 
-All together, the total time complexity of the paralleled application is $O(N/p + m/p \cdot N \log N + m \cdot N/p)$. Knowing sequential and parallel time complexity, it is possible to measure the parallel speedup. According to \cite{Tvrdik10}, Parallel speedup $S(N, p)$, where $N$ is a size of the data and $p$ number of processors, is defined as followed: 
+All together, the total time complexity of the paralleled application is $O(N/p + m/p \cdot N \log N + m \cdot N/p)$. Knowing sequential and parallel time complexity, it is possible to measure the parallel speedup. According to \cite{Tvrdik10}, parallel speedup $S(N, p)$, where $N$ is a size of data and $p$ a number of processors, is defined as followed: 
 \begin{equation}
 S(N, p) = \frac{SU(N)}{T(N,p)}
 \end{equation}
@@ -1061,15 +1060,15 @@ S(N, p) &= \frac{N + m \cdot N \log N + m \cdot N}{N/p + m/p \cdot N \log N + m 
 &= \frac{N + m \cdot N \log N + m \cdot N}{(1/p)(N + m \cdot N \log N + m \cdot N)} = \frac{1}{1/p} = p
 \end{align*}
 
-When $S(N, p) = \theta(p)$, it is called linear speedup \cite{Tvrdik10}. Hence, our application has possibility to achieve linear speedup. However, the speedup is limited by the number of input nodes, given by user. The parallel run time of the second part is tightly connected to calling Dijkstra function in parallel, depending on the number of input nodes. Therefore, the real speedup is more likely expected to be $S(N, p) = m/N$.
+When $S(N, p) = \theta(p)$, it is called linear speedup \cite{Tvrdik10}. Hence, our application has the possibility to achieve a linear speed, while computing the optimal meeting point of multiple locations. However, the speedup is limited by the number of input nodes, given by user. The parallel run time of the second part is tightly connected to calling Dijkstra function in parallel, which is dependent on the number of input nodes. Therefore, the real speedup is more likely expected to be $S(N, p) = m/N$.
 
-To create parallel code was chosen the application programming interface OpenMP, described in the Section \ref{sec:TechUsed}.
+To create parallel code the application programming interface OpenMP was chosen, described in the Section \ref{sec:TechUsed}.
 
 \newpage
 \section{Client}
 \label{sec:RClient}
-The client provides basic GUI for the user. The user thought the client connects to the remote server and send the server locations of people.
-The appearance of the current UI was created by Qt framework as mentioned in the beginning of the Section \ref{sec:TechUsed}. According to Section \ref{sec:UIDesign}, the final version of the user interface is presented in the Figure \ref{pic:UIFinal}.
+The client provides basic GUI for the user. Through the client the user is connected to the remote server and can send the server locations of people.
+The appearance of the current UI was created by Qt framework as mentioned in the beginning of the Section \ref{sec:TechUsed}. Of course, the UI can be adapted any time to wishes of users. However, for this thesis task the UI was of lesser importance than the server implementations. According to Section \ref{sec:UIDesign}, the final version of the user interface is presented in the Figure \ref{pic:UIFinal}.
 
 
 \begin{figure}[H]
@@ -1079,22 +1078,22 @@ The appearance of the current UI was created by Qt framework as mentioned in the
 \label{pic:UIFinal}
 \end{figure}
 
-The client is split into left and right section. Left section enables the user to enter the locations of people. The edit blocks for other people are uneditable until every person before contains a valid input. For example, after entering the location and the name of the first person, the fields for the second person become editable. After entering proper data into each person's fields, the user is notified in the \textit{Result window} that the next person is available. 
+The client is split into left and right section. Left section enables the user to enter the locations of participants. The edit blocks for each person can only be filled after every person before contains a valid input. For example, after entering the location and the name of the first person, the fields for the second person become editable. After entering proper data into a person's fields, the user is notified in the \textit{Result window} that the next person is available for editing. 
 
-The input required for the application is only a set of latitudes and longitudes in order to locate the position of the person and further use the locations to find a node in the graph and ultimately the optimal meeting point. However, the user interface allows the user to enter the name of the person. This enhances the general user flow, providing the user to associate the location of the coordinates with the name.
+The input required for the application is only a set of latitudes and longitudes, in order to locate the position of the person. Further, the locations are used to find a node in the graph to ultimately identify the optimal meeting point for a group of people. Furthermore, the user interface allows the user to enter the name of the participant. This enhances the general user flow of the application by providing an association of the added user name with the location of the coordinates.
 
-In the right section of the client the \textit{Result window} and \textit{Connection} is located. After every action user makes, the \textit{Result window} updates according to the current state of the client or server.
+In the right section of the client, the \textit{Result window} and \textit{Connection} is located. After every action the user makes, the \textit{Result window} updates according to the current state of the client or server.
 
-\textit{Connection} allows the user to connect to the server using server address and port. The server and client are connected via transmission control protocol (TCP) as explained in the beginning of the Section \ref{sec:server}. After setting up the connection with the server it is possible to begin the algorithm by pressing \textit{Search} button. Result is afterwards displayed in the \textit{Result window}. Button \textit{Clear} erases all the message in the \textit{Result window}. At last, button \textit{Close} naturally closes the application.
+\textit{Connection} allows the user to connect to the server by using the server address and port. The server and client are connected via transmission control protocol (TCP) as explained in the beginning of the Section \ref{sec:server}. After setting up the connection with the server it is possible to begin the algorithm by pressing the \textit{Search} button. Afterwards, the result is displayed in the \textit{Result window}. The button \textit{Clear} erases all the message in the \textit{Result window}. At last, the button \textit{Close} naturally closes the application.
 
 
-Implemented client is not far of fully optimal user interface mentioned in Section \ref{sec:UIDesign} and meets all the requirements of the sub-optimal version of the UI. 
+The implemented client is not far of fully optimal user interface for reasons mentioned in Section \ref{sec:UIDesign}. However, it meets all the requirements of the sub-optimal version of the UI. 
 
 
 \chapter{Results}
 \label{ch:Results}
 
-For testing the data set of city Prague, capital of Czech republic, was chosen. The data set is available in two versions. First version consist of all the transport nodes available within the area. 
+For testing the application, the main data set of the city Prague, the capital of Czech republic, was chosen. The data set is available in two versions. The first version consist of all the transport nodes available within the area. 
 The data set is displayed with QGIS Desktop software on Figure \ref{pic:dataset1}.
 \begin{figure}[H]
 \centering
@@ -1114,14 +1113,65 @@ The second data set is also displayed with QGIS Desktop software on the Figure \
 
 The second preprocessing technique described in the Section \ref{sec:Clustering} -- clustering method -- was not used in order to better measure the differences between sequential and parallel solution for the given problem. 
 
-\section{Speed}
+
+As the secondary data set, was chosen the data set of the city New York, capital of state New York in USA. The secondary data set was established for testing the run time of the application. The Table \ref{tab:gnodes} shows the number of nodes in the graph from each data set. These numbers plays significant part of the run time of the application.
+
+\begin{table}[h]
+ \centering
+ \caption{Sizes of the graph created from different data sets}
+ \label{tab:gnodes}
+ \begin{tabular}{|l|r|}
+ \hline
+ \textbf{Data set}    & \textbf{\# nodes in graph} \\ \hline
+ Prague               & 270504                     \\ \hline
+ Prague generalised   & 28761                      \\ \hline
+ New York             & 425076                     \\ \hline
+ New York generalised & 67220                      \\ \hline
+ \end{tabular}
+\end{table}
+
+
+All the test were executed on the computer with Intel(R) Core(TM) i7-4710HQ CPU @ 2.50GHz x 4. The OS used is virtualized 64-bit Ubuntu 16.04 LTS with 2GB operating memory available.
+
+
+The attributes being measured are speed and preciseness of the application, described in the following sections.
 
 \section{Preciseness}
+Preciseness of the application represent the correctness of the result node. Correctness is defined by the distances from the input nodes, verifying the . The distances are computed using the third party service -- Google Maps (Google Inc.). Analysis of the output node by the distances to the input nodes allows the 
+
+\section{Speed}
+To measure the run time of the application was used time library \texttt{<chrono>} available in C\texttt{++}11. Before and after execution of the application, the timestamps were saved and the final run time is calculated as a difference between these two timestamps.
+
+The goal is to measure the speedup obtained using parallelization method described in Section \ref{sec:real_parallelization}.
+The part of the code measured is the computation part. The data processing part run only, when the server is started, however computation part is being executed for each client request.
+
+The configuration variables of the speed tests are the size of the graph and the number of input nodes. The sizes of the graph are shown in Table \ref{tab:gnodes}. The number of input nodes are numbers from 2 to 5, which is the currently supported number of input nodes due to the UI limitations (See Section \ref{sec:RClient}). Every combination of these configuration values will be executed on sequential and parallel version of the application 10 times and then the average value will be picked to normalize the results.
 
 \setsecnumdepth{part}
 \chapter{Conclusion}
 
+Through this thesis, the in cooperation of geospatial informations for creating a Meeting Scheduler application was performed. The goal of the application was to create a handy tool with an working user interface (programmed with a Qt framework) for coordinating the location of up to five people within a group to find an optimal meeting point with an equal distance to each one of the participants. Hence, the optimal data source and format was identified and chosen (OpenStreetMaps and Shapefile). Further, storage and preprocessing tools were applied to optimize the used data and needed memory of the application. After adaptation and implementation of the shortest path algorithm, Dijkstra algorithm, the time complexity problem was tried to keep to a minimum by applying parallalization onto profiting code. After prove of successfully locating a meeting point for a group of people, precision and speed of the application was tested. Due to the lack of other similar applications, no comparison could have been performed between the created and pre-existing applications. Due to limited time worked on this application, possible improvements could be further implemented for optimization of the application. These will be described in the following section.
+
 \section{Future Work}
+
+
+So far the application was proven to deliver a concrete set of coordinates located on a street within Prague. Each of the people within a group have an equal distance to the coordinates obtained. 
+For covering a wider area or using the application even on a global scale, clustering would be an option to improve the computing time of larger data sets. This would be achieved by the data processing method, local clustering. By connecting subgraphs or adjacency lists of nearby vertices, the running time of the clustering algorithm would grow faster and therefore, guaranteeing a relative short processing time even if the group of people would even be separated by countries.
+
+
+% Using GPU - graphical processing unit -> to map the Dijkstra algorithm on the 
+Another way to improve the application would be optimizing the computation module of the application. Within optimal conditions, the application would use the graphical processing unit (GPU) instead of the CPU. However, currently the application runs on the CPU. The disadvantage of the usage of the CPU instead of the GPU could be that the sequentiality of Dijkstra algorithm may not fully use the parallel potential of the GPU. Furthermore, the CPU would provide a significantly higher computational power, which would be especially important for using the application on a continental or global scale.
+
+%GPU or CPU is used???
+
+% Automatize the data gathering -> Data processing module can automaticaly fetch 
+% the data every time interval and update the current data version and recreate the graph from it
+% creating scheduled service, maintance setion ,automatically connect to data source, download, processing (reading,creating graph)
+Also, up to now the data set is downloaded once, processed and used for computing the meeting point. For a fast expanding city, this could lead to a bottleneck for users, which would like to meet in an area not yet updated in the data set. Therefore, a scheduled maintenance service, which automatically connects to the data source and downloads the newest version for data processing would be mandatory for staying up-to-date with the newest geographical developments. The automatized data gathering would also included the automatized recreation of the graph, so that the usage time of the application would always be kept to a minimum.
+
+% Complete the user interface to support locating the input nodes on the real world map
+% e.g. render the data obtained from OSM 
+As mentioned previously, the UI was created in a suboptimal manner due to a lower priority on the list of tasks for creating the application. Therefore, implementing the coordinates, obtained as result for the meeting point, onto the street map of Prague would create a graphical visualization of the result. Hence, the application would be more user-friendly and colorful.
 
 
 \bibliographystyle{iso690}
@@ -1177,7 +1227,7 @@ The second preprocessing technique described in the Section \ref{sec:Clustering}
 		.3 graph\DTcomment{folder containing graph sources}.
 		.3 node\DTcomment{folder containing node sources used by graph}.
 		.3 data\_reader\DTcomment{folder containing data reading sources}.
-		.3 dijkstra\DTcomment{folder containing sources of Dijsktra algorithm}.
+		.3 msched\DTcomment{folder containing sources of Dijsktra algorithm}.
 		.2 client\DTcomment{folder containing client sources}.
 		.2 thesis\DTcomment{the directory of \LaTeX{} source codes of the thesis}.
 		.1 text\DTcomment{the thesis text directory}.
