@@ -195,7 +195,7 @@ Raster type formats consist of equally sized cells arranged in rows and columns 
 
 \paragraph*{Advantages}
 \begin{itemize}[noitemsep]
-\item Easy and "cheap" to render
+\item Easy and ``cheap'' to render
 \item Represent well both, discrete (urban areas, soil types) and continuous data (elevation)
 \item Grid natures provide suitability for mathematical modeling or quantitative analysis
 \end{itemize}
@@ -1137,7 +1137,9 @@ All the test were executed on the computer with Intel(R) Core(TM) i7-4710HQ CPU 
 The attributes being measured are speed and preciseness of the application, described in the following sections.
 
 \section{Preciseness}
-Preciseness of the application represent the correctness of the result node. Correctness is defined by the distances from the input nodes, verifying the . The distances are computed using the third party service -- Google Maps (Google Inc.). Analysis of the output node by the distances to the input nodes allows the 
+Preciseness of the application represent the correctness of the result node. Correctness is defined by the distances from the input nodes. The distances are computed using the third party service -- Google Maps (Google Inc.). Using reliable party serves as a verification, that the result node is approaching the optimum.
+
+The test was based on the 
 
 \section{Speed}
 To measure the run time of the application was used time library \texttt{<chrono>} available in C\texttt{++}11. Before and after execution of the application, the timestamps were saved and the final run time is calculated as a difference between these two timestamps.
@@ -1145,7 +1147,19 @@ To measure the run time of the application was used time library \texttt{<chrono
 The goal is to measure the speedup obtained using parallelization method described in Section \ref{sec:real_parallelization}.
 The part of the code measured is the computation part. The data processing part run only, when the server is started, however computation part is being executed for each client request.
 
-The configuration variables of the speed tests are the size of the graph and the number of input nodes. The sizes of the graph are shown in Table \ref{tab:gnodes}. The number of input nodes are numbers from 2 to 5, which is the currently supported number of input nodes due to the UI limitations (See Section \ref{sec:RClient}). Every combination of these configuration values will be executed on sequential and parallel version of the application 10 times and then the average value will be picked to normalize the results.
+The configuration variables of the speed tests are the size of the graph, the number of input nodes and number of the threads in the application. The sizes of the graph are shown in Table \ref{tab:gnodes}. The number of input nodes are numbers from 2 to 5, which is the currently supported number of input nodes due to the UI limitations (See Section \ref{sec:RClient}). The number of threads used is 1, 2, 3, 4 and 6. It is expected to see speedup only for number of threads between 1-4, because the operating system has only 4 CPU available. 
+
+Every combination of these configuration values were executed on sequential and parallel version of the application 20 times and then the average value was picked to reduce the number of deviations.
+
+The results of the run time is displayed on the Graph.
+
+
+It is noticeable, the speedup of the parallel version of the application is not linear as stated in Section \ref{sec:real_parallelization}. The non-linear speedup is caused by using shared variables within the Dijkstra algorithm. The most significant shared variable is the input graph, which each thread uses to compute the result node. Therefore, input graph is a critical section.
+Solution to this could be copying the entire graph and providing each copy for every thread. However, this solution is a trade off between memory usage and performance.
+
+% using shared result memory for each thread,
+% sdilene promenne a cast kodu 
+
 
 \setsecnumdepth{part}
 \chapter{Conclusion}
